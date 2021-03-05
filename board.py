@@ -1,4 +1,5 @@
 
+
 class Board:
     def __init__(self, board, playerPos, targetsPos, boxesPos):
         self.board = board
@@ -8,3 +9,6 @@ class Board:
 
     def getPlayerPosition(self):
         return self.playerPos
+
+    def isComplete(self, node):
+        return sorted(self.targetsPos) == sorted(node.getBoxesPositions())

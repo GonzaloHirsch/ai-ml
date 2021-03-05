@@ -4,3 +4,6 @@ class Node:
         self.parent = parent
         self.playerPos = playerPos
         self.boxesPos = boxesPos
+
+    def getBoxesPositions(self):
+        return self.boxesPos
