@@ -61,22 +61,22 @@ def solveDFS(board):
     # Iterate from the goal up to the root in order to get the complete list of actions
 
 exampleOG = np.array([
-    ['X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', '.', '.', '.', 'G', 'X'],
-    ['X', '.', 'B', 'X', '.', 'X'],
-    ['X', 'O', '.', '.', '.', 'X'],
-    ['X', 'X', 'X', 'X', 'X', 'X']
+    ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+    ['X', '.', '.', '.', 'G', 'G', 'X'],
+    ['X', '.', 'B', 'B', 'X', '.', 'X'],
+    ['X', 'O', '.', '.', '.', '.', 'X'],
+    ['X', 'X', 'X', 'X', 'X', 'X', 'X']
 ])
 
 example = np.array([
-    ['X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', '.', '.', '.', 'G', 'X'],
-    ['X', '.', '.', 'X', '.', 'X'],
-    ['X', '.', '.', '.', '.', 'X'],
-    ['X', 'X', 'X', 'X', 'X', 'X']
+    ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+    ['X', '.', '.', '.', 'G', 'G', 'X'],
+    ['X', '.', '.', '.', 'X', '.', 'X'],
+    ['X', '.', '.', '.', '.', '.', 'X'],
+    ['X', 'X', 'X', 'X', 'X', 'X', 'X']
 ])
 
-board = Board(example, np.array([3, 1]), [np.array([1, 4])], [np.array([2, 2])])
+board = Board(example, np.array([3, 1]), [np.array([1, 4]), np.array([1, 5])], [np.array([2, 2]),np.array([2, 3])])
 
 print(exampleOG)
 

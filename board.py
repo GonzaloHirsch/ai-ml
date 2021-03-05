@@ -15,8 +15,8 @@ class Board:
         return self.boxesPos
 
     def isComplete(self, node):
-        sortedTargets = sorted(self.targetsPos)
-        sortedBoxes = sorted(node.getBoxesPositions())
+        sortedTargets = np.sort(self.targetsPos)
+        sortedBoxes = np.sort(node.getBoxesPositions())
         for i in range(len(sortedBoxes)):
             if not np.array_equal(sortedBoxes[i], sortedTargets[i]):
                 return False
