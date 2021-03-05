@@ -1,12 +1,10 @@
 import constants
+import inputParser
 import numpy as np
 
 class Board:
-    def __init__(self, board, playerPos, targetsPos, boxesPos):
-        self.board = board
-        self.playerPos = playerPos
-        self.targetsPos = targetsPos
-        self.boxesPos = boxesPos
+    def __init__(self, configFile):
+        self.board, self.boxesPos, self.targetsPos, self.playerPos = inputParser.generateMatrixAndPositions(configFile)
 
     def getPlayerPosition(self):
         return self.playerPos

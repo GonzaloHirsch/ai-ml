@@ -32,7 +32,8 @@ def solveDFS(board):
             for direction in constants.ALL_DIRECTIONS:
                 # Test the movement direction
                 newPlayerPosition, newBoxesPosition, isPossible = board.testMovement(
-                    np.copy(curr.playerPos), np.copy(curr.boxesPos), direction)
+                    np.copy(curr.playerPos), np.copy(curr.boxesPos), direction
+                )
 
                 # Create a new node and push it if possible
                 if isPossible:
@@ -76,7 +77,9 @@ example = np.array([
     ['X', 'X', 'X', 'X', 'X', 'X', 'X']
 ])
 
-board = Board(example, np.array([3, 1]), [np.array([1, 4]), np.array([1, 5])], [np.array([2, 2]),np.array([2, 3])])
+# board = Board(example, np.array([3, 1]), [np.array([1, 4]), np.array([1, 5])], [np.array([2, 2]),np.array([2, 3])])
+INPUT_CONFIGURATION_FILE = "./examples/boards.txt"
+board = Board(INPUT_CONFIGURATION_FILE)
 
 print(exampleOG)
 
