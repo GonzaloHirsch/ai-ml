@@ -2,6 +2,7 @@ from constants import SearchMethods
 from board import Board
 from inputParser import generateConfigDetails, generateMatrixAndPositions
 import dfs
+import bfs
 
 def generateAndRunGame(configFile, matrixFile):
 
@@ -21,7 +22,11 @@ def generateAndRunGame(configFile, matrixFile):
         print("\n[Starting BFS Algorithm]\n")
         print("============================\n")
 
-        # call BFS
+        print("Initial Board")
+
+        board.printBoard()
+
+        bfs.solveBFS(board)
         
         print("\n============================")
         print("\n[Finished BFS Algorithm]\n")
@@ -65,4 +70,4 @@ def generateAndRunGame(configFile, matrixFile):
         print("============================")
 
 
-generateAndRunGame("input/configuration.txt", "examples/boards.txt")
+generateAndRunGame("input/configuration.txt", "examples/board_solvable_easy.txt")
