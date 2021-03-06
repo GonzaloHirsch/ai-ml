@@ -1,6 +1,7 @@
 from numpy import random
 import numpy as np
-import constants
+from constants import BoardElement
+
 
 # Name of the configuration file with the inner configuration
 def generateMatrixAndPositions(filename):
@@ -21,14 +22,16 @@ def generateMatrixAndPositions(filename):
 
         for colIdx in range(0, len(row)):
 
-            if row[colIdx] == constants.USER:
+            element = row[colIdx]
+
+            if element == BoardElement.PLAYER:
                 playerPosition = [rowIdx, colIdx]
 
-            if row[colIdx] == constants.BLOCK:
+            if element == BoardElement.BOX:
                 boxesPositions[boxIdx] = [rowIdx, colIdx]
                 boxIdx += 1
 
-            if row[colIdx] == constants.GOAL:
+            if element == BoardElement.GOAL:
                 targetPositions[targetIdx] = [rowIdx, colIdx]
                 targetIdx += 1
 
@@ -40,4 +43,27 @@ def generateMatrixAndPositions(filename):
         rowIdx += 1
 
     return matrix, boxesPositions, targetPositions, playerPosition
+
+
+def generateConfigDetails(configFile):
+
+    f = open(configFile, "r")
+
+    index = 0
+
+    for line in f:
+        if index == 0:
+            algorithm = line.rstrip("\n")
+        
+        index += 1
+
+    return algorithm
+
+
+
+
+
+    
+
+    
 

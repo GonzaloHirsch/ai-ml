@@ -87,10 +87,8 @@ example = np.array([
     ['X', 'X', 'X', 'X', 'X', 'X', 'X']
 ])
 
-# board = Board(example, np.array([3, 1]), [np.array([1, 4]), np.array([1, 5])], [np.array([2, 2]),np.array([2, 3])])
-INPUT_CONFIGURATION_FILE = "./examples/boards.txt"
-board = Board(INPUT_CONFIGURATION_FILE)
+# board = Board(exampleOG, [np.array([2, 2]),np.array([2, 3])], [np.array([1, 4]), np.array([1, 5])], np.array([3, 1]))
 
-print(exampleOG)
+# print(exampleOG)
 
-solveDFS(board)
+# solveDFS(board)

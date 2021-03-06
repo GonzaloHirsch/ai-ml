@@ -1,10 +1,13 @@
 import constants
-import inputParser
+from constants import BoardElement
 import numpy as np
 
 class Board:
-    def __init__(self, configFile):
-        self.board, self.boxesPos, self.targetsPos, self.playerPos = inputParser.generateMatrixAndPositions(configFile)
+    def __init__(self, board, boxesPos, targetsPos, playerPos):
+        self.board = board
+        self.boxesPos = boxesPos
+        self.targetsPos = targetsPos 
+        self.playerPos = playerPos
 
     def getPlayerPosition(self):
         return self.playerPos
@@ -42,11 +45,11 @@ class Board:
         # Calculate new player position
         newPlayerPosition = playerPosition + direction
 
-        # Get the type of block to move to
-        targetBlockToMove = self.board[newPlayerPosition[0], newPlayerPosition[1]]
+        # Get the type of box to move to
+        targetBoxToMove = self.board[newPlayerPosition[0], newPlayerPosition[1]]
 
         # In case it hits a wall when moving
-        if targetBlockToMove == constants.WALL:
+        if targetBoxToMove == BoardElement.WALL:
             return playerPosition, boxesPosition, False
         
         # In case the player wants to move to a blank space, return new player pos
@@ -57,17 +60,48 @@ class Board:
         # In case the player wants to move a box
         # Position of the other element
         nextNewPlayerPosition = newPlayerPosition + direction
-        # Block in the other element position
-        nextTargetBlockToMove = self.board[nextNewPlayerPosition[0], nextNewPlayerPosition[1]]
-        # Position of other block overlaps with box
-        blockOverlaps, newIndex = self.__playerOverlapsBox(nextNewPlayerPosition, boxesPosition)
 
-        # If the other block is a wall or a box 
-        if nextTargetBlockToMove == constants.WALL or blockOverlaps:
+        # Box in the other element position
+        nextTargetBoxToMove = self.board[nextNewPlayerPosition[0], nextNewPlayerPosition[1]]
+        
+        # Position of other box overlaps with box
+        boxOverlaps, newIndex = self.__playerOverlapsBox(nextNewPlayerPosition, boxesPosition)
+
+        # If the other box is a wall or a box 
+        if nextTargetBoxToMove == BoardElement.WALL or boxOverlaps:
             return playerPosition, boxesPosition, False
 
         # In case the box is moved successfully, we store the new position of that box
         boxesPosition[index] = nextNewPlayerPosition
         return newPlayerPosition, boxesPosition, True
 
+    
+    def printBoard(self):
+
+        rows = self.board.shape[0]
+        cols = self.board.shape[1]
+
+        currBoard = np.copy(self.board)
+
+        for boxIdx in range(0, len(self.boxesPos)):
+            i = int(self.boxesPos[boxIdx][0])
+            j = int(self.boxesPos[boxIdx][1])
+            currBoard[i][j] = BoardElement.BOX.value
+            boxIdx += 1
+
+        for targetIdx in range(0, len(self.targetsPos)):
+            i = int(self.targetsPos[targetIdx][0])
+            j = int(self.targetsPos[targetIdx][1])
+            currBoard[i][j] = BoardElement.GOAL.value
+            targetIdx += 1
+
+        currBoard[self.playerPos[0]][self.playerPos[1]] = BoardElement.PLAYER.value
+
+        for rowIdx in range(0, rows):            
+            for colIdx in range(0, cols):
+                print(currBoard[rowIdx][colIdx], end = " ")
+            
+            print("\n")
+
+                
 
