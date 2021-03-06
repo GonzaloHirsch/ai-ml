@@ -10,8 +10,8 @@ def generateMatrixAndPositions(filename):
 
     matrix = []
     playerPosition = []
-    boxesPositions = np.zeros(shape=(2,2))
-    targetPositions = np.zeros(shape=(2,2))
+    boxesPositions = np.zeros(shape=(8,2))
+    targetPositions = np.zeros(shape=(8,2))
 
     boxIdx = 0
     rowIdx = 0

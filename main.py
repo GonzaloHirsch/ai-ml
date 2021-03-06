@@ -3,6 +3,7 @@ from board import Board
 from inputParser import generateConfigDetails, generateMatrixAndPositions
 import dfs
 import bfs
+import time
 
 def generateAndRunGame(configFile, matrixFile):
 
@@ -16,7 +17,9 @@ def generateAndRunGame(configFile, matrixFile):
     matrix, boxes, targets, player = generateMatrixAndPositions(matrixFile)
 
     board = Board(matrix, boxes, targets, player)
-   
+    
+    start = time.time()
+
     if algorithm == SearchMethods.BFS:
         print("============================")
         print("\n[Starting BFS Algorithm]\n")
@@ -69,5 +72,8 @@ def generateAndRunGame(configFile, matrixFile):
         print("\n[Finished GREEDY Algorithm]\n")
         print("============================")
 
+    end = time.time()
+    print("\nResolution time: ", end - start)
 
-generateAndRunGame("input/configuration.txt", "examples/board_solvable_easy.txt")
+
+generateAndRunGame("input/configuration.txt", "examples/board_solvable_3.txt")
