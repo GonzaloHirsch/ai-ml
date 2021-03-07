@@ -81,4 +81,4 @@ def generateAndRunGame(configFile, matrixFile):
     print("\nResolution time: ", end - start)
 
 
-generateAndRunGame("input/configuration.txt", "input/board.txt")
+generateAndRunGame("input/configuration.json", "input/board.txt")
