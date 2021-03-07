@@ -8,8 +8,6 @@ def solveDFS(board):
     # Create the root
     root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
 
-    print(board.playerPos, board.boxesPos, board.targetsPos)
-
     # Map of visited nodes
     visited = {}
 
