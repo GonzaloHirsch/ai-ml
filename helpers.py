@@ -43,9 +43,8 @@ def printBoardsToSolution(board, solution):
     # Print the solution based on the stack
     while solutionStack:
         node = solutionStack.pop()
-        print("------------- MOVE " + str(node.getLevel()) + " ------------------\n")
+        print("\n------------- MOVE " + str(node.getLevel()) + " ------------------\n")
         board.printCustomBoard(node.getBoxesPositions(), node.getPlayerPosition())        
-        print("\n-------------- END " + str(node.getLevel()) + " ------------------\n")
 
 
 def printStats(expandedNodes, frontier):

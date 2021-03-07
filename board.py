@@ -79,8 +79,6 @@ class Board:
         self.boxesPos = boxesPos
         self.playerPos = playerPos
 
-        print(self.boxesPos, self.playerPos)
-
         self.printBoard()
 
     
