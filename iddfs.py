@@ -25,6 +25,9 @@ def solveIDDFS(board, maxDepth):
 
         node = frontier.popleft()
 
+        if not node in visited:
+            visited[node] = True
+
         # Set up the DFS stack
         stack = deque()
         stack.append(node)
