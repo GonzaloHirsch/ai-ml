@@ -2,12 +2,13 @@ from constants import SearchMethods
 from board import Board
 from inputParser import generateConfigDetails, generateMatrixAndPositions
 import dfs
+import iddfs
 import bfs
 import time
 
 def generateAndRunGame(configFile, matrixFile):
 
-    algorithm = generateConfigDetails(configFile)
+    algorithm, maxDepth = generateConfigDetails(configFile)
 
     try:
         algorithm = SearchMethods[algorithm]
@@ -55,7 +56,11 @@ def generateAndRunGame(configFile, matrixFile):
         print("\n[Starting IDDFS Algorithm]\n")
         print("============================\n")
 
-        # call
+        print("Initial Board")
+
+        board.printBoard()
+
+        iddfs.solveIDDFS(board, maxDepth)
         
         print("\n============================")
         print("\n[Finished IDDFS Algorithm]\n")
@@ -76,4 +81,4 @@ def generateAndRunGame(configFile, matrixFile):
     print("\nResolution time: ", end - start)
 
 
-generateAndRunGame("input/configuration.txt", "examples/board_solvable_3.txt")
+generateAndRunGame("input/configuration.txt", "input/board.txt")

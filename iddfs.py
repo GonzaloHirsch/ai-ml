@@ -3,7 +3,7 @@ from board import Board
 import numpy as np
 import constants
 from collections import deque
-from helpers import printBoardsToSolution
+import helpers
 
 def solveIDDFS(board, maxDepth):
     # Create the root
@@ -23,17 +23,21 @@ def solveIDDFS(board, maxDepth):
 
     while frontier:
 
+        node = frontier.popleft()
+
         # Set up the DFS stack
         stack = deque()
-        stack.append(frontier.popleft())
+        stack.append(node)
         
-        currDepth = 0
+        currDepth = node.getLevel()
+        currMaxDepth = currDepth + maxDepth
 
         # Iterates while not empty
-        while stack and currDepth < maxDepth:
+        while stack and currDepth < currMaxDepth:
 
             # Poping the first element
             curr = stack.pop()
+            currDepth = curr.getLevel()
 
             # Check if goal, if goal exit loop
             if board.isComplete(curr):
@@ -57,13 +61,12 @@ def solveIDDFS(board, maxDepth):
 
                             # If the next node is the limit, add to the frontier
                             # Will be analyzed in the next iteration
-                            if (currDepth + 1) == maxDepth:
+                            if newNode.getLevel() == currMaxDepth:
                                 frontier.append(newNode)
                             else:
                                 stack.append(newNode)
                                 visited[newNode] = True
 
-            currDepth += 1
 
         if foundSolution:
             break
@@ -73,12 +76,10 @@ def solveIDDFS(board, maxDepth):
     else:
         print("SOLUTION NOT FOUND")
 
-    print("STATS:")
-    print("Expanded Nodes:", expandedNodes)
-    print("Frontier Nodes:", len(stack))
+    helpers.printStats(expandedNodes, frontier)
 
     if foundSolution:
-        printBoardsToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)
 
 
     # Iterate from the goal up to the root in order to get the complete list of actions

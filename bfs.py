@@ -3,7 +3,7 @@ from board import Board
 import numpy as np
 import constants
 from collections import deque
-from helpers import printBoardsToSolution
+import helpers
 
 def solveBFS(board):
     # Create the root
@@ -50,10 +50,7 @@ def solveBFS(board):
     else:
         print("SOLUTION NOT FOUND \n")
 
-    print("STATS:")
-    print("Expanded Nodes: ", expandedNodes)
-    print("Frontier Nodes: ", len(queue))
-    print("\n")
+    helpers.printStats(expandedNodes, queue)
 
     if foundSolution:
-        printBoardsToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)

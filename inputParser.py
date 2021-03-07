@@ -1,7 +1,7 @@
 from numpy import random
 import numpy as np
 from constants import BoardElement
-
+from constants import SearchMethods
 
 # Name of the configuration file with the inner configuration
 def generateMatrixAndPositions(filename):
@@ -10,12 +10,10 @@ def generateMatrixAndPositions(filename):
 
     matrix = []
     playerPosition = []
-    boxesPositions = np.zeros(shape=(8,2))
-    targetPositions = np.zeros(shape=(8,2))
+    boxesPositions = []
+    targetPositions = []
 
-    boxIdx = 0
     rowIdx = 0
-    targetIdx = 0
 
     for line in f:
         row = [x for x in line.rstrip("\n").split(" ")]
@@ -25,15 +23,13 @@ def generateMatrixAndPositions(filename):
             element = row[colIdx]
 
             if element == BoardElement.PLAYER:
-                playerPosition = [rowIdx, colIdx]
+                playerPosition = np.array([rowIdx, colIdx])
 
             if element == BoardElement.BOX:
-                boxesPositions[boxIdx] = [rowIdx, colIdx]
-                boxIdx += 1
+                boxesPositions.append(np.array([rowIdx, colIdx]))
 
             if element == BoardElement.GOAL:
-                targetPositions[targetIdx] = [rowIdx, colIdx]
-                targetIdx += 1
+                targetPositions.append(np.array([rowIdx, colIdx]))
 
         if rowIdx == 0:
             matrix = np.array(row)
@@ -41,6 +37,9 @@ def generateMatrixAndPositions(filename):
             matrix = np.vstack((matrix, row))
 
         rowIdx += 1
+
+    boxesPositions = np.array(boxesPositions)
+    targetPositions = np.array(targetPositions)
 
     return matrix, boxesPositions, targetPositions, playerPosition
 
@@ -50,14 +49,17 @@ def generateConfigDetails(configFile):
     f = open(configFile, "r")
 
     index = 0
+    maxDepth = 1
 
     for line in f:
         if index == 0:
             algorithm = line.rstrip("\n")
+        if algorithm == SearchMethods.IDDFS.name and index == 1:
+            maxDepth = int(line.rstrip("\n"))
         
         index += 1
 
-    return algorithm
+    return algorithm, maxDepth
 
 
 

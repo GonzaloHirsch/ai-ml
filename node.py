@@ -1,9 +1,16 @@
+import numpy as np
 
 class Node:
     def __init__(self, parent, playerPos, boxesPos):
+
+        if parent is None:
+            self.level = 0
+        else:
+            self.level = parent.getLevel() + 1
+
         self.parent = parent
         self.playerPos = playerPos
-        self.boxesPos = boxesPos
+        self.boxesPos = np.sort(boxesPos, axis=0)
         self.computedHash = hash(self.__computeHashString())
 
     def getBoxesPositions(self):
@@ -11,6 +18,9 @@ class Node:
 
     def getParent(self):
         return self.parent
+
+    def getLevel(self):
+        return self.level
 
     def getPlayerPosition(self):
         return self.playerPos

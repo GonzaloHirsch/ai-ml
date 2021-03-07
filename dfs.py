@@ -3,14 +3,15 @@ from board import Board
 import numpy as np
 import constants
 from collections import deque
-from helpers import printBoardsToSolution
+import helpers
 
 def solveDFS(board):
-    # Create the root
-    root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
-
     # Map of visited nodes
     visited = {}
+    
+    # Create the root
+    root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
+    visited[root] = True
 
     # Stack to store nodes to visit
     stack = deque()
@@ -50,31 +51,7 @@ def solveDFS(board):
     else:
         print("SOLUTION NOT FOUND")
 
-    print("STATS:")
-    print("Expanded Nodes:", expandedNodes)
-    print("Frontier Nodes:", len(stack))
+    helpers.printStats(expandedNodes, stack)
 
     if foundSolution:
-        printBoardsToSolution(board, curr)
-        
-exampleOG = np.array([
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', '.', '.', '.', 'G', 'G', 'X'],
-    ['X', '.', 'B', 'B', 'X', '.', 'X'],
-    ['X', 'O', '.', '.', '.', '.', 'X'],
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-])
-
-example = np.array([
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', '.', '.', '.', 'G', 'G', 'X'],
-    ['X', '.', '.', '.', 'X', '.', 'X'],
-    ['X', '.', '.', '.', '.', '.', 'X'],
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-])
-
-# board = Board(exampleOG, [np.array([2, 2]),np.array([2, 3])], [np.array([1, 4]), np.array([1, 5])], np.array([3, 1]))
-
-# print(exampleOG)
-
-# solveDFS(board)
+        helpers.printBoardsToSolution(board, curr)

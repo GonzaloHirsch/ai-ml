@@ -23,3 +23,9 @@ def printBoardsToSolution(board, solution):
         node = solutionStack.pop()
         if solutionStack:
             print(board.getPlayerMovement(node.getPlayerPosition(), solutionStack[-1].getPlayerPosition()))
+
+
+def printStats(expandedNodes, frontier):
+    print("STATS:")
+    print("Expanded Nodes:", expandedNodes)
+    print("Frontier Nodes:", len(frontier))
