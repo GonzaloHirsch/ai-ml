@@ -53,4 +53,4 @@ def solveBFS(board):
     helpers.printStats(expandedNodes, queue)
 
     if foundSolution:
-        helpers.printBoardsToSolution(board, curr)
+        helpers.printMovesToSolution(board, curr)
