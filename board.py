@@ -6,7 +6,7 @@ class Board:
     def __init__(self, board, boxesPos, targetsPos, playerPos):
         self.board = board
         self.boxesPos = boxesPos
-        self.targetsPos = targetsPos 
+        self.targetsPos = np.sort(targetsPos, axis=0) 
         self.playerPos = playerPos
 
     def getPlayerPosition(self):
@@ -16,10 +16,9 @@ class Board:
         return self.boxesPos
 
     def isComplete(self, node):
-        sortedTargets = np.sort(self.targetsPos, axis=0)
         sortedBoxes = np.sort(node.getBoxesPositions(), axis=0)
         for i in range(len(sortedBoxes)):
-            if not np.array_equal(sortedBoxes[i], sortedTargets[i]):
+            if not np.array_equal(sortedBoxes[i], self.targetsPos[i]):
                 return False
         return True
 

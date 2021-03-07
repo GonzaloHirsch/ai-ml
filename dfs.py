@@ -5,11 +5,12 @@ import constants
 from collections import deque
 
 def solveDFS(board):
-    # Create the root
-    root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
-
     # Map of visited nodes
     visited = {}
+    
+    # Create the root
+    root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
+    visited[root] = True
 
     # Stack to store nodes to visit
     stack = deque()
