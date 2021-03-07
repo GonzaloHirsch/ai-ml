@@ -18,6 +18,12 @@ class SearchMethods(enum.Enum):
    def __str__(self):
       return str(self.value)
 
+class ConfigOptions(enum.Enum):
+   ALGORITHM = "algorithm"
+   MAX_DEPTH = "maxDepth"
+
+   def __str__(self):
+      return str(self.value)
 
 class BoardElement(enum.Enum):
    SPACE='.'
