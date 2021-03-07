@@ -8,6 +8,8 @@ def solveDFS(board):
     # Create the root
     root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
 
+    print(board.playerPos, board.boxesPos, board.targetsPos)
+
     # Map of visited nodes
     visited = {}
 
@@ -70,25 +72,3 @@ def solveDFS(board):
                 print(board.getPlayerMovement(curr.getPlayerPosition(), solutionStack[-1].getPlayerPosition()))
 
     # Iterate from the goal up to the root in order to get the complete list of actions
-
-exampleOG = np.array([
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', '.', '.', '.', 'G', 'G', 'X'],
-    ['X', '.', 'B', 'B', 'X', '.', 'X'],
-    ['X', 'O', '.', '.', '.', '.', 'X'],
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-])
-
-example = np.array([
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-    ['X', '.', '.', '.', 'G', 'G', 'X'],
-    ['X', '.', '.', '.', 'X', '.', 'X'],
-    ['X', '.', '.', '.', '.', '.', 'X'],
-    ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-])
-
-# board = Board(exampleOG, [np.array([2, 2]),np.array([2, 3])], [np.array([1, 4]), np.array([1, 5])], np.array([3, 1]))
-
-# print(exampleOG)
-
-# solveDFS(board)

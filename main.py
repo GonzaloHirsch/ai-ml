@@ -76,4 +76,4 @@ def generateAndRunGame(configFile, matrixFile):
     print("\nResolution time: ", end - start)
 
 
-generateAndRunGame("input/configuration.txt", "examples/board_solvable_3.txt")
+generateAndRunGame("input/configuration.txt", "input/board.txt")
