@@ -3,6 +3,7 @@ from board import Board
 import numpy as np
 import constants
 from collections import deque
+from helpers import printBoardsToSolution
 
 def solveBFS(board):
     # Create the root
@@ -55,17 +56,4 @@ def solveBFS(board):
     print("\n")
 
     if foundSolution:
-        # Invert the list into a stack
-        solutionStack = deque()                    
-        while curr.getParent() != None:
-            solutionStack.append(curr)
-            curr = curr.getParent()
-        solutionStack.append(curr)
-        print("Solution Cost/Depth: ", len(solutionStack) - 1)
-        print("\n")
-        print("Solution Steps: ")
-        # Print the solution based on the stack
-        while solutionStack:
-            curr = solutionStack.pop()
-            if solutionStack:
-                print(board.getPlayerMovement(curr.getPlayerPosition(), solutionStack[-1].getPlayerPosition()))
+        printBoardsToSolution(board, curr)

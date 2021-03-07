@@ -3,6 +3,7 @@ from board import Board
 import numpy as np
 import constants
 from collections import deque
+from helpers import printBoardsToSolution
 
 def solveDFS(board):
     # Create the root
@@ -54,23 +55,8 @@ def solveDFS(board):
     print("Frontier Nodes:", len(stack))
 
     if foundSolution:
-        # Invert the list into a stack
-        solutionStack = deque()                    
-        while curr.getParent() != None:
-            solutionStack.append(curr)
-            curr = curr.getParent()
-        solutionStack.append(curr)
-        print("Solution Cost/Depth:", len(solutionStack) - 1)
-        print("Solution Steps:")
-
-        # Print the solution based on the stack
-        while solutionStack:
-            curr = solutionStack.pop()
-            if solutionStack:
-                print(board.getPlayerMovement(curr.getPlayerPosition(), solutionStack[-1].getPlayerPosition()))
-
-    # Iterate from the goal up to the root in order to get the complete list of actions
-
+        printBoardsToSolution(board, curr)
+        
 exampleOG = np.array([
     ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
     ['X', '.', '.', '.', 'G', 'G', 'X'],
