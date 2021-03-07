@@ -25,11 +25,14 @@ def generateMatrixAndPositions(filename):
             if element == BoardElement.PLAYER:
                 playerPosition = np.array([rowIdx, colIdx])
 
-            if element == BoardElement.BOX:
+            elif element == BoardElement.BOX:
                 boxesPositions.append(np.array([rowIdx, colIdx]))
 
-            if element == BoardElement.GOAL:
+            elif element == BoardElement.GOAL:
                 targetPositions.append(np.array([rowIdx, colIdx]))
+
+            if element == BoardElement.PLAYER or element == BoardElement.BOX:
+                row[colIdx] = BoardElement.SPACE.value
 
         if rowIdx == 0:
             matrix = np.array(row)

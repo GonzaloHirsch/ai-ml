@@ -74,6 +74,15 @@ class Board:
         boxesPosition[index] = newBoxPosition
         return newPlayerPosition, boxesPosition, True
 
+
+    def printCustomBoard(self, boxesPos, playerPos):
+        self.boxesPos = boxesPos
+        self.playerPos = playerPos
+
+        print(self.boxesPos, self.playerPos)
+
+        self.printBoard()
+
     
     def printBoard(self):
 
@@ -87,12 +96,6 @@ class Board:
             j = int(self.boxesPos[boxIdx][1])
             currBoard[i][j] = BoardElement.BOX.value
             boxIdx += 1
-
-        for targetIdx in range(0, len(self.targetsPos)):
-            i = int(self.targetsPos[targetIdx][0])
-            j = int(self.targetsPos[targetIdx][1])
-            currBoard[i][j] = BoardElement.GOAL.value
-            targetIdx += 1
 
         currBoard[self.playerPos[0]][self.playerPos[1]] = BoardElement.PLAYER.value
 

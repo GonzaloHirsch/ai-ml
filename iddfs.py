@@ -79,7 +79,9 @@ def solveIDDFS(board, maxDepth):
     helpers.printStats(expandedNodes, frontier)
 
     if foundSolution:
+        helpers.printMovesToSolution(board, curr)
         helpers.printBoardsToSolution(board, curr)
+        
 
 
     # Iterate from the goal up to the root in order to get the complete list of actions

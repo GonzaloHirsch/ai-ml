@@ -54,4 +54,4 @@ def solveDFS(board):
     helpers.printStats(expandedNodes, stack)
 
     if foundSolution:
-        helpers.printBoardsToSolution(board, curr)
+        helpers.printMovesToSolution(board, curr)
