@@ -1,4 +1,4 @@
 {
-    "algorithm": "IDDFS_PRUNING",
+    "algorithm": "BFS",
     "maxDepth": 10
 }

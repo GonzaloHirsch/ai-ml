@@ -10,7 +10,8 @@ class Node:
 
         self.parent = parent
         self.playerPos = playerPos
-        self.boxesPos = np.sort(boxesPos, axis=0)
+        # self.boxesPos = np.sort(boxesPos, axis=0)
+        self.boxesPos = boxesPos
         self.computedHash = hash(self.__computeHashString())
 
     def getBoxesPositions(self):
@@ -29,9 +30,9 @@ class Node:
         return self.playerPos
 
     def __computeHashString(self):
-        s = str(self.playerPos[0]) + str(self.playerPos[1])
+        s = str(self.playerPos[0]) + "-" + str(self.playerPos[1])
         for box in self.boxesPos:
-            s = s + str(box[0]) + str(box[1])
+            s = s + "-" + str(box[0]) + "-" + str(box[1])
         return s
 
     def __hash__(self):
