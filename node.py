@@ -30,10 +30,10 @@ class Node:
         return self.playerPos
 
     def __computeHashString(self):
-        s = str(self.playerPos[0]) + "-" + str(self.playerPos[1])
+        data = []
         for box in self.boxesPos:
-            s = s + "-" + str(box[0]) + "-" + str(box[1])
-        return s
+            data.append((box[0], box[1]))
+        return hash((self.playerPos[0], self.playerPos[1])) + hash(frozenset(data))
 
     def __hash__(self):
         return self.computedHash
