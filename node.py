@@ -33,7 +33,7 @@ class Node:
         data = []
         for box in self.boxesPos:
             data.append((box[0], box[1]))
-        return hash((self.playerPos[0], self.playerPos[1])) + hash(frozenset(data))
+        return hash(str(hash((self.playerPos[0], self.playerPos[1]))) + str(hash(frozenset(data))))
 
     def __hash__(self):
         return self.computedHash
