@@ -5,7 +5,7 @@ import constants
 from collections import deque
 import helpers
 
-def solveBFS(board):
+def solve(board):
     # Create the root
     root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
 
@@ -54,3 +54,4 @@ def solveBFS(board):
 
     if foundSolution:
         helpers.printMovesToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)

@@ -9,6 +9,9 @@ def solve(board, maxDepth):
     # Create the root
     root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
 
+    # Map of visited nodes
+    visited = {}
+
     # Queue of frontier nodes
     # These are the nodes that must be analyzed in the next iteration
     frontier = deque()
@@ -21,6 +24,9 @@ def solve(board, maxDepth):
     while frontier:
 
         node = frontier.popleft()
+
+        if not node in visited:
+            visited[node] = True
 
         # Set up the DFS stack
         stack = deque()
@@ -54,12 +60,16 @@ def solve(board, maxDepth):
                     if isPossible:
                         newNode = Node(curr, newPlayerPosition, newBoxesPosition)
                         
-                        if newNode.getLevel() == currMaxDepth:
+                        if not newNode in visited:
+
                             # If the next node is the limit, add to the frontier
                             # Will be analyzed in the next iteration
-                            frontier.append(newNode)
-                        else:
-                            stack.append(newNode)
+                            if newNode.getLevel() == currMaxDepth:
+                                frontier.append(newNode)
+                            else:
+                                stack.append(newNode)
+                                visited[newNode] = True
+
 
         if foundSolution:
             break

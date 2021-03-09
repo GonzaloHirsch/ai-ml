@@ -13,6 +13,7 @@ class SearchMethods(enum.Enum):
    BFS = "BFS"
    DFS = "DFS"
    IDDFS = "IDDFS"
+   IDDFS_PRUNING = "IDDFS_PRUNING"
    GREEDY = "GREEDY"
 
    def __str__(self):

@@ -52,7 +52,7 @@ def generateMatrixAndPositions(filename):
 def generateConfigDetails(configFile):
     with open(configFile) as json_file:
         data = json.load(json_file)
-        if data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value:
+        if data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS_PRUNING.value:
             return data[ConfigOptions.ALGORITHM.value], data[ConfigOptions.MAX_DEPTH.value]
         else:
             return data[ConfigOptions.ALGORITHM.value], 1

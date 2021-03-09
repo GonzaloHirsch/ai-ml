@@ -3,6 +3,7 @@ from board import Board
 from inputParser import generateConfigDetails, generateMatrixAndPositions
 import dfs
 import iddfs
+import iddfsPruning
 import bfs
 import time
 
@@ -30,7 +31,7 @@ def generateAndRunGame(configFile, matrixFile):
 
         board.printBoard()
 
-        bfs.solveBFS(board)
+        bfs.solve(board)
         
         print("\n============================")
         print("\n[Finished BFS Algorithm]\n")
@@ -45,7 +46,7 @@ def generateAndRunGame(configFile, matrixFile):
 
         board.printBoard()
 
-        dfs.solveDFS(board)
+        dfs.solve(board)
 
         print("\n============================")
         print("\n[Finished DFS Algorithm]\n")
@@ -60,7 +61,22 @@ def generateAndRunGame(configFile, matrixFile):
 
         board.printBoard()
 
-        iddfs.solveIDDFS(board, maxDepth)
+        iddfs.solve(board, maxDepth)
+        
+        print("\n============================")
+        print("\n[Finished IDDFS Algorithm]\n")
+        print("============================")
+
+    elif algorithm == SearchMethods.IDDFS_PRUNING:
+        print("============================")
+        print("\n[Starting IDDFS Algorithm with Pruning]\n")
+        print("============================\n")
+
+        print("Initial Board")
+
+        board.printBoard()
+
+        iddfsPruning.solve(board, maxDepth)
         
         print("\n============================")
         print("\n[Finished IDDFS Algorithm]\n")

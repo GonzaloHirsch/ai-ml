@@ -5,7 +5,7 @@ import constants
 from collections import deque
 import helpers
 
-def solveDFS(board):
+def solve(board):
     # Map of visited nodes
     visited = {}
     
@@ -55,3 +55,4 @@ def solveDFS(board):
 
     if foundSolution:
         helpers.printMovesToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)
