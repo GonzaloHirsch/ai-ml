@@ -5,6 +5,8 @@ from algorithms import dfs
 from algorithms import iddfs
 from algorithms import iddfsPruning
 from algorithms import bfs
+from algorithms import greedy
+from heuristic import Heuristic
 import time
 
 BOARD_INPUT = "input/board.txt"
@@ -23,8 +25,9 @@ def generateAndRunGame(configFile, matrixFile):
     # Generate matrix
     matrix, boxes, targets, player = generateMatrixAndPositions(matrixFile)
 
-    # Generate board
+    # Generate board and heuristic
     board = Board(matrix, boxes, targets, player)
+    heuristic = Heuristic(config.heuristic)
     
     # Start timer
     start = time.time()
@@ -70,9 +73,7 @@ def generateAndRunGame(configFile, matrixFile):
         print("============================")
         print("\n[Starting GREEDY Algorithm]\n")
         print("============================\n")
-
-        # call
-        
+        greedy.solve(board, heuristic)
         print("\n============================")
         print("\n[Finished GREEDY Algorithm]\n")
         print("============================")
