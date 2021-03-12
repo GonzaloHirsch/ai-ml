@@ -7,82 +7,86 @@ import iddfsPruning
 import bfs
 import time
 
+BOARD_INPUT = "input/board.txt"
+CONFIG_INPUT = "input/configuration.json"
+
 def generateAndRunGame(configFile, matrixFile):
+    # Parse config
+    config = generateConfigDetails(configFile)
 
-    algorithm, maxDepth = generateConfigDetails(configFile)
-
+    # Check algorithm
     try:
-        algorithm = SearchMethods[algorithm]
+        config.algorithm = SearchMethods[config.algorithm]
     except:
-        print("Invalid algorithm in the configuration file: ", algorithm)
+        print("Invalid algorithm in the configuration file: ", config.algorithm)
 
+    # Generate matrix
     matrix, boxes, targets, player = generateMatrixAndPositions(matrixFile)
 
+    # Generate board
     board = Board(matrix, boxes, targets, player)
     
+    # Start timer
     start = time.time()
 
-    if algorithm == SearchMethods.BFS:
+    # Show the board
+    print("Initial Board")
+    board.printBoard()
+
+    # Run the selected algorithm
+    if config.algorithm == SearchMethods.BFS:
         print("============================")
         print("\n[Starting BFS Algorithm]\n")
         print("============================\n")
-
-        print("Initial Board")
-
-        board.printBoard()
-
-        bfs.solve(board)
-        
+        bfs.solve(board)    
         print("\n============================")
         print("\n[Finished BFS Algorithm]\n")
         print("============================")
-
-    elif algorithm == SearchMethods.DFS:
+    elif config.algorithm == SearchMethods.DFS:
         print("============================")
         print("\n[Starting DFS Algorithm]\n")
         print("============================\n")
-
-        print("Initial Board")
-
-        board.printBoard()
-
         dfs.solve(board)
-
         print("\n============================")
         print("\n[Finished DFS Algorithm]\n")
         print("============================")
-
-    elif algorithm == SearchMethods.IDDFS:
+    elif config.algorithm == SearchMethods.IDDFS:
         print("============================")
         print("\n[Starting IDDFS Algorithm]\n")
         print("============================\n")
-
-        print("Initial Board")
-
-        board.printBoard()
-
-        iddfs.solve(board, maxDepth)
-        
+        iddfs.solve(board, config.maxDepth)
         print("\n============================")
         print("\n[Finished IDDFS Algorithm]\n")
         print("============================")
-
-    elif algorithm == SearchMethods.IDDFS_PRUNING:
+    elif config.algorithm == SearchMethods.IDDFS_PRUNING:
         print("============================")
         print("\n[Starting IDDFS Algorithm with Pruning]\n")
         print("============================\n")
-
-        print("Initial Board")
-
-        board.printBoard()
-
-        iddfsPruning.solve(board, maxDepth)
-        
+        iddfsPruning.solve(board, config.maxDepth)
         print("\n============================")
         print("\n[Finished IDDFS Algorithm]\n")
         print("============================")
+    elif config.algorithm == SearchMethods.GREEDY:
+        print("============================")
+        print("\n[Starting GREEDY Algorithm]\n")
+        print("============================\n")
 
-    elif algorithm == SearchMethods.GREEDY:
+        # call
+        
+        print("\n============================")
+        print("\n[Finished GREEDY Algorithm]\n")
+        print("============================")
+    elif config.algorithm == SearchMethods.A_STAR:
+        print("============================")
+        print("\n[Starting GREEDY Algorithm]\n")
+        print("============================\n")
+
+        # call
+        
+        print("\n============================")
+        print("\n[Finished GREEDY Algorithm]\n")
+        print("============================")
+    elif config.algorithm == SearchMethods.IDA_STAR:
         print("============================")
         print("\n[Starting GREEDY Algorithm]\n")
         print("============================\n")
@@ -97,4 +101,4 @@ def generateAndRunGame(configFile, matrixFile):
     print("\nResolution time: ", end - start)
 
 
-generateAndRunGame("input/configuration.json", "input/board.txt")
+generateAndRunGame(CONFIG_INPUT, BOARD_INPUT)

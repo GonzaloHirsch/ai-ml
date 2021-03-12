@@ -15,6 +15,8 @@ class SearchMethods(enum.Enum):
    IDDFS = "IDDFS"
    IDDFS_PRUNING = "IDDFS_PRUNING"
    GREEDY = "GREEDY"
+   IDA_STAR = "IDA*"
+   A_STAR = "A*"
 
    def __str__(self):
       return str(self.value)
@@ -22,6 +24,7 @@ class SearchMethods(enum.Enum):
 class ConfigOptions(enum.Enum):
    ALGORITHM = "algorithm"
    MAX_DEPTH = "maxDepth"
+   HEURISTIC = "heuristic"
 
    def __str__(self):
       return str(self.value)

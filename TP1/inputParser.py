@@ -3,6 +3,7 @@ import numpy as np
 from constants import BoardElement
 from constants import SearchMethods
 from constants import ConfigOptions
+from config import Config
 import json
 
 # Name of the configuration file with the inner configuration
@@ -52,31 +53,9 @@ def generateMatrixAndPositions(filename):
 def generateConfigDetails(configFile):
     with open(configFile) as json_file:
         data = json.load(json_file)
-        if data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS_PRUNING.value:
-            return data[ConfigOptions.ALGORITHM.value], data[ConfigOptions.MAX_DEPTH.value]
+        if data[ConfigOptions.ALGORITHM.value] == SearchMethods.A_STAR.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.GREEDY.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDA_STAR.value:
+            return Config(data[ConfigOptions.ALGORITHM.value], heuristic=data[ConfigOptions.HEURISTIC.value])
+        elif data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS_PRUNING.value:
+            return Config(data[ConfigOptions.ALGORITHM.value], maxDepth=data[ConfigOptions.MAX_DEPTH.value])
         else:
-            return data[ConfigOptions.ALGORITHM.value], 1
-
-    # f = open(configFile, "r")
-
-    # index = 0
-    # maxDepth = 1
-
-    # for line in f:
-    #     if index == 0:
-    #         algorithm = line.rstrip("\n")
-    #     if algorithm == SearchMethods.IDDFS.name and index == 1:
-    #         maxDepth = int(line.rstrip("\n"))
-        
-    #     index += 1
-
-    # return algorithm, maxDepth
-
-
-
-
-
-    
-
-    
-
+            return Config(data[ConfigOptions.ALGORITHM.value])
