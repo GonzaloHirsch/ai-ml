@@ -1,10 +1,10 @@
 from constants import SearchMethods
 from board import Board
 from inputParser import generateConfigDetails, generateMatrixAndPositions
-import dfs
-import iddfs
-import iddfsPruning
-import bfs
+from algorithms import dfs
+from algorithms import iddfs
+from algorithms import iddfsPruning
+from algorithms import bfs
 import time
 
 BOARD_INPUT = "input/board.txt"
