@@ -1,4 +1,4 @@
 {
-    "algorithm": "DFS",
-    "maxDepth": 5
+    "algorithm": "IDDFS",
+    "maxDepth": 10
 }

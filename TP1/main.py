@@ -3,7 +3,6 @@ from board import Board
 from inputParser import generateConfigDetails, generateMatrixAndPositions
 from algorithms import dfs
 from algorithms import iddfs
-from algorithms import iddfsPruning
 from algorithms import bfs
 from algorithms import greedy
 from heuristic import Heuristic
@@ -58,14 +57,6 @@ def generateAndRunGame(configFile, matrixFile):
         print("\n[Starting IDDFS Algorithm]\n")
         print("============================\n")
         iddfs.solve(board, config.maxDepth)
-        print("\n============================")
-        print("\n[Finished IDDFS Algorithm]\n")
-        print("============================")
-    elif config.algorithm == SearchMethods.IDDFS_PRUNING:
-        print("============================")
-        print("\n[Starting IDDFS Algorithm with Pruning]\n")
-        print("============================\n")
-        iddfsPruning.solve(board, config.maxDepth)
         print("\n============================")
         print("\n[Finished IDDFS Algorithm]\n")
         print("============================")

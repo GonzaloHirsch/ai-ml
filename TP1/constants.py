@@ -13,7 +13,6 @@ class SearchMethods(enum.Enum):
    BFS = "BFS"
    DFS = "DFS"
    IDDFS = "IDDFS"
-   IDDFS_PRUNING = "IDDFS_PRUNING"
    GREEDY = "GREEDY"
    IDA_STAR = "IDA*"
    A_STAR = "A*"
