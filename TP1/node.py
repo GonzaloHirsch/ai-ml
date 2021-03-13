@@ -1,8 +1,9 @@
 import numpy as np
 
 class Node:
+    INSTANCES = 0
     def __init__(self, parent, playerPos, boxesPos):
-
+        self.id = Node.INSTANCES
         if parent is None:
             self.level = 0
         else:
@@ -13,6 +14,7 @@ class Node:
         self.boxesPos = boxesPos
         self.computedHash = hash(self.__computeHashString())
         self.heuristic = 0
+        Node.INSTANCES += 1
 
     def getBoxesPositions(self):
         return self.boxesPos
@@ -43,3 +45,6 @@ class Node:
 
     def __eq__(self, other):
         return self.computedHash == other.__hash__()
+
+    def __str__(self):
+        return "level: " + str(self.level) + " heur: " + str(self.heuristic) + " player: " + str(self.playerPos) + " boxes: " + str(self.boxesPos)

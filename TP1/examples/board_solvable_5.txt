@@ -1,0 +1,9 @@
+X X X X X X X
+X . G X X X X
+X . G X X X X
+X . G B . X X
+X . G B . . X
+X . G B . . X
+X X . B B . X
+X X X X O . X
+X X X X X X X

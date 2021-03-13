@@ -21,19 +21,33 @@ class Heuristic:
     # -----------------------------------------------------------------
 
     def __h1(self, node, board):
-        min = 100000
+        # min = 10000000
+        # for target in board.targetsPos:
+        #     for box in node.boxesPos:
+        #         val = sum(abs(target - box))
+        #         if val < min and val > 0:
+        #             min = val
+        # return min
+        s = 0
         for target in board.targetsPos:
+            min = 10000000
             for box in node.boxesPos:
                 val = sum(abs(target - box))
-                if val < min and val > 0:
+                if val < min:
                     min = val
-        return val
+            s += min
+        return s
 
     def __h2(self, node, board):
-        print(2)
+        min = 10000000
+        for box in node.boxesPos:
+            val = sum(abs(node.playerPos - box))
+            if val < min and val > 0:
+                min = val
+        return val
 
     def __h3(self, node, board):
-        print(3)
+        return max(self.__h2(node, board), self.__h1(node, board))
 
     # Exposed method to calculate the heuristic value
     def calculate(self, node, board):
