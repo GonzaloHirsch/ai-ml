@@ -34,6 +34,8 @@ class BoardElement(enum.Enum):
    BOX='B'
    PLAYER='O'
    GOAL='G'
+   GOAL_PLAYER='M'
+   GOAL_BOX='V'
 
    def __eq__(self, value):
       return self.value == value

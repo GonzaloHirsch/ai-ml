@@ -1,5 +1,4 @@
 from node import Node
-from board import Board
 import numpy as np
 from collections import deque
 
@@ -51,3 +50,10 @@ def printStats(expandedNodes, frontier):
     print("STATS:")
     print("Expanded Nodes:", expandedNodes)
     print("Frontier Nodes:", len(frontier))
+
+def sortPoints(arr):
+    # Inspired by https://stackoverflow.com/questions/2828059/sorting-arrays-in-numpy-by-column
+    # First sort doesn't need to be stable.
+    arr = arr[arr[:,1].argsort()]
+    arr = arr[arr[:,0].argsort(kind='mergesort')]
+    return arr

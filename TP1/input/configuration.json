@@ -1,4 +1,5 @@
 {
-    "algorithm": "IDDFS",
-    "maxDepth": 10
+    "algorithm": "DFS",
+    "maxDepth": 10,
+    "heuristic": 1
 }

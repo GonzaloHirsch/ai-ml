@@ -4,6 +4,7 @@ import numpy as np
 import constants
 from collections import deque
 import helpers
+import heapq
 
 def solve(board, heuristic):
     # Map of visited nodes
@@ -13,17 +14,19 @@ def solve(board, heuristic):
     root = Node(None, board.getPlayerPosition(), board.getBoxesPositions())
     visited[root] = True
 
-    # Stack to store nodes to visit
-    stack = deque()
-    stack.append(root)
+    # Priority queue in the form of a heap
+    # Elements are (heuristic, hash, Node) to provide uniqueness
+    heap = [(0, root.computedHash, root)]
+    heapq.heapify(heap) 
 
     foundSolution = False
     expandedNodes = 0
 
     # Iterates while not empty
-    while stack:
-        # Poping the first element
-        curr = stack.pop()
+    while heap:
+        # Poping the first element, keeping the 
+        curr = heapq.heappop(heap)
+        curr = curr[2]
 
         # Check if goal, if goal exit loop
         if board.isComplete(curr):
@@ -32,7 +35,7 @@ def solve(board, heuristic):
         else:
             expandedNodes += 1
             # Try to move the player to all 4 positions
-            # if possible, create the node and push it to stack
+            # if possible, create the node and push it to queue
             for direction in constants.ALL_DIRECTIONS:
                 # Test the movement direction
                 newPlayerPosition, newBoxesPosition, isPossible = board.testMovement(
@@ -43,7 +46,11 @@ def solve(board, heuristic):
                 if isPossible:
                     newNode = Node(curr, newPlayerPosition, newBoxesPosition)
                     if not newNode in visited:
-                        stack.append(newNode)
+                        # Calculate heuristic and store it
+                        newNode.setHeuristic(heuristic.calculate(newNode, board))
+                        # Push item to heap
+                        heapq.heappush(heap, (newNode.heuristic, newNode.computedHash, newNode))
+                        # Add to visited list
                         visited[newNode] = True
 
     if foundSolution:
@@ -51,7 +58,7 @@ def solve(board, heuristic):
     else:
         print("SOLUTION NOT FOUND")
 
-    helpers.printStats(expandedNodes, stack)
+    helpers.printStats(expandedNodes, heap)
 
     if foundSolution:
         helpers.printMovesToSolution(board, curr)

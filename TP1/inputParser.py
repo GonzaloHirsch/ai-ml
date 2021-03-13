@@ -24,15 +24,26 @@ def generateMatrixAndPositions(filename):
         for colIdx in range(0, len(row)):
 
             element = row[colIdx]
+            positionElement = np.array([rowIdx, colIdx])
 
             if element == BoardElement.PLAYER:
-                playerPosition = np.array([rowIdx, colIdx])
+                playerPosition = positionElement
 
             elif element == BoardElement.BOX:
-                boxesPositions.append(np.array([rowIdx, colIdx]))
+                boxesPositions.append(positionElement)
 
             elif element == BoardElement.GOAL:
-                targetPositions.append(np.array([rowIdx, colIdx]))
+                targetPositions.append(positionElement)
+
+            elif element == BoardElement.GOAL_PLAYER:
+                targetPositions.append(positionElement)
+                playerPosition = positionElement
+                row[colIdx] = BoardElement.GOAL.value
+
+            elif element == BoardElement.GOAL_BOX:
+                targetPositions.append(positionElement)
+                boxesPositions.append(positionElement)
+                row[colIdx] = BoardElement.GOAL.value
 
             if element == BoardElement.PLAYER or element == BoardElement.BOX:
                 row[colIdx] = BoardElement.SPACE.value
@@ -55,7 +66,7 @@ def generateConfigDetails(configFile):
         data = json.load(json_file)
         if data[ConfigOptions.ALGORITHM.value] == SearchMethods.A_STAR.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.GREEDY.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDA_STAR.value:
             return Config(data[ConfigOptions.ALGORITHM.value], heuristic=data[ConfigOptions.HEURISTIC.value])
-        elif data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS_PRUNING.value:
+        elif data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value:
             return Config(data[ConfigOptions.ALGORITHM.value], maxDepth=data[ConfigOptions.MAX_DEPTH.value])
         else:
             return Config(data[ConfigOptions.ALGORITHM.value])

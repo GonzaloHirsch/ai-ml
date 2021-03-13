@@ -10,9 +10,9 @@ class Node:
 
         self.parent = parent
         self.playerPos = playerPos
-        # self.boxesPos = np.sort(boxesPos, axis=0)
         self.boxesPos = boxesPos
         self.computedHash = hash(self.__computeHashString())
+        self.heuristic = 0
 
     def getBoxesPositions(self):
         return self.boxesPos
@@ -28,6 +28,9 @@ class Node:
 
     def getHash(self):
         return self.playerPos
+
+    def setHeuristic(self, heuristic):
+        self.heuristic = heuristic
 
     def __computeHashString(self):
         data = []

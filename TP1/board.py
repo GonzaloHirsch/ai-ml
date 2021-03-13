@@ -1,12 +1,13 @@
 import constants
 from constants import BoardElement
 import numpy as np
+from helpers import sortPoints
 
 class Board:
     def __init__(self, board, boxesPos, targetsPos, playerPos):
         self.board = board
         self.boxesPos = boxesPos
-        self.targetsPos = np.sort(targetsPos, axis=0) 
+        self.targetsPos = sortPoints(targetsPos)
         self.playerPos = playerPos
 
     def getPlayerPosition(self):
@@ -16,12 +17,7 @@ class Board:
         return self.boxesPos
 
     def isComplete(self, node):
-        # boxes = node.getBoxesPositions()
-        # for i in range(len(boxes)):
-        #     if not np.array_equal(boxes[i], self.targetsPos[i]):
-        #         return False
-        # return True
-        sortedBoxes = np.sort(node.getBoxesPositions(), axis=0)
+        sortedBoxes = sortPoints(node.getBoxesPositions())
         for i in range(len(sortedBoxes)):
             if not np.array_equal(sortedBoxes[i], self.targetsPos[i]):
                 return False
