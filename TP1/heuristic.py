@@ -1,5 +1,3 @@
-from pykdtree.kdtree import KDTree
-
 class Heuristic:
     def __init__(self, h_id):
         self.h_id = h_id
@@ -23,11 +21,13 @@ class Heuristic:
     # -----------------------------------------------------------------
 
     def __h1(self, node, board):
-        # Only index if the tree is non-existent, avoid reindexing, only works if index targets
-        if self.tree == None:
-            self.tree = KDTree(board.targetsPos)      
-        neighbor_dists, neighbor_indices = self.tree.query(node.boxesPos)
-        return Heuristic.__min_element(neighbor_dists)
+        min = 100000
+        for target in board.targetsPos:
+            for box in node.boxesPos:
+                val = sum(abs(target - box))
+                if val < min and val > 0:
+                    min = val
+        return val
 
     def __h2(self, node, board):
         print(2)

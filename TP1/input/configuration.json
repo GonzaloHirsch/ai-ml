@@ -1,5 +1,5 @@
 {
-    "algorithm": "DFS",
+    "algorithm": "GREEDY",
     "maxDepth": 10,
     "heuristic": 1
 }
