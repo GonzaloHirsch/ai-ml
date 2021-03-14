@@ -15,7 +15,7 @@ def solve(board, heuristic):
     visited[root] = True
 
     # Priority queue in the form of a heap
-    # Elements are (heuristic, hash, Node) to provide uniqueness
+    # Elements are (heuristic, id, Node) to provide uniqueness
     heap = [(0, root.id, root)]
     heapq.heapify(heap) 
 
@@ -48,7 +48,6 @@ def solve(board, heuristic):
                     if not newNode in visited:
                         # Calculate heuristic and store it
                         newNode.setHeuristic(heuristic.calculate(newNode, board))
-                        #print(newNode)
                         # Push item to heap
                         heapq.heappush(heap, (newNode.heuristic, newNode.id, newNode))
                         # Add to visited list
