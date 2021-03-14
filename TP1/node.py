@@ -31,6 +31,9 @@ class Node:
     def getHash(self):
         return self.playerPos
 
+    def getFValue(self):
+        return self.level + self.heuristic
+
     def setHeuristic(self, heuristic):
         self.heuristic = heuristic
 

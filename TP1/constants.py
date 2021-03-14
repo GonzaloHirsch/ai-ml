@@ -20,6 +20,9 @@ class SearchMethods(enum.Enum):
    def __str__(self):
       return str(self.value)
 
+   def __eq__(self, value):
+      return self.value == value
+
 class ConfigOptions(enum.Enum):
    ALGORITHM = "algorithm"
    MAX_DEPTH = "maxDepth"

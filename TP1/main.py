@@ -5,6 +5,7 @@ from algorithms import dfs
 from algorithms import iddfs
 from algorithms import bfs
 from algorithms import greedy
+from algorithms import idaStar
 from heuristic import Heuristic
 import time
 
@@ -14,12 +15,6 @@ CONFIG_INPUT = "input/configuration.json"
 def generateAndRunGame(configFile, matrixFile):
     # Parse config
     config = generateConfigDetails(configFile)
-
-    # Check algorithm
-    try:
-        config.algorithm = SearchMethods[config.algorithm]
-    except:
-        print("Invalid algorithm in the configuration file: ", config.algorithm)
 
     # Generate matrix
     matrix, boxes, targets, player = generateMatrixAndPositions(matrixFile)
@@ -70,23 +65,21 @@ def generateAndRunGame(configFile, matrixFile):
         print("============================")
     elif config.algorithm == SearchMethods.A_STAR:
         print("============================")
-        print("\n[Starting GREEDY Algorithm]\n")
+        print("\n[Starting A* Algorithm]\n")
         print("============================\n")
 
         # call
         
         print("\n============================")
-        print("\n[Finished GREEDY Algorithm]\n")
+        print("\n[Finished A* Algorithm]\n")
         print("============================")
     elif config.algorithm == SearchMethods.IDA_STAR:
         print("============================")
-        print("\n[Starting GREEDY Algorithm]\n")
+        print("\n[Starting IDA* Algorithm]\n")
         print("============================\n")
-
-        # call
-        
+        idaStar.solve(board, heuristic)
         print("\n============================")
-        print("\n[Finished GREEDY Algorithm]\n")
+        print("\n[Finished IDA* Algorithm]\n")
         print("============================")
 
     end = time.time()

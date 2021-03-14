@@ -64,9 +64,9 @@ def generateMatrixAndPositions(filename):
 def generateConfigDetails(configFile):
     with open(configFile) as json_file:
         data = json.load(json_file)
-        if data[ConfigOptions.ALGORITHM.value] == SearchMethods.A_STAR.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.GREEDY.value or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDA_STAR.value:
+        if data[ConfigOptions.ALGORITHM.value] == SearchMethods.A_STAR or data[ConfigOptions.ALGORITHM.value] == SearchMethods.GREEDY or data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDA_STAR:
             return Config(data[ConfigOptions.ALGORITHM.value], heuristic=data[ConfigOptions.HEURISTIC.value])
-        elif data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS.value:
+        elif data[ConfigOptions.ALGORITHM.value] == SearchMethods.IDDFS:
             return Config(data[ConfigOptions.ALGORITHM.value], maxDepth=data[ConfigOptions.MAX_DEPTH.value])
         else:
             return Config(data[ConfigOptions.ALGORITHM.value])

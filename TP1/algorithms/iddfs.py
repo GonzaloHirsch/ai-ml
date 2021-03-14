@@ -61,8 +61,8 @@ def solve(board, maxDepth):
                         newNode = Node(curr, newPlayerPosition, newBoxesPosition)
                         
                         # If the node wasnt visited or it has been but took  
-                        # at least 3 more cost to get to it, visit it again
-                        if not newNode in visited or (visited[newNode] - 3) > newNode.getLevel():
+                        # at least 10 more cost to get to it, visit it again
+                        if not newNode in visited or (visited[newNode] - 10) > newNode.getLevel():
 
                             # If the next node is the limit, add to the frontier
                             # Will be analyzed in the next iteration

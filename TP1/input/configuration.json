@@ -1,5 +1,5 @@
 {
-    "algorithm": "GREEDY",
+    "algorithm": "IDA*",
     "maxDepth": 40,
-    "heuristic": 1
+    "heuristic": 2
 }
