@@ -27,7 +27,6 @@ def solve(board, heuristic):
     while heap:
         # Poping the first element, keeping the 
         curr = heapq.heappop(heap)
-        g = curr[0] - curr[1]
         curr = curr[3]
 
         # Check if goal, if goal exit loop
@@ -36,9 +35,6 @@ def solve(board, heuristic):
             break
         else:
             expandedNodes += 1
-
-            # Distance is increased by one
-            g += 1
 
             # Try to move the player to all 4 positions
             # if possible, create the node and push it to queue
@@ -55,7 +51,7 @@ def solve(board, heuristic):
                         # Calculate heuristic and store it
                         newNode.setHeuristic(heuristic.calculate(newNode, board))
                         # Push item to heap
-                        heapq.heappush(heap, ( g + newNode.heuristic, newNode.heuristic, newNode.id, newNode))
+                        heapq.heappush(heap, (newNode.getFValue(), newNode.heuristic, newNode.id, newNode))
                         # Add to visited list
                         visited[newNode] = True
 
