@@ -1,3 +1,5 @@
+import heapq
+
 class Heuristic:
     def __init__(self, h_id):
         self.h_id = h_id
@@ -15,6 +17,9 @@ class Heuristic:
                 min = elem
         return min
 
+    def __manhattan(c1, c2):
+        return sum(abs(c1 - c2))
+
     # -----------------------------------------------------------------
     # HEURISTIC FUNCTIONS
     # -----------------------------------------------------------------
@@ -24,7 +29,7 @@ class Heuristic:
         for target in board.targetsPos:
             min = 10000000
             for box in node.boxesPos:
-                val = sum(abs(target - box))
+                val = Heuristic.__manhattan(target, box)
                 if val < min:
                     min = val
             s += min
@@ -33,13 +38,39 @@ class Heuristic:
     def __h2(self, node, board):
         min = 10000000
         for box in node.boxesPos:
-            val = sum(abs(node.playerPos - box))
+            val = Heuristic.__manhattan(node.playerPos, box)
             if val < min and val > 0:
                 min = val
-        return val
+        return min
 
     def __h3(self, node, board):
-        return max(self.__h2(node, board), self.__h1(node, board))
+
+        # Variable declaration
+        targets = board.getTargetPosition()
+        boxes = node.getBoxesPositions()
+        distanceHeap = []
+        claimedTargets = {}
+        claimedBoxes = {}
+        distanceSum = 0
+
+        # Storing the distance between each target and box into a priority queue
+        for tIdx in range(len(targets)):
+            for bIdx in range(len(boxes)):
+                distance = Heuristic.__manhattan(targets[tIdx], boxes[bIdx])
+                distanceHeap.append((distance, tIdx, bIdx))
+        
+        heapq.heapify(distanceHeap)
+
+        # Will keep 1 distance between each box and target
+        while distanceHeap:
+            curr = heapq.heappop(distanceHeap)
+            if curr[1] not in claimedTargets and curr[2] not in claimedBoxes:
+                claimedTargets[curr[1]] = True
+                claimedBoxes[curr[2]] = True
+                distanceSum += curr[0]
+
+        # Will return the sum of the distances and the min distance from player to box
+        return distanceSum + self.__h2(node, board)
 
     # Exposed method to calculate the heuristic value
     def calculate(self, node, board):

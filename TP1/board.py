@@ -16,10 +16,11 @@ class Board:
     def getBoxesPositions(self):
         return self.boxesPos
 
-    def isComplete(self, node, last = False):
+    def getTargetPosition(self):
+        return self.targetsPos
+
+    def isComplete(self, node):
         sortedBoxes = sortPoints(node.getBoxesPositions())
-        if last:
-            print(node.getBoxesPositions(), sortedBoxes, self.targetsPos)
         for i in range(len(sortedBoxes)):
             if not np.array_equal(sortedBoxes[i], self.targetsPos[i]):
                 return False

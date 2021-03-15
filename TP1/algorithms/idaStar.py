@@ -47,7 +47,6 @@ def solve(board, heuristic):
             # Check if goal, if goal exit loop
             if board.isComplete(curr):
                 foundSolution = True
-                board.isComplete(curr, True)
                 break
             else:
                 expandedNodes += 1
