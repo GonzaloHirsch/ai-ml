@@ -27,10 +27,6 @@ def generateAndRunGame(configFile, matrixFile):
     # Start timer
     start = time.time()
 
-    # Show the board
-    print("Initial Board")
-    board.printBoard()
-
     # Run the selected algorithm
     if config.algorithm == SearchMethods.BFS:
         print("============================")
