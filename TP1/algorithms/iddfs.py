@@ -36,7 +36,7 @@ def solve(board, maxDepth):
         currMaxDepth = currDepth + maxDepth
 
         # Iterates while not empty
-        while stack and currDepth < currMaxDepth:
+        while stack:
 
             # Poping the first element
             curr = stack.pop()

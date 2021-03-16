@@ -104,9 +104,9 @@ class Board:
 
         for rowIdx in range(0, rows):            
             for colIdx in range(0, cols):
-                print(currBoard[rowIdx][colIdx], end = " ")
+                print(currBoard[rowIdx][colIdx], end = "")
             
-            print("\n")
+            print("")
 
                 
 
