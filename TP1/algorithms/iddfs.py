@@ -85,7 +85,7 @@ def solve(board, maxDepth):
 
     if foundSolution:
         helpers.printMovesToSolution(board, curr)
-        helpers.printBoardsToSolution(board, curr)
+        # helpers.printBoardsToSolution(board, curr)
         
 
 

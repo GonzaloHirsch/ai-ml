@@ -1,4 +1,4 @@
 {
-    "algorithm": "A*",
-    "heuristic": 2
+    "algorithm": "DFS",
+    "heuristic": 3
 }

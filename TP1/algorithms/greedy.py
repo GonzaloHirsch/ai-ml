@@ -62,4 +62,4 @@ def solve(board, heuristic):
 
     if foundSolution:
         helpers.printMovesToSolution(board, curr)
-        helpers.printBoardsToSolution(board, curr)
+        # helpers.printBoardsToSolution(board, curr)
