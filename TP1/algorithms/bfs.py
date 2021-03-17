@@ -43,7 +43,6 @@ def solve(board):
                 if isPossible:
                     newNode = Node(curr, newPlayerPosition, newBoxesPosition)
                     if not newNode in visited:
-                        print(newNode)
                         queue.append(newNode)
                         visited[newNode] = True
 
