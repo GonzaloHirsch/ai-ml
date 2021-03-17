@@ -79,15 +79,13 @@ def solve(board, heuristic):
                                 stack.append(newNode)
                                 visited[newNode] = newNode.getLevel() 
                     
-   
+    if foundSolution:
+        # helpers.printMovesToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)
 
     if foundSolution:
-        print("SOLUTION FOUND")
+        print("SOLUTION FOUND\n")
     else:
-        print("SOLUTION NOT FOUND")
+        print("SOLUTION NOT FOUND\n")
 
-    helpers.printStats(expandedNodes, frontierHeap)
-
-    if foundSolution:
-        helpers.printMovesToSolution(board, curr)
-        # helpers.printBoardsToSolution(board, curr)
+    helpers.printStats(expandedNodes, len(frontierHeap), curr)

@@ -47,12 +47,14 @@ def solve(board):
                         visited[newNode] = True
 
     if foundSolution:
-        print("SOLUTION FOUND")
-    else:
-        print("SOLUTION NOT FOUND")
-
-    helpers.printStats(expandedNodes, stack)
+        # helpers.printMovesToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)
 
     if foundSolution:
-        helpers.printMovesToSolution(board, curr)
-        # helpers.printBoardsToSolution(board, curr)
+        print("SOLUTION FOUND\n")
+    else:
+        print("SOLUTION NOT FOUND\n")
+
+    helpers.printStats(expandedNodes, len(stack), curr)
+
+    

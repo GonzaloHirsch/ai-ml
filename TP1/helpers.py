@@ -46,10 +46,11 @@ def printBoardsToSolution(board, solution):
         board.printCustomBoard(node.getBoxesPositions(), node.getPlayerPosition())        
 
 
-def printStats(expandedNodes, frontier):
+def printStats(expandedNodes, frontier, lastNode):
     print("STATS:")
     print("Expanded Nodes:", expandedNodes)
-    print("Frontier Nodes:", len(frontier))
+    print("Frontier Nodes:", frontier)
+    print("Solution Cost/Depth: ", lastNode.getLevel())
 
 def sortPoints(arr):
     # Inspired by https://stackoverflow.com/questions/2828059/sorting-arrays-in-numpy-by-column

@@ -20,6 +20,7 @@ def solve(board, maxDepth):
     # Variables
     foundSolution = False
     expandedNodes = 0
+    lookaheadLimit = int(0.75 * maxDepth)
 
     while frontier:
 
@@ -34,6 +35,8 @@ def solve(board, maxDepth):
         
         currDepth = node.getLevel()
         currMaxDepth = currDepth + maxDepth
+
+        # print(node)
 
         # Iterates while not empty
         while stack:
@@ -62,31 +65,30 @@ def solve(board, maxDepth):
                         
                         # If the node wasnt visited or it has been but took  
                         # at least 10 more cost to get to it, visit it again
-                        if not newNode in visited or (visited[newNode] - 10) > newNode.getLevel():
-
+                        if not newNode in visited or (lookaheadLimit > 0 and (visited[newNode] - lookaheadLimit) > newNode.getLevel()):
+                            visited[newNode] = newNode.getLevel()
                             # If the next node is the limit, add to the frontier
                             # Will be analyzed in the next iteration
-                            if newNode.getLevel() == currMaxDepth:
+                            if newNode.getLevel() >= currMaxDepth:
                                 frontier.append(newNode)
                             else:
                                 stack.append(newNode)
-                                visited[newNode] = newNode.getLevel()
 
 
         if foundSolution:
             break
 
     if foundSolution:
-        print("SOLUTION FOUND")
-    else:
-        print("SOLUTION NOT FOUND")
-
-    helpers.printStats(expandedNodes, frontier)
-
+        # helpers.printMovesToSolution(board, curr)
+        helpers.printBoardsToSolution(board, curr)
+    
     if foundSolution:
-        helpers.printMovesToSolution(board, curr)
-        # helpers.printBoardsToSolution(board, curr)
+        print("SOLUTION FOUND\n")
+    else:
+        print("SOLUTION NOT FOUND\n")
+
+    helpers.printStats(expandedNodes, len(frontier) + len(stack), curr)
         
 
 
-    # Iterate from the goal up to the root in order to get the complete list of actions
+    # Iterate from the goal up to the root in order to get the complete list of actions

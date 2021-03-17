@@ -11,6 +11,7 @@ def solve(board):
 
     # Map of visited nodes
     visited = {}
+    visited[root] = True
 
     # Queue to store nodes to visit
     queue = deque()
@@ -42,16 +43,18 @@ def solve(board):
                 if isPossible:
                     newNode = Node(curr, newPlayerPosition, newBoxesPosition)
                     if not newNode in visited:
+                        print(newNode)
                         queue.append(newNode)
                         visited[newNode] = True
 
     if foundSolution:
-        print("SOLUTION FOUND \n")
-    else:
-        print("SOLUTION NOT FOUND \n")
-
-    helpers.printStats(expandedNodes, queue)
+        helpers.printBoardsToSolution(board, curr)
 
     if foundSolution:
-        helpers.printMovesToSolution(board, curr)
-        # helpers.printBoardsToSolution(board, curr)
+        print("SOLUTION FOUND\n")
+    else:
+        print("SOLUTION NOT FOUND\n")
+
+    helpers.printStats(expandedNodes, len(queue), curr)
+
+    
