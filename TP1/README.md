@@ -51,7 +51,15 @@ python main.py
 
 ## Ejemplos
 
-Dentro de la carpeta `/examples` hay ejemplos de tableros
+Dentro de la carpeta `/examples` hay ejemplos de tableros. Los tableros son:
+* Board 1 --> 16 Pasos
+* Board 2 --> 78 Pasos --> http://www.game-sokoban.com/index.php?mode=level&lid=200
+* Board 3 --> 83 Pasos --> http://www.game-sokoban.com/index.php?mode=level&lid=202
+* Board 4 --> 44 Pasos --> http://www.game-sokoban.com/index.php?mode=level&lid=44957
+* Board 5 --> 59 Pasos --> http://www.game-sokoban.com/index.php?mode=level&lid=19517
+* Board 6 --> 52 Pasos --> http://www.game-sokoban.com/index.php?mode=level&lid=350
+* Board Hard --> 102 Pasos --> http://www.game-sokoban.com/index.php?mode=level&lid=349
+
 
 ## Dependencias
 
