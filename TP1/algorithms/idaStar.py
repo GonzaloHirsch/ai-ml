@@ -71,13 +71,14 @@ def solve(board, heuristic):
                             # Cost + heuristic = f
                             fvalue = newNode.getFValue()
 
+                            visited[newNode] = newNode.getLevel()
+
                             # Do not want to continue DFS with this node if it exceeds the limit
                             # Will add it to the frontier heap
                             if fvalue > limit:
                                 heapq.heappush(frontierHeap, (fvalue, newNode.heuristic, newNode.id, newNode))
                             else: 
                                 stack.append(newNode)
-                                visited[newNode] = newNode.getLevel() 
                     
     if foundSolution:
         # helpers.printMovesToSolution(board, curr)
