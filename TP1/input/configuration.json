@@ -1,5 +1,5 @@
 {
-    "algorithm": "IDA*",
-    "maxDepth": 100000000,
-    "heuristic": 1
+    "algorithm": "IDDFS",
+    "maxDepth": 20,
+    "heuristic": 3
 }
