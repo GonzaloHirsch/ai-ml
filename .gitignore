@@ -6,3 +6,7 @@ __pycache__/
 .DS_Store
 
 TP1/.idea/
+
+TP2/.idea
+
+TP2/datasets
