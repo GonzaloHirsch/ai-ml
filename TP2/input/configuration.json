@@ -1,0 +1,18 @@
+{
+    "clase": "guerrero",
+    "data": "./datasets/allitems-small",
+    "gen": {
+        "cruce": "uniforme",
+        "mutacion": "limitada",
+        "seleccion": ["elite", "ruleta"],
+        "reemplazo": ["universal", "ranking"],
+        "implementacion": "parent",
+        "corte": "cantidad"
+    },
+    "nums": {
+        "A": 0.4,
+        "B": 0.6,
+        "N": 3,
+        "K": 4
+    }
+}

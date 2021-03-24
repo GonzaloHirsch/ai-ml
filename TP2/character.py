@@ -10,12 +10,14 @@ class Character:
         self.gene = [height, arma, botas, casco, guantes, pechera]
         
         self.qualities = {
-            Qualities.FUERZA.value: 0, 
-            Qualities.AGILIDAD.value: 0,
-            Qualities.PERICIA.value: 0,
-            Qualities.RESISTENCIA.value: 0,
-            Qualities.VIDA.value: 0,
+            Qualities.FU.value: 0, 
+            Qualities.AG.value: 0,
+            Qualities.EX.value: 0,
+            Qualities.RE.value: 0,
+            Qualities.VI.value: 0,
         }
+
+        self.calculateQualities()
 
 
     # -----------------------------------------------------------------
@@ -28,15 +30,15 @@ class Character:
 
 
     def _getQualityMultiplier(self, quality):
-        if Quality.FUERZA == quality:
+        if Quality.FU == quality:
             return 100
-        elif Quality.AGILIDAD == quality:
+        elif Quality.AG == quality:
             return 1
-        elif Quality.PERICIA == quality:
+        elif Quality.EX == quality:
             return 0.6
-        elif Quality.RESISTENCIA == quality:
+        elif Quality.RE == quality:
             return 1
-        elif Quality.VIDA == quality:
+        elif Quality.VI == quality:
             return 100
 
 
@@ -48,5 +50,9 @@ class Character:
             itemsValue += self.gene[idx][quality]
 
         return multiplier * math.tanh(0.01 * itemsValue)
+
+    # -----------------------------------------------------------------
+    # GENE FUNCTIONS
+    # -----------------------------------------------------------------
 
     
