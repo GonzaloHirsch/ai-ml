@@ -53,6 +53,17 @@ Los posibles valores de cada campo son:
 * `N` --> Número entero mayor a 0
 * `K` --> Número entero mayor a 0
 
+## Dataset
+
+Los datos a utilizar deben estar todos en una misma carpeta, dentro de la carpeta `TP2`. Esta carpeta va a ser referenciada en el archivo de configuración. 
+
+Los nombres de los archivos con los datos deben ser:
+* `armas.tsv` --> Archivo de Armas
+* `botas.tsv` --> Archivo de Botas
+* `cascos.tsv` --> Archivo de Cascos
+* `guantes.tsv` --> Archivo de Guantes
+* `pecheras.tsv` --> Archivo de Pecheras
+
 ## Ejecución
 
 Para ejecutar el programa hay que correr:
