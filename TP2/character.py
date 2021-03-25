@@ -1,13 +1,16 @@
 import numpy as np
 import math  
 
-from constants import CharacterGenes
+from constants import Qualities
+from constants import ClaseOptions
 
 
 class Character:
-    def __init__(self, height, arma, botas, casco, guantes, pechera):
+    def __init__(self, clase, height, arma, botas, casco, guantes, pechera):
 
-        self.gene = [height, arma, botas, casco, guantes, pechera]
+        self.fitness = self.__getFitnessMethod(clase)
+
+        self.gene = [arma, botas, casco, guantes, pechera, height]
         
         self.qualities = {
             Qualities.FU.value: 0, 
@@ -17,7 +20,7 @@ class Character:
             Qualities.VI.value: 0,
         }
 
-        self.calculateQualities()
+        # self.calculateQualities()
 
 
     # -----------------------------------------------------------------
@@ -26,10 +29,10 @@ class Character:
 
     def calculateQualities(self):
         for quality in Qualities:
-            self.qualities[quality.value] = self._calculateQuality[quality.value]()
+            self.qualities[quality.value] = self.__calculateQuality[quality.value]()
 
 
-    def _getQualityMultiplier(self, quality):
+    def __getQualityMultiplier(self, quality):
         if Quality.FU == quality:
             return 100
         elif Quality.AG == quality:
@@ -42,9 +45,9 @@ class Character:
             return 100
 
 
-    def _calculateQuality(self, quality):
+    def __calculateQuality(self, quality):
         itemsValue = 0
-        multiplier = self._getQualityMultiplier(quality)
+        multiplier = self.__getQualityMultiplier(quality)
 
         for idx in range(1, len(self.gene)):
             itemsValue += self.gene[idx][quality]
@@ -52,10 +55,51 @@ class Character:
         return multiplier * math.tanh(0.01 * itemsValue)
 
     # -----------------------------------------------------------------
-    # GENE FUNCTIONS
+    # ATTACK AND DEFENSE FUNCTIONS
     # -----------------------------------------------------------------
 
-    def setGene(geneItem, item):
-        self.gene[geneItem.value] = item
+    def calculateAttackModifier(self):
+        h = self.gene[len(self.gene)-1]
+        return 0.7 - (3 * h - 5)**4 + (3 * h - 5)**2 + h/4
+
+    def calculateDefenseModifier(self):
+        h = self.gene[len(self.gene)-1]
+        return 1.9 + (2.5 * h - 4.16)**4 + (2.5 * h - 4.16)**2 - (3*h)/10
+
+    def calculateAttack(self):
+        f = self.qualities[Qualities.FU.value]
+        a = self.qualities[Qualities.AG.value]
+        e = self.qualities[Qualities.EX.value]
+        return (a + e) * f * self.calculateAttackModifier()
+
+    def calculateDefense(self):
+        r = self.qualities[Qualities.FU.value]
+        e = self.qualities[Qualities.AG.value]
+        v = self.qualities[Qualities.EX.value]
+        return (r + e) * v * self.calculateDefenseModifier()
+
+
+    def __getWarriorFitness(self):
+        return 0.6 * self.calculateAttack() + 0.6 * self.calculateDefense()
+
+    def __getArcherFitness(self):
+        return 0.9 * self.calculateAttack() + 0.1 * self.calculateDefense()
+
+    def __getDefendorFitness(self):
+        return 0.3 * self.calculateAttack() + 0.8 * self.calculateDefense()
+
+    def __getSpyFitness(self):
+        return 0.8 * self.calculateAttack() + 0.3 * self.calculateDefense()
+
+    
+    def __getFitnessMethod(self, clase):
+
+        fitnessMethod = {
+            ClaseOptions.GUERRERO.value: self.__getWarriorFitness, 
+            ClaseOptions.ARQUERO.value: self.__getArcherFitness, 
+            ClaseOptions.DEFENSOR.value: self.__getDefendorFitness, 
+            ClaseOptions.INFILTRADO.value: self.__getSpyFitness
+        }
+        return fitnessMethod[clase]
 
     

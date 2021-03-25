@@ -30,7 +30,7 @@ class ItemTypes(enum.Enum):
       return self.value == value
 
 # Enum for item properties with indexes
-class ItemProperties(enum.Enum):
+class Qualities(enum.Enum):
    FU = 1
    AG = 2
    EX = 3
