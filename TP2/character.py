@@ -2,7 +2,7 @@ import numpy as np
 import math  
 
 from constants import Qualities
-from constants import ClaseOptions
+from constants import Clase
 
 
 class Character:
@@ -95,10 +95,10 @@ class Character:
     def __getFitnessMethod(self, clase):
 
         fitnessMethod = {
-            ClaseOptions.GUERRERO.value: self.__getWarriorFitness, 
-            ClaseOptions.ARQUERO.value: self.__getArcherFitness, 
-            ClaseOptions.DEFENSOR.value: self.__getDefendorFitness, 
-            ClaseOptions.INFILTRADO.value: self.__getSpyFitness
+            Clase.GUERRERO.value: self.__getWarriorFitness, 
+            Clase.ARQUERO.value: self.__getArcherFitness, 
+            Clase.DEFENSOR.value: self.__getDefendorFitness, 
+            Clase.INFILTRADO.value: self.__getSpyFitness
         }
         return fitnessMethod[clase]
 

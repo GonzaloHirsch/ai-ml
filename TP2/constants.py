@@ -65,7 +65,7 @@ class ConfigOptions(enum.Enum):
       return str(self.value)
 
 # Posibles opciones de configuraciones
-class ClaseOptions(enum.Enum):
+class Clase(enum.Enum):
    GUERRERO = "guerrero"
    ARQUERO = "arquero"
    DEFENSOR = "defensor"
@@ -74,7 +74,7 @@ class ClaseOptions(enum.Enum):
    def __str__(self):
       return str(self.value)
 
-class CruceOptions(enum.Enum):
+class Cruce(enum.Enum):
    PUNTO_1 = "1 punto"
    PUNTO_2 = "2 puntos"
    ANULAR = "anular"
@@ -83,7 +83,7 @@ class CruceOptions(enum.Enum):
    def __str__(self):
       return str(self.value)
 
-class MutacionOptions(enum.Enum):
+class Mutacion(enum.Enum):
    GEN = "gen"
    LIMITADA = "limitada"
    UNIFORME = "uniforme"
@@ -92,7 +92,7 @@ class MutacionOptions(enum.Enum):
    def __str__(self):
       return str(self.value)
 
-class SeleccionOptions(enum.Enum):
+class Seleccion(enum.Enum):
    ELITE = "elite"
    RULETA = "ruleta"
    UNIVERSAL = "universal"
@@ -104,14 +104,14 @@ class SeleccionOptions(enum.Enum):
    def __str__(self):
       return str(self.value)
 
-class ImplementacionOptions(enum.Enum):
+class Implementacion(enum.Enum):
    ALL = "all"
    PARENT = "parent"
 
    def __str__(self):
       return str(self.value)
 
-class CorteOptions(enum.Enum):
+class Corte(enum.Enum):
    TIEMPO = "tiempo"
    CANTIDAD = "cantidad"
    ACEPTABLE = "aceptable"
