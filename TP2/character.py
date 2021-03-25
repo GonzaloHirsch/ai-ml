@@ -55,4 +55,7 @@ class Character:
     # GENE FUNCTIONS
     # -----------------------------------------------------------------
 
+    def setGene(geneItem, item):
+        self.gene[geneItem.value] = item
+
     

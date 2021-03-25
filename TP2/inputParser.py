@@ -15,11 +15,10 @@ def parseItems(directoryPath):
     for itemFile in ItemFiles:
         # Parse file
         df = pd.read_csv(os.path.join(directoryPath, itemFile.value), sep='\t', header=0, index_col=0)
-        print(len(df))
         # Push dataframe to array
         data.append(df)
-    # Generate new items class and return
-    return Items(data)
+    # Generate new items class
+    Items.setInstance(data)
 
 # Parses the configuration
 def parseConfiguration(configPath):
@@ -41,9 +40,11 @@ def parseConfiguration(configPath):
             a=nums[ConfigOptions.A.value], 
             b=nums[ConfigOptions.B.value], 
             n=nums[ConfigOptions.N.value], 
-            k=nums[ConfigOptions.K.value]
+            k=nums[ConfigOptions.K.value],
+            pm=nums[ConfigOptions.PM.value]
         )
     return config
 
 
 print(parseConfiguration("./input/configuration.json"))
+print(parseItems("./datasets/allitems-small"))

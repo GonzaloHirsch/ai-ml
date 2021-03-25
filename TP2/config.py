@@ -1,5 +1,17 @@
 class Config:
-    def __init__(self, clase, data, cruce, mutacion, seleccion, reemplazo, implementacion, corte, a, b, n, k):
+    __instance = None
+
+    # Asumes the class was instantiated once
+    @staticmethod
+    def getInstance():
+        if Config.__instance == None:
+            raise Exception("No config instance available")
+        return Items.__instance
+
+    def __init__(self, clase, data, cruce, mutacion, seleccion, reemplazo, implementacion, corte, a, b, n, k, pm):
+        if Config.__instance != None:
+            raise Exception("Cannot create another instance of config")
+
         self.clase = clase
         self.data = data
         self.cruce = cruce
@@ -12,6 +24,8 @@ class Config:
         self.b = b
         self.n = n
         self.k = k
+        self.pm = pm
+        Config.__instance = self
     
     def __str__(self):
         return '%s{%s\n}' % (

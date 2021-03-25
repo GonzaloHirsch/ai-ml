@@ -21,6 +21,7 @@ class ItemTypes(enum.Enum):
    CASCOS = 2
    GUANTES = 3
    PECHERAS = 4
+   ALTURA = 5
 
    def __str__(self):
       return str(self.value)
@@ -58,6 +59,7 @@ class ConfigOptions(enum.Enum):
    B = "B"
    N = "N"
    K = "K"
+   PM = "Pm"
 
    def __str__(self):
       return str(self.value)

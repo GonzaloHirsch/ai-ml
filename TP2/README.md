@@ -34,7 +34,8 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         "A": 0.4,
         "B": 0.6,
         "N": 3,
-        "K": 4
+        "K": 4,
+        "Pm": 0.05
     }
 }
 ```
@@ -52,6 +53,7 @@ Los posibles valores de cada campo son:
 * `B` --> Número decimal entre 0 y 1
 * `N` --> Número entero mayor a 0
 * `K` --> Número entero mayor a 0
+* `Pm` --> Número decimal entre 0 y 1
 
 ## Dataset
 
