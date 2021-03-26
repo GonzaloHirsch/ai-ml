@@ -2,6 +2,44 @@
 
 Implementacion de algoritmos genéticos para optimizar la configuración de un personaje.
 
+## Tareas
+
+Selecci ́on de padres y reemplazo de individuos*
+- [ ] Elite - G
+- [ ] Ruleta - F
+- [ ] Universal - J
+- [ ] Boltzmann - J
+- [ ] Torneos (ambas versiones) - J
+- [ ] Ranking - G
+
+Operadores gen ́eticos
+- [ ] Cruce - F
+- [ ] Cruce de un punto - J
+- [ ] Cruce de dos puntos - G
+- [ ] Cruce anular - F
+- [ ] Cruce uniforme - J
+
+Mutaci ́on
+- [x] Gen - G
+- [ ] Multigen Limitada - F
+- [ ] Multigen Uniforme - J
+- [x] Completa - G
+
+Implementaci ́on
+- [ ] Fill-All - F
+- [ ] Fill-Parent - J
+
+Criterios de corte
+- [ ] Tiempo - G
+- [ ] Cantidad de generaciones - F
+- [ ] Soluci ́on aceptable - J
+- [ ] Estructura - G
+- [ ] Contenido - F
+
+General
+- [x] parseo + configuracion - G
+- [ ] clase character - F
+
 ## Requerimientos
 
 Para poder correr el programa es necesario **Python 3**

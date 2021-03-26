@@ -3,7 +3,7 @@
     "data": "./datasets/allitems-small",
     "gen": {
         "cruce": "uniforme",
-        "mutacion": "limitada",
+        "mutacion": "gen",
         "seleccion": ["elite", "ruleta"],
         "reemplazo": ["universal", "ranking"],
         "implementacion": "parent",

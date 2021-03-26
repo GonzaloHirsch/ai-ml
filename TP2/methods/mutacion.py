@@ -3,7 +3,7 @@ import random
 # Local imports
 from items import Items
 from config import Config
-from constants import ItemTypes, MutacionOptions
+from constants import ItemTypes, Mutacion
 
 class Mutacion:
     def __init__(self, mut):
@@ -66,13 +66,13 @@ class Mutacion:
 
     # Exposed method to calculate the mutation
     def apply(self, ch):
-        return self.mutacion(self, node, board)
+        return self.mutacion(ch)
 
     # Map with pointers to the functions
-    mutacion = {
-        MutacionOptions.GEN: __mutacionGen, 
-        MutacionOptions.LIMITADA: __mutacionLimitada, 
-        MutacionOptions.UNIFORME: __mutacionUniforme,
-        MutacionOptions.COMPLETA: __mutacionCompleta
+    mutaciones = {
+        Mutacion.GEN.value: __mutacionGen, 
+        Mutacion.LIMITADA.value: __mutacionLimitada, 
+        Mutacion.UNIFORME.value: __mutacionUniforme,
+        Mutacion.COMPLETA.value: __mutacionCompleta
     }
             

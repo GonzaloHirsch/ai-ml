@@ -44,7 +44,3 @@ def parseConfiguration(configPath):
             pm=nums[ConfigOptions.PM.value]
         )
     return config
-
-
-print(parseConfiguration("./input/configuration.json"))
-print(parseItems("./datasets/allitems-small"))

@@ -6,7 +6,7 @@ class Config:
     def getInstance():
         if Config.__instance == None:
             raise Exception("No config instance available")
-        return Items.__instance
+        return Config.__instance
 
     def __init__(self, clase, data, cruce, mutacion, seleccion, reemplazo, implementacion, corte, a, b, n, k, pm):
         if Config.__instance != None:
