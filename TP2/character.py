@@ -6,9 +6,12 @@ from items import Items
 from config import Config
 
 class Character:
+    INSTANCES = 0
     def __init__(self, clase, arma, botas, casco, guantes, pechera, height):
-
-        self.fitness = self.__getFitnessMethod(clase)
+        self.id = Character.INSTANCES
+        
+        self.fitnessFunction = self.__getFitnessMethod(clase)
+        self.fitness = 0
 
         self.gene = [arma, botas, casco, guantes, pechera, height]
         
@@ -19,6 +22,8 @@ class Character:
             Qualities.RE.value: 0,
             Qualities.VI.value: 0,
         }
+
+        Character.INSTANCES += 1
 
         # self.calculateQualities()
 
