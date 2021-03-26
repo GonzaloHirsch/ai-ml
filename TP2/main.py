@@ -17,8 +17,15 @@ def main():
     # Generate the initial random population
     population = ga.generateInitialPopulation(config.n)
 
-    for pop in population:
-        print(pop)
+    parents = ga.select(population, config.k, config.a)    
+
+    print("POPULATION")
+    for p in population:
+        print(p)
+
+    print("PARENTS")
+    for p in parents:
+        print(p)
 
 
     # App flow

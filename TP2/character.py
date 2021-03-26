@@ -92,7 +92,6 @@ class Character:
 
     def __getWarriorFitness(self):
         self.fitness = 0.6 * self.calculateAttack() + 0.6 * self.calculateDefense()
-        print(self.fitness)
         return self.fitness
 
     def __getArcherFitness(self):

@@ -16,12 +16,12 @@ class Seleccion:
     # -----------------------------------------------------------------
 
     def __getEliteCount(n, k, i):
-        return ceil.((k - i)/n)
+        return ceil((k - i)/n)
 
     # Returns a sorted character heap
     # Items are (fitness, id, character)
     def __getSortedCharacters(chs):
-        heap = [(ch.fitness, ch.id, ch) for ch in chs]
+        heap = [(ch.fitness * -1, ch.id, ch) for ch in chs]
         heapq.heapify(heap)
         return heap
 
@@ -49,22 +49,22 @@ class Seleccion:
         return result
 
     def __seleccionRuleta(chs, k):
-        return ch
+        return chs
 
     def __seleccionUniversal(chs, k):
-        return ch
+        return chs
 
     def __seleccionBoltzmann(chs, k):
-        return ch
+        return chs
 
     def __seleccionTorneoDeterminista(chs, k):
-        return ch
+        return chs
 
     def __seleccionTorneoProbabilistico(chs, k):
-        return ch
+        return chs
 
     def __seleccionRanking(chs, k):
-        return ch
+        return chs
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS
@@ -77,12 +77,12 @@ class Seleccion:
 
     # Map with pointers to the functions
     selecciones = {
-        Seleccion.ELITE.value = __seleccionElite,
-        Seleccion.RULETA.value = __seleccionRuleta,
-        Seleccion.UNIVERSAL.value = __seleccionUniversal,
-        Seleccion.BOLTZMANN.value = __seleccionBoltzmann,
-        Seleccion.TORNEO_DET.value = __seleccionTorneoDeterminista,
-        Seleccion.TORNEO_PROB.value = __seleccionTorneoProbabilistico,
-        Seleccion.RANKING.value = __seleccionRanking
+        Seleccion.ELITE.value: __seleccionElite,
+        Seleccion.RULETA.value: __seleccionRuleta,
+        Seleccion.UNIVERSAL.value: __seleccionUniversal,
+        Seleccion.BOLTZMANN.value: __seleccionBoltzmann,
+        Seleccion.TORNEO_DET.value: __seleccionTorneoDeterminista,
+        Seleccion.TORNEO_PROB.value: __seleccionTorneoProbabilistico,
+        Seleccion.RANKING.value: __seleccionRanking
     }
             
