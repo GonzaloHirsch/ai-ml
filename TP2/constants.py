@@ -31,11 +31,11 @@ class ItemTypes(enum.Enum):
 
 # Enum for item properties with indexes
 class Qualities(enum.Enum):
-   FU = 1
-   AG = 2
-   EX = 3
-   RE = 4
-   VI = 5
+   FU = 0
+   AG = 1
+   EX = 2
+   RE = 3
+   VI = 4
 
    def __str__(self):
       return str(self.value)

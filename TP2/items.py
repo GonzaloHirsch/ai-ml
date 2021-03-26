@@ -44,7 +44,7 @@ class Items:
     # Input: enum value from ItemTypes
     def getRandomItem(self, enumVal):
         idx = int(random.uniform(0, self.limits[enumVal.value]))
-        return self.data[enumVal.value].loc[idx]
+        return self.data[enumVal.value].iloc[idx]
 
     # Picks a random height with a uniform distribution
     def getRandomHeight(self):

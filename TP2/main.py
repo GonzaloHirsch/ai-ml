@@ -14,6 +14,13 @@ def main():
     # Generate instance of the genetic algorithm configuration
     ga = GeneticAlgorithm(config)
 
+    # Generate the initial random population
+    population = ga.generateInitialPopulation(config.n)
+
+    for pop in population:
+        print(pop)
+
+
     # App flow
     # Generate initial population
     # Character.generateRandomCharacter()

@@ -9,8 +9,9 @@ class Character:
     INSTANCES = 0
     def __init__(self, clase, arma, botas, casco, guantes, pechera, height):
         self.id = Character.INSTANCES
-        
-        self.fitnessFunction = self.__getFitnessMethod(clase)
+
+        # Determine fitness function
+        self.calculateFitness = self.__getFitnessMethod(clase)
         self.fitness = 0
 
         self.gene = [arma, botas, casco, guantes, pechera, height]
@@ -23,9 +24,11 @@ class Character:
             Qualities.VI.value: 0,
         }
 
-        Character.INSTANCES += 1
+        # Calculate fitness & qualities
+        self.calculateQualities()
+        self.calculateFitness()
 
-        # self.calculateQualities()
+        Character.INSTANCES += 1
 
 
     # -----------------------------------------------------------------
@@ -34,19 +37,19 @@ class Character:
 
     def calculateQualities(self):
         for quality in Qualities:
-            self.qualities[quality.value] = self.__calculateQuality[quality.value]()
+            self.qualities[quality.value] = self.__calculateQuality(quality)
 
 
     def __getQualityMultiplier(self, quality):
-        if Quality.FU == quality:
+        if Qualities.FU == quality:
             return 100
-        elif Quality.AG == quality:
+        elif Qualities.AG == quality:
             return 1
-        elif Quality.EX == quality:
+        elif Qualities.EX == quality:
             return 0.6
-        elif Quality.RE == quality:
+        elif Qualities.RE == quality:
             return 1
-        elif Quality.VI == quality:
+        elif Qualities.VI == quality:
             return 100
 
 
@@ -54,8 +57,8 @@ class Character:
         itemsValue = 0
         multiplier = self.__getQualityMultiplier(quality)
 
-        for idx in range(1, len(self.gene)):
-            itemsValue += self.gene[idx][quality]
+        for idx in range(0, len(self.gene) - 1):
+            itemsValue += self.gene[idx].iloc[quality.value]
 
         return multiplier * math.tanh(0.01 * itemsValue)
 
@@ -64,11 +67,11 @@ class Character:
     # -----------------------------------------------------------------
 
     def calculateAttackModifier(self):
-        h = self.gene[len(self.gene)-1]
+        h = self.gene[-1]
         return 0.7 - (3 * h - 5)**4 + (3 * h - 5)**2 + h/4
 
     def calculateDefenseModifier(self):
-        h = self.gene[len(self.gene)-1]
+        h = self.gene[-1]
         return 1.9 + (2.5 * h - 4.16)**4 + (2.5 * h - 4.16)**2 - (3*h)/10
 
     def calculateAttack(self):
@@ -88,16 +91,21 @@ class Character:
     # -----------------------------------------------------------------
 
     def __getWarriorFitness(self):
-        return 0.6 * self.calculateAttack() + 0.6 * self.calculateDefense()
+        self.fitness = 0.6 * self.calculateAttack() + 0.6 * self.calculateDefense()
+        print(self.fitness)
+        return self.fitness
 
     def __getArcherFitness(self):
-        return 0.9 * self.calculateAttack() + 0.1 * self.calculateDefense()
+        self.fitness = 0.9 * self.calculateAttack() + 0.1 * self.calculateDefense()
+        return self.fitness
 
     def __getDefendorFitness(self):
-        return 0.3 * self.calculateAttack() + 0.8 * self.calculateDefense()
+        self.fitness = 0.3 * self.calculateAttack() + 0.8 * self.calculateDefense()
+        return self.fitness
 
     def __getSpyFitness(self):
-        return 0.8 * self.calculateAttack() + 0.3 * self.calculateDefense()
+        self.fitness = 0.8 * self.calculateAttack() + 0.3 * self.calculateDefense()
+        return self.fitness
 
     def __getFitnessMethod(self, clase):
         fitnessMethod = {
@@ -132,8 +140,7 @@ class Character:
     # -----------------------------------------------------------------
 
     def __str__(self):
-        return '%s{%s\n}' % (
-            type(self).__name__,
-            ', '.join('\n\t%s = %s' % item for item in vars(self).items())
-        )
+        subs = 'fitness=%s => arma=%s, botas=%s, casco=%s, guantes=%s, pechera=%s, height=%s' % (self.fitness, self.gene[0].name, self.gene[1].name, self.gene[2].name, self.gene[3].name, self.gene[4].name, self.gene[5])
+        s = '%s{%s}' % (type(self).__name__, subs)
+        return s
     

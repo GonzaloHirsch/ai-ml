@@ -71,6 +71,7 @@ class Seleccion:
     # -----------------------------------------------------------------
 
     # Exposed method to calculate the mutation
+    # Receives: chs --> List of characters, k --> Amount to select
     def apply(self, chs, k):
         return self.seleccion(chs, k)
 
