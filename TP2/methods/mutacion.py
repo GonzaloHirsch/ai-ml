@@ -31,6 +31,8 @@ class Mutacion:
                     newItem = items.getRandomHeight()
                 # Set the gene in the character
                 ch.setGene(item, newItem)
+            # Update fitness in character
+            ch.calculateCompleteFitness()
         return ch
 
     def __mutacionGen(ch):
@@ -52,6 +54,8 @@ class Mutacion:
                 newItem = items.getRandomHeight()
             # Set the gene in the character
             ch.setGene(item, newItem)
+            # Update fitness in character
+            ch.calculateCompleteFitness()
         return ch
 
     def __mutacionLimitada(ch):

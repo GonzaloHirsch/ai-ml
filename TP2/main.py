@@ -19,13 +19,12 @@ def main():
 
     parents = ga.select(population, config.k, config.a)    
 
-    print("POPULATION")
-    for p in population:
-        print(p)
+    print("BEFORE")
+    print(parents[0])
 
-    print("PARENTS")
-    for p in parents:
-        print(p)
+    nparent = ga.mutate(parents[0])
+    print("AFTER")
+    print(nparent)
 
 
     # App flow

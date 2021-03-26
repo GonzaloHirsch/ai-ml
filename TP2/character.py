@@ -25,15 +25,24 @@ class Character:
         }
 
         # Calculate fitness & qualities
-        self.calculateQualities()
-        self.calculateFitness()
+        self.calculateCompleteFitness()
 
         Character.INSTANCES += 1
 
+    # -----------------------------------------------------------------
+    # GENE FUNCTIONS
+    # -----------------------------------------------------------------
+
+    def setGene(self, itemType, newValue):
+        self.gene[itemType.value] = newValue
 
     # -----------------------------------------------------------------
     # QUALITIES FUNCTIONS
     # -----------------------------------------------------------------
+
+    def calculateCompleteFitness(self):
+        self.calculateQualities()
+        return self.calculateFitness()
 
     def calculateQualities(self):
         for quality in Qualities:
