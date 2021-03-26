@@ -16,11 +16,13 @@ def main():
 
     # App flow
     # Generate initial population
+    # Character.generateRandomCharacter()
     # While condition not met
     # Select parents
     # Cross
     # mutate
     # select next iteration
+    
 
     
 # App entrypoint

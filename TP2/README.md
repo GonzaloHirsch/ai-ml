@@ -20,10 +20,10 @@ Operadores gen ́eticos
 - [ ] Cruce uniforme - J
 
 Mutaci ́on
-- [x] Gen - G
+- [x] ~~Gen - G~~
 - [ ] Multigen Limitada - F
 - [ ] Multigen Uniforme - J
-- [x] Completa - G
+- [x] ~~Completa - G~~
 
 Implementaci ́on
 - [ ] Fill-All - F
@@ -37,7 +37,7 @@ Criterios de corte
 - [ ] Contenido - F
 
 General
-- [x] parseo + configuracion - G
+- [x] ~~parseo + configuracion - G~~
 - [ ] clase character - F
 
 ## Requerimientos

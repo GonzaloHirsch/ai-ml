@@ -1,12 +1,12 @@
-import numpy as np
+# Lib imports
 import math  
-
-from constants import Qualities
-from constants import Clase
-
+# Local imports
+from constants import Qualities, Clase, ItemTypes
+from items import Items
+from config import Config
 
 class Character:
-    def __init__(self, clase, height, arma, botas, casco, guantes, pechera):
+    def __init__(self, clase, arma, botas, casco, guantes, pechera, height):
 
         self.fitness = self.__getFitnessMethod(clase)
 
@@ -78,6 +78,9 @@ class Character:
         v = self.qualities[Qualities.EX.value]
         return (r + e) * v * self.calculateDefenseModifier()
 
+    # -----------------------------------------------------------------
+    # FITNESS FUNCTIONS
+    # -----------------------------------------------------------------
 
     def __getWarriorFitness(self):
         return 0.6 * self.calculateAttack() + 0.6 * self.calculateDefense()
@@ -91,9 +94,7 @@ class Character:
     def __getSpyFitness(self):
         return 0.8 * self.calculateAttack() + 0.3 * self.calculateDefense()
 
-    
     def __getFitnessMethod(self, clase):
-
         fitnessMethod = {
             Clase.GUERRERO.value: self.__getWarriorFitness, 
             Clase.ARQUERO.value: self.__getArcherFitness, 
@@ -102,4 +103,32 @@ class Character:
         }
         return fitnessMethod[clase]
 
+    # -----------------------------------------------------------------
+    # RANDOM CHARACTER FUNCTIONS
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def generateRandomCharacter():
+        # Get instance of classes
+        items = Items.getInstance()
+        config = Config.getInstance()
+        # Generate all items for new character
+        gen = []
+        for item in ItemTypes:
+            if item != ItemTypes.ALTURA:
+                gen.append(items.getRandomItem(item))
+            else:
+                gen.append(items.getRandomHeight())
+        # Return character, generated items should be in correct positions
+        return Character(config.clase, gen[0], gen[1], gen[2], gen[3], gen[4], gen[5])
+
+    # -----------------------------------------------------------------
+    # HELPER FUNCTIONS
+    # -----------------------------------------------------------------
+
+    def __str__(self):
+        return '%s{%s\n}' % (
+            type(self).__name__,
+            ', '.join('\n\t%s = %s' % item for item in vars(self).items())
+        )
     
