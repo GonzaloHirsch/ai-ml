@@ -64,6 +64,6 @@ class Cruce:
         Cruce.PUNTO_1.value: __crucePunto1,
         Cruce.PUNTO_2.value: __crucePunto2,
         Cruce.ANULAR.value: __cruceAnular,
-        Cruce.UNIFORME.value: __cruceUniforme
+        Cruce.UNIFORME.value: __cruceUniforme,
     }
             

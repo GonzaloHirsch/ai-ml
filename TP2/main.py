@@ -17,11 +17,26 @@ def main():
     # Generate the initial random population
     population = ga.generateInitialPopulation(config.n)
 
+    # Iterate while terminal condition is not met
+    while not ga.isTerminated(population):
+        # Select parents for next generation
+        parents = ga.select(population, config.k, config.a)
+        # Cross parents to generate children
+        children = ga.crossAll(parents)
+        # Mutate children
+        for i in range(len(children)):
+            children[i] = ga.mutate(children[i])
+        # Determine fill method
+        # Select next generation
+        population = ga.replace(population, config.n, config.b)
+
+    
+
     print("POPU")
     for p in population:
         print(p)
 
-    parents = ga.select(population, config.k, config.a)
+    
 
     # for i in range(len(parents)):
     #     print('BEFORE')

@@ -29,9 +29,9 @@ Implementación
 - [ ] Fill-Parent - J
 
 Criterios de corte
-- [ ] Tiempo - G
+- [x] ~~Tiempo - G~~
 - [ ] Cantidad de generaciones - F
-- [ ] Soluci ́on aceptable - J
+- [ ] Solución aceptable - J
 - [ ] Estructura - G
 - [ ] Contenido - F
 
@@ -72,7 +72,9 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         "B": 0.6,
         "N": 3,
         "K": 4,
-        "Pm": 0.05
+        "Pm": 0.05,
+        "criterio1": 10,
+        "criterio2": 10
     }
 }
 ```
@@ -91,6 +93,18 @@ Los posibles valores de cada campo son:
 * `N` --> Número entero mayor a 0
 * `K` --> Número entero mayor a 0
 * `Pm` --> Número decimal entre 0 y 1
+* `criterio1` --> Número decimal/entero, sirve para los parámetros de corte, dependiendo del valor de `corte` representa
+    * `corte = tiempo` --> Tiempo en segundos que se deja corriendo
+    * `corte = cantidad` --> Cantidad de generaciones usadas
+    * `corte = aceptable` --> Fitness mayor aceptable
+    * `corte = estructura` --> Porcentaje (entre 0 y 1) de la población que se mantiene estable
+    * `corte = contenido` --> Delta de cambio de fitness
+* `criterio2` --> Número decimal/entero, sirve para los parámetros de corte, dependiendo del valor de `corte` representa
+    * `corte = tiempo` --> No aplica, ignorar en este caso
+    * `corte = cantidad` --> No aplica, ignorar en este caso
+    * `corte = aceptable` --> No aplica, ignorar en este caso
+    * `corte = estructura` --> Cantidad de generaciones contadas
+    * `corte = contenido` --> Cantidad de generaciones contadas
 
 ## Dataset
 

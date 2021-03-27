@@ -5,6 +5,7 @@ import numpy as np
 from methods.mutacion import Mutacion
 from methods.seleccion import Seleccion
 from methods.cruce import Cruce
+from methods.corte import Corte
 from character import Character
 
 class GeneticAlgorithm:
@@ -13,7 +14,10 @@ class GeneticAlgorithm:
         self.mutacion = Mutacion(config.mutacion)
         self.seleccion1 = Seleccion(config.seleccion[0])
         self.seleccion2 = Seleccion(config.seleccion[1])
+        self.reemplazo1 = Seleccion(config.reemplazo[0])
+        self.reemplazo2 = Seleccion(config.reemplazo[1])
         self.cruce = Cruce(config.cruce)
+        self.corte = Corte(config.corte)
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS
@@ -36,5 +40,27 @@ class GeneticAlgorithm:
         list2 = self.seleccion2.apply(characters, k2)
         return list1 + list2
 
+    def replace(self, characters, k, b):
+        k1 = ceil(k * b)
+        k2 = floor(k * (1 - b))
+        list1 = self.reemplazo1.apply(characters, k1)
+        list2 = self.reemplazo2.apply(characters, k2)
+        return list1 + list2
+
+    def crossAll(self, parents):
+        n = len(parents)
+        children = []
+        for i in range(0, n, 2):
+            if i + 1 >= n:
+                children.append(parents[i])
+            else:
+                child1, child2 = self.cross(parents[i], parents[i+1])
+                children.append(child1)
+                children.append(child2)
+        return children
+
     def cross(self, p1, p2):
         return self.cruce.apply(p1, p2)
+
+    def isTerminated(self, chs):
+        return self.corte.apply(chs)

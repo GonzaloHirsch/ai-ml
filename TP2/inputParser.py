@@ -41,6 +41,8 @@ def parseConfiguration(configPath):
             b=nums[ConfigOptions.B.value], 
             n=nums[ConfigOptions.N.value], 
             k=nums[ConfigOptions.K.value],
-            pm=nums[ConfigOptions.PM.value]
+            pm=nums[ConfigOptions.PM.value],
+            crit1=nums[ConfigOptions.CRITERIO_1.value],
+            crit2=nums[ConfigOptions.CRITERIO_2.value]
         )
     return config

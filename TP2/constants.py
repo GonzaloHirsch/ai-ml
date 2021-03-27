@@ -60,6 +60,8 @@ class ConfigOptions(enum.Enum):
    N = "N"
    K = "K"
    PM = "Pm"
+   CRITERIO_1 = "criterio1"
+   CRITERIO_2 = "criterio2"
 
    def __str__(self):
       return str(self.value)
