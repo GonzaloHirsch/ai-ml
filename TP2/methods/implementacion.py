@@ -26,7 +26,20 @@ class Implementacion:
         return list1 + list2
 
     def __fillParent(population, children, selection1, selection2, b, gen):
-        return True
+        n = len(population)
+        k = len(children)
+
+        if k > n:
+            # A percentage of the new population will be chosen with one method and the rest with another
+            n1 = ceil(n * b)
+            n2 = floor(n * (1 - b))
+            # if there are more children than previous population, next generation is selected entirely from children.
+            return selection1.apply(children, n1, gen) + selection2.apply(children, n2, gen)
+        else:
+            # next generation is composed of the K children + (N-K) last generation population.
+            n1 = ceil((n-k) * b)
+            n2 = floor((n-k) * (1 - b))
+            return children + selection1.apply(population, n1, gen) + selection2.apply(population, n2, gen)
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS
