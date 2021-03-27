@@ -7,7 +7,7 @@
         "seleccion": ["ruleta", "ranking"],
         "reemplazo": ["universal", "ranking"],
         "implementacion": "all",
-        "corte": "tiempo"
+        "corte": "cantidad"
     },
     "nums": {
         "A": 1,

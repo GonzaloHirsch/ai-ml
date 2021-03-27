@@ -29,7 +29,16 @@ class Corte:
         return True if elapsed > config.crit1 else False
 
     def __corteCantidad(chs):
-        return True
+        # The first time it is called
+        if len(Corte.variables) == 0:
+            # Store start time
+            Corte.variables.append(0)
+            return False
+
+        # Add 1 to the generation counter
+        Corte.variables[0] += 1
+
+        return True if Corte.variables[0] >= Config.getInstance().crit1 else False
 
     def __corteAceptable(chs):
         return True
