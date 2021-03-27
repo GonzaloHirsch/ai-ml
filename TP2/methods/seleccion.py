@@ -18,11 +18,12 @@ class Seleccion:
     # HELPER FUNCTIONS
     # -----------------------------------------------------------------
 
+    # Returns the amount of items per index to include in elite
     def __getEliteCount(n, k, i):
         return ceil((k - i)/n)
 
     # Returns a sorted character heap
-    # Items are (fitness, id, character)
+    # Items are (fitness, pseudoindex, character)
     def __getSortedCharacters(chs):
         cnt = count(start=0, step=1)
         heap = [(ch.fitness * -1, next(cnt), ch) for ch in chs]
@@ -30,12 +31,26 @@ class Seleccion:
         return heap
 
     def __getPositionInAccumulatedFitness(accumulated, ri):
-
         for i in range(0, len(accumulated)):
             if ri < accumulated[i]:
                 return i
-
         return -1
+
+    def __getPseudoFitnessByRank(n, k):
+        return (n - k)/n
+
+    # Internal roulette selection given the characters, fitnesses and k
+    def __seleccionRuletaInternal(chs, fitnesses, k):
+        result = []
+        # Calculated the accumulated relative fitnesses
+        accumulated = np.cumsum(getRelativeFitnesses(fitnesses))
+        # Create K random ri values between 0 and 1
+        # And get the position in the accumulated array of each r value
+        for i in range(0, k):
+            ri = random.uniform(0, 1)
+            idx = Seleccion.__getPositionInAccumulatedFitness(accumulated, ri)
+            result.append(chs[idx])
+        return result
 
     # -----------------------------------------------------------------
     # SELECCION FUNCTIONS
@@ -63,23 +78,11 @@ class Seleccion:
 
     def __seleccionRuleta(chs, k):
         fitnesses = np.array([])
-        result = []
-
         # Store the fitness of the characters in an array
         for character in chs:
             fitnesses = np.append(fitnesses, character.fitness)
-
-        # Calculated the accumulated relative fitnesses
-        accumulated = np.cumsum(getRelativeFitnesses(fitnesses))
-
-        # Create K random ri values between 0 and 1
-        # And get the position in the accumulated array of each r value
-        for i in range(0, k):
-            ri = random.uniform(0, 1)
-            idx = Seleccion.__getPositionInAccumulatedFitness(accumulated, ri)
-            result.append(chs[idx])
-
-        return result
+        return Seleccion.__seleccionRuletaInternal(chs, fitnesses, k)
+        
 
     def __seleccionUniversal(chs, k):
         fitnesses = np.array([])
@@ -111,7 +114,16 @@ class Seleccion:
         return chs
 
     def __seleccionRanking(chs, k):
-        return chs
+        n = len(chs)
+        # Sort by fitness and convert to sorted list
+        heap = Seleccion.__getSortedCharacters(chs)
+        heaplist = [heapq.heappop(heap)[2] for i in range(n)]
+        # Get pseudo fitnesses
+        fitnesses = np.array([])
+        # Store the fitness of the characters in an array
+        for i in range(n):
+            fitnesses = np.append(fitnesses, Seleccion.__getPseudoFitnessByRank(n, i + 1))
+        return Seleccion.__seleccionRuletaInternal(heaplist, fitnesses, k)
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS

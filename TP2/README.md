@@ -10,7 +10,7 @@ Selección de padres y reemplazo de individuos
 - [x] ~~Universal - F~~
 - [ ] Boltzmann - J
 - [ ] Torneos (ambas versiones) - J
-- [ ] Ranking - G
+- [x] ~~Ranking - G~~
 
 Operadores genéticos
 - [ ] Cruce de un punto - J
