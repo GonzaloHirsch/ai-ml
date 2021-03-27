@@ -75,6 +75,9 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         "Pm": 0.05,
         "criterio1": 10,
         "criterio2": 10
+    },
+    "plot": {
+        "show": true
     }
 }
 ```
@@ -82,12 +85,16 @@ La configuración del programa se realiza desde el archivo `input/configuration.
 Los posibles valores de cada campo son:
 * `clase` --> 1 valor de [`guerrero`, `arquero`, `defensor`, `infiltrado`]
 * `data` --> Path a la carpeta con el dataset (desde la carpeta `TP2`)
+
+Dentro del objeto `gen` debe ir:
 * `cruce` --> 1 valor de [`1 punto`, `2 puntos`, `anular`, `uniforme`]
 * `mutacion` --> 1 valor de [`gen`, `limitada`, `uniforme`, `completa`]
 * `seleccion` --> 2 valores de [`elite`, `ruleta`, `universal`, `boltzmann`, `torneo det`, `torneo prob`, `ranking`] (en formato array)
 * `reemplazo` --> 2 valores de [`elite`, `ruleta`, `universal`, `boltzmann`, `torneo det`, `torneo prob`, `ranking`] (en formato array)
 * `implementacion` --> 1 valor de [`all`,`parent`]
 * `corte` --> 1 valor de [`tiempo`, `cantidad`, `aceptable`, `estructura`, `contenido`]
+
+Dentro del objeto `nums` debe ir:
 * `A` --> Número decimal entre 0 y 1
 * `B` --> Número decimal entre 0 y 1
 * `N` --> Número entero mayor a 0
@@ -105,6 +112,9 @@ Los posibles valores de cada campo son:
     * `corte = aceptable` --> No aplica, ignorar en este caso
     * `corte = estructura` --> Cantidad de generaciones contadas
     * `corte = contenido` --> Cantidad de generaciones contadas
+
+Dentro del objeto `plot` debe ir:
+* `show` --> Determina si se muestra el gráfico en tiempo real, `true` o `false`
 
 ## Dataset
 

@@ -27,6 +27,7 @@ def parseConfiguration(configPath):
         # Get submaps inside config
         gen = data[ConfigOptions.GEN.value]
         nums = data[ConfigOptions.NUMS.value]
+        plot = data[ConfigOptions.PLOT.value]
         # Create config
         config = Config(
             clase=data[ConfigOptions.CLASE.value], 
@@ -43,6 +44,7 @@ def parseConfiguration(configPath):
             k=nums[ConfigOptions.K.value],
             pm=nums[ConfigOptions.PM.value],
             crit1=nums[ConfigOptions.CRITERIO_1.value],
-            crit2=nums[ConfigOptions.CRITERIO_2.value]
+            crit2=nums[ConfigOptions.CRITERIO_2.value],
+            show=plot[ConfigOptions.SHOW.value]
         )
     return config

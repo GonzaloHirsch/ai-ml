@@ -62,6 +62,8 @@ class ConfigOptions(enum.Enum):
    PM = "Pm"
    CRITERIO_1 = "criterio1"
    CRITERIO_2 = "criterio2"
+   PLOT = "plot"
+   SHOW = "show"
 
    def __str__(self):
       return str(self.value)

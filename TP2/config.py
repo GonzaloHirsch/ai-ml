@@ -8,7 +8,7 @@ class Config:
             raise Exception("No config instance available")
         return Config.__instance
 
-    def __init__(self, clase, data, cruce, mutacion, seleccion, reemplazo, implementacion, corte, a, b, n, k, pm, crit1, crit2):
+    def __init__(self, clase, data, cruce, mutacion, seleccion, reemplazo, implementacion, corte, a, b, n, k, pm, crit1, crit2, show):
         if Config.__instance != None:
             raise Exception("Cannot create another instance of config")
 
@@ -27,6 +27,7 @@ class Config:
         self.pm = pm
         self.crit1 = crit1
         self.crit2 = crit2
+        self.show = show
         Config.__instance = self
     
     def __str__(self):

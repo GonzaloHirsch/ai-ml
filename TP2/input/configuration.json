@@ -17,5 +17,8 @@
         "Pm": 0.1,
         "criterio1": 0.75,
         "criterio2": 20
+    },
+    "plot": {
+        "show": true
     }
 }

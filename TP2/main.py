@@ -56,9 +56,7 @@ def writeRow(writer, gen, min, avg):
     }
     writer.writerow(info)
 
-def main():
-    # Parse configuration files
-    config = parser.parseConfiguration(CONFIG_INPUT)
+def main(config):
     # Parse item files, pass the path to folder
     parser.parseItems(config.data)
     # Generate instance of the genetic algorithm configuration
@@ -66,9 +64,6 @@ def main():
 
     # Generate the initial random population
     population = ga.generateInitialPopulation(config.n)
-
-    # Prepare output file
-    prepareOutput()
 
     generation = 0
         
@@ -98,8 +93,16 @@ def main():
     
 # App entrypoint
 if __name__ == "__main__":
+    # Parse configuration files
+    config = parser.parseConfiguration(CONFIG_INPUT)
+    # Prepare output file
+    prepareOutput()
+
     # Create the thread for the processing
-    x = threading.Thread(target=main, args=())
+    x = threading.Thread(target=main, args=(config,))
     x.start()
-    # Run animation on main thread
-    run_animation()
+
+    # Show plot if configured to
+    if config.show:
+        # Run animation on main thread
+        run_animation()
