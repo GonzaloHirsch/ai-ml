@@ -6,7 +6,14 @@ from constants import ItemTypes, Corte
 from config import Config
 
 class Corte:
-    variables = []
+    # Corte timepo variables
+    startTime = None
+    # Corte cantidad variables
+    generations = None
+    # Corte estructura variables
+    generationsOverLimit = None
+    currentStat = None
+    charactersDistribution = None
 
     def __init__(self, cte):
         self.cte = cte
@@ -18,33 +25,57 @@ class Corte:
 
     def __corteTiempo(chs):
         # The first time it is called
-        if len(Corte.variables) == 0:
+        if Corte.startTime == None:
             # Store start time
-            Corte.variables.append(time.time())
+            Corte.startTime = time.time()
             return False
-        # Get time limit
-        config = Config.getInstance()
         # Calculate elapsed time
-        elapsed = time.time() - Corte.variables[0]
-        return True if elapsed > config.crit1 else False
+        elapsed = time.time() - Corte.startTime
+        return elapsed > Config.getInstance().crit1
 
     def __corteCantidad(chs):
         # The first time it is called
-        if len(Corte.variables) == 0:
-            # Store start time
-            Corte.variables.append(0)
+        if Corte.generations == None:
+            # Store initial generations data
+            Corte.generations = 0
             return False
-
         # Add 1 to the generation counter
-        Corte.variables[0] += 1
-
-        return True if Corte.variables[0] >= Config.getInstance().crit1 else False
+        Corte.generations += 1
+        return Corte.generations >= Config.getInstance().crit1
 
     def __corteAceptable(chs):
         return True
 
     def __corteEstructura(chs):
-        return True
+        # First time called, init variables
+        if Corte.charactersDistribution == None:
+            Corte.charactersDistribution = {}
+            Corte.generationsOverLimit = 0
+            Corte.currentStat = 0
+            return False
+        # Getting variables
+        config = Config.getInstance()
+        n = len(chs)
+        # Store counts of characters per hash
+        for ch in chs:
+            # Check if the character is there or not, store count of characters
+            if ch in Corte.charactersDistribution:
+                Corte.charactersDistribution[ch] += 1
+            else:
+                Corte.charactersDistribution[ch] = 1
+        # Compute distributions
+        max = 0
+        for dist in Corte.charactersDistribution.values():
+            val = dist / n
+            if val > max:
+                max = val
+        # Check if the current percentage is bigger that the limit
+        if max >= config.crit1:
+            Corte.generationsOverLimit += 1
+        else:
+            Corte.generationsOverLimit = 0
+        Corte.currentStat = max
+        return Corte.generationsOverLimit >= config.crit2
 
     def __corteContenido(chs):
         return True
