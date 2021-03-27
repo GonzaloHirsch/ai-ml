@@ -25,7 +25,7 @@ Mutación
 - [x] ~~Completa - G~~
 
 Implementación
-- [ ] Fill-All - F
+- [x] ~~Fill-All - F~~
 - [ ] Fill-Parent - J
 
 Criterios de corte
