@@ -7,7 +7,7 @@
         "seleccion": ["ruleta", "ranking"],
         "reemplazo": ["ruleta", "ranking"],
         "implementacion": "all",
-        "corte": "estructura"
+        "corte": "cantidad"
     },
     "nums": {
         "A": 0.5,
@@ -15,7 +15,7 @@
         "N": 10,
         "K": 7,
         "Pm": 0.2,
-        "criterio1": 0.75,
+        "criterio1": 1,
         "criterio2": 20
     }
 }
