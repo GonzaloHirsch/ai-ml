@@ -27,7 +27,7 @@ def main():
         for i in range(len(children)):
             children[i] = ga.mutate(children[i])
         # Select next generation
-        population = ga.nextGeneration(population, children, config.b)
+        population = ga.nextGeneration(population, children, config.n, config.k, config.b)
     
 # App entrypoint
 if __name__ == "__main__":

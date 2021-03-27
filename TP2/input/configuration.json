@@ -6,7 +6,7 @@
         "mutacion": "gen",
         "seleccion": ["ruleta", "ranking"],
         "reemplazo": ["universal", "ranking"],
-        "implementacion": "parent",
+        "implementacion": "all",
         "corte": "tiempo"
     },
     "nums": {

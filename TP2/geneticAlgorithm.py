@@ -57,8 +57,8 @@ class GeneticAlgorithm:
     def cross(self, p1, p2):
         return self.cruce.apply(p1, p2)
 
-    def nextGeneration(self, population, children, b):
-        return self.implementacion.apply(population, children, self.reemplazo1, self.reemplazo2, b)
+    def nextGeneration(self, population, children, n, k, b):
+        return self.implementacion.apply(population, children, self.reemplazo1, self.reemplazo2, n, k, b)
 
     def isTerminated(self, chs):
         return self.corte.apply(chs)
