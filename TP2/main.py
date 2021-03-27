@@ -24,16 +24,18 @@ def animate(i):
     min = data[OUTPUT_FIELDNAMES[1]]
     avg = data[OUTPUT_FIELDNAMES[2]]
     plt.cla()
-    plt.plot(x, min, label='Fitness Mínima')
-    plt.plot(x, avg, label='Fitness Promedio')
-    plt.legend(loc='upper left')
+    plt.plot(x, min, 'r', label='Mínima', linewidth=2)
+    plt.plot(x, avg, 'g', label='Promedio', linewidth=2)
+    plt.xlabel("Generación")
+    plt.ylabel("Fitness")
+    plt.title("Fitness por Generación")
+    plt.legend(loc='lower right')
     plt.tight_layout()
 
 # Function to run the animation
 def run_animation():
     plt.style.use('fivethirtyeight')
     ani = FuncAnimation(plt.gcf(), animate, interval=250)
-    plt.xlabel("Generación")
     plt.tight_layout()
     plt.show()
 

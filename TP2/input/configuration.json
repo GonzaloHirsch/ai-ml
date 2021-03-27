@@ -4,18 +4,18 @@
     "gen": {
         "cruce": "anular",
         "mutacion": "gen",
-        "seleccion": ["ruleta", "ranking"],
-        "reemplazo": ["ruleta", "ranking"],
+        "seleccion": ["elite", "ranking"],
+        "reemplazo": ["elite", "ranking"],
         "implementacion": "all",
-        "corte": "contenido"
+        "corte": "estructura"
     },
     "nums": {
         "A": 0.5,
         "B": 0.5,
-        "N": 10,
-        "K": 7,
-        "Pm": 0.2,
-        "criterio1": 0.5,
-        "criterio2": 5
+        "N": 500,
+        "K": 400,
+        "Pm": 0.1,
+        "criterio1": 0.75,
+        "criterio2": 20
     }
 }
