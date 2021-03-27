@@ -3,7 +3,7 @@
     "data": "./datasets/allitems-small",
     "gen": {
         "cruce": "2 puntos",
-        "mutacion": "completa",
+        "mutacion": "gen",
         "seleccion": ["ruleta", "universal"],
         "reemplazo": ["universal", "ranking"],
         "implementacion": "parent",

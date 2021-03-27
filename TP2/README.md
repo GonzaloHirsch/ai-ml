@@ -6,8 +6,8 @@ Implementacion de algoritmos genéticos para optimizar la configuración de un p
 
 Selección de padres y reemplazo de individuos
 - [x] ~~Elite - G~~
-- [X] ~~Ruleta - F~~
-- [X] ~~Universal - F~~
+- [x] ~~Ruleta - F~~
+- [x] ~~Universal - F~~
 - [ ] Boltzmann - J
 - [ ] Torneos (ambas versiones) - J
 - [ ] Ranking - G
@@ -20,7 +20,7 @@ Operadores genéticos
 
 Mutación
 - [x] ~~Gen - G~~
-- [ ] Multigen Limitada - F
+- [x] ~~Multigen Limitada - F~~
 - [ ] Multigen Uniforme - J
 - [x] ~~Completa - G~~
 

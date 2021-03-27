@@ -12,7 +12,7 @@ class Character:
         self.calculateFitness = self.__getFitnessMethod(clase)
         self.fitness = 0
 
-        self.gene = [arma, botas, casco, guantes, pechera, height]
+        self.genes = [arma, botas, casco, guantes, pechera, height]
         self.clase = clase
         
         self.qualities = {
@@ -35,7 +35,7 @@ class Character:
     # -----------------------------------------------------------------
 
     def setGene(self, itemType, newValue):
-        self.gene[itemType.value] = newValue
+        self.genes[itemType.value] = newValue
 
     # -----------------------------------------------------------------
     # QUALITIES FUNCTIONS
@@ -66,8 +66,8 @@ class Character:
         itemsValue = 0
         multiplier = self.__getQualityMultiplier(quality)
 
-        for idx in range(0, len(self.gene) - 1):
-            itemsValue += self.gene[idx].iloc[quality.value]
+        for idx in range(0, len(self.genes) - 1):
+            itemsValue += self.genes[idx].iloc[quality.value]
 
         return multiplier * math.tanh(0.01 * itemsValue)
 
@@ -76,11 +76,11 @@ class Character:
     # -----------------------------------------------------------------
 
     def calculateAttackModifier(self):
-        h = self.gene[-1]
+        h = self.genes[-1]
         return 0.7 - (3 * h - 5)**4 + (3 * h - 5)**2 + h/4
 
     def calculateDefenseModifier(self):
-        h = self.gene[-1]
+        h = self.genes[-1]
         return 1.9 + (2.5 * h - 4.16)**4 + (2.5 * h - 4.16)**2 - (3*h)/10
 
     def calculateAttack(self):
@@ -148,7 +148,7 @@ class Character:
     # -----------------------------------------------------------------
 
     def __str__(self):
-        subs = 'fitness=%s => arma=%s, botas=%s, casco=%s, guantes=%s, pechera=%s, height=%s' % (self.fitness, self.gene[0].name, self.gene[1].name, self.gene[2].name, self.gene[3].name, self.gene[4].name, self.gene[5])
+        subs = 'fitness=%s => arma=%s, botas=%s, casco=%s, guantes=%s, pechera=%s, height=%s' % (self.fitness, self.genes[0].name, self.genes[1].name, self.genes[2].name, self.genes[3].name, self.genes[4].name, self.genes[5])
         s = '%s{%s}' % (type(self).__name__, subs)
         return s
     

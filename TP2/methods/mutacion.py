@@ -11,58 +11,80 @@ class Mutacion:
         self.mut = mut
         self.mutacion = self.mutaciones[mut]
 
+    def __getRandomGene(geneIdx):
+        items = Items.getInstance()
+        # Get item for that index
+        item = ItemTypes(geneIdx)
+        # Generate random item
+        if item != ItemTypes.ALTURA:
+            newItem = items.getRandomItem(item)
+        else:
+            newItem = items.getRandomHeight()
+
+        return newItem
+
     # -----------------------------------------------------------------
     # MUTACION FUNCTIONS
     # -----------------------------------------------------------------
 
     def __mutacionCompleta(ch):
         # Recover instances
-        items = Items.getInstance()
         conf = Config.getInstance()
         # Generate random number
         rnd = random.uniform(0, 1)
         # If less than probability, mutate
         if rnd <= conf.pm:
             # Generate copy of items
-            genes = list.copy(ch.gene)
+            genes = list.copy(ch.genes)
             # Iterate item types and get all new items
-            for item in ItemTypes:
-                # Get new random item for that type
-                if item != ItemTypes.ALTURA:
-                    newItem = items.getRandomItem(item)
-                else:
-                    newItem = items.getRandomHeight()
-                genes[item.value] = newItem
+            for idx in range(0, len(genes)):
+                genes[idx] = Mutacion.__getRandomGene(idx)
             # Create new character instance
             ch = Character.fromList(ch.clase, genes)
         return ch
 
     def __mutacionGen(ch):
         # Recover instances
-        items = Items.getInstance()
         conf = Config.getInstance()
         # Generate random number
         rnd = random.uniform(0, 1)
         # If less than probability, mutate
         if rnd <= conf.pm:
             # Generate a random property to alter
-            rnd = int(random.uniform(0, len(ItemTypes)))
-            # Get item for that index
-            item = ItemTypes(rnd)
-            # Generate random item
-            if item != ItemTypes.ALTURA:
-                newItem = items.getRandomItem(item)
-            else:
-                newItem = items.getRandomHeight()
+            geneIdx = int(random.uniform(0, len(ItemTypes)))
             # Generate gene copy
-            genes = list.copy(ch.gene)
+            genes = list.copy(ch.genes)
             # Set the gene in the new genes
-            genes[item.value] = newItem
+            genes[geneIdx] = Mutacion.__getRandomGene(geneIdx)
             # Generate new character instance
             ch = Character.fromList(ch.clase, genes)
         return ch
 
     def __mutacionLimitada(ch):
+
+        # Recover instances
+        conf = Config.getInstance()
+
+        # TODO IS M a parameter?
+        M = len(ch.genes) + 1
+        # Generate random number
+        rnd = random.uniform(0, 1)
+        # If less than probability, mutate
+        if rnd <= conf.pm:
+            # Generate a random amount of genes to alter between 1 and M
+            amountToAlter = int(random.uniform(1, M))
+            # Idx of gene to be altered
+            genesToAlter = random.sample(range(0, len(ch.genes)), amountToAlter)
+            # Generate gene copy
+            genes = list.copy(ch.genes)
+            
+            for geneIdx in genesToAlter:
+                # Set the gene in the new genes
+                genes[geneIdx] = Mutacion.__getRandomGene(geneIdx)
+
+            # Generate new character instance
+            ch = Character.fromList(ch.clase, genes)
+            
         return ch
 
     def __mutacionUniforme(ch):
