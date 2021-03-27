@@ -13,7 +13,7 @@ class Corte:
         self.corte = self.cortes[cte]
 
     # -----------------------------------------------------------------
-    # CRUCE FUNCTIONS
+    # CORTE FUNCTIONS
     # -----------------------------------------------------------------
 
     def __corteTiempo(chs):

@@ -6,6 +6,7 @@ from methods.mutacion import Mutacion
 from methods.seleccion import Seleccion
 from methods.cruce import Cruce
 from methods.corte import Corte
+from methods.implementacion import Implementacion
 from character import Character
 
 class GeneticAlgorithm:
@@ -18,6 +19,7 @@ class GeneticAlgorithm:
         self.reemplazo2 = Seleccion(config.reemplazo[1])
         self.cruce = Cruce(config.cruce)
         self.corte = Corte(config.corte)
+        self.implementacion = Implementacion(config.implementacion)
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS
@@ -30,9 +32,6 @@ class GeneticAlgorithm:
             characters.append(Character.generateRandomCharacter())
         return characters
 
-    def mutate(self, character):
-        return self.mutacion.apply(character)
-
     def select(self, characters, k, a):
         k1 = ceil(k * a)
         k2 = floor(k * (1 - a))
@@ -40,12 +39,8 @@ class GeneticAlgorithm:
         list2 = self.seleccion2.apply(characters, k2)
         return list1 + list2
 
-    def replace(self, characters, k, b):
-        k1 = ceil(k * b)
-        k2 = floor(k * (1 - b))
-        list1 = self.reemplazo1.apply(characters, k1)
-        list2 = self.reemplazo2.apply(characters, k2)
-        return list1 + list2
+    def mutate(self, character):
+        return self.mutacion.apply(character)
 
     def crossAll(self, parents):
         n = len(parents)
@@ -61,6 +56,9 @@ class GeneticAlgorithm:
 
     def cross(self, p1, p2):
         return self.cruce.apply(p1, p2)
+
+    def nextGeneration(self, population, children, b):
+        return self.implementacion.apply(population, children, self.reemplazo1, self.reemplazo2, b)
 
     def isTerminated(self, chs):
         return self.corte.apply(chs)
