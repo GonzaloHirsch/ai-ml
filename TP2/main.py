@@ -78,14 +78,14 @@ def main(config):
             csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
             writeRow(csv_writer, generation, min, average)
         # Select parents for next generation
-        parents = ga.select(population, config.k, config.a)
+        parents = ga.select(population, config.k, config.a, generation)
         # Cross parents to generate children
         children = ga.crossAll(parents)
         # Mutate children
         for i in range(len(children)):
             children[i] = ga.mutate(children[i])
         # Select next generation
-        population = ga.nextGeneration(population, children, config.b)
+        population = ga.nextGeneration(population, children, config.b, generation)
         generation += 1
 
     for p in population:

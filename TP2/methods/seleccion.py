@@ -56,7 +56,7 @@ class Seleccion:
     # SELECCION FUNCTIONS
     # -----------------------------------------------------------------
 
-    def __seleccionElite(chs, k):
+    def __seleccionElite(chs, k, gen):
         n = len(chs)
         result = []
         # Sort characters
@@ -76,7 +76,7 @@ class Seleccion:
         return result
 
 
-    def __seleccionRuleta(chs, k):
+    def __seleccionRuleta(chs, k, gen):
         fitnesses = np.array([])
         # Store the fitness of the characters in an array
         for character in chs:
@@ -84,7 +84,7 @@ class Seleccion:
         return Seleccion.__seleccionRuletaInternal(chs, fitnesses, k)
         
 
-    def __seleccionUniversal(chs, k):
+    def __seleccionUniversal(chs, k, gen):
         fitnesses = np.array([])
         result = []
 
@@ -104,10 +104,10 @@ class Seleccion:
 
         return result
 
-    def __seleccionBoltzmann(chs, k):
+    def __seleccionBoltzmann(chs, k, gen):
         return chs
 
-    def __seleccionTorneoDeterminista(chs, k):
+    def __seleccionTorneoDeterminista(chs, k, gen):
         # number of characters to choose randomly
         m = 2
 
@@ -123,7 +123,7 @@ class Seleccion:
 
         return result
 
-    def __seleccionTorneoProbabilistico(chs, k):
+    def __seleccionTorneoProbabilistico(chs, k, gen):
         # treshold under which the best fitted character will be selected
         treshold = 0.75
 
@@ -149,7 +149,7 @@ class Seleccion:
 
         return result
 
-    def __seleccionRanking(chs, k):
+    def __seleccionRanking(chs, k, gen):
         n = len(chs)
         # Sort by fitness and convert to sorted list
         heap = Seleccion.__getSortedCharacters(chs)
@@ -167,8 +167,8 @@ class Seleccion:
 
     # Exposed method to calculate the mutation
     # Receives: chs --> List of characters, k --> Amount to select
-    def apply(self, chs, k):
-        return self.seleccion(chs, k)
+    def apply(self, chs, k, gen):
+        return self.seleccion(chs, k, gen)
 
     # Map with pointers to the functions
     selecciones = {

@@ -32,11 +32,11 @@ class GeneticAlgorithm:
             characters.append(Character.generateRandomCharacter())
         return characters
 
-    def select(self, characters, k, a):
+    def select(self, characters, k, a, gen):
         k1 = ceil(k * a)
         k2 = floor(k * (1 - a))
-        list1 = self.seleccion1.apply(characters, k1)
-        list2 = self.seleccion2.apply(characters, k2)
+        list1 = self.seleccion1.apply(characters, k1, gen)
+        list2 = self.seleccion2.apply(characters, k2, gen)
         return list1 + list2
 
     def mutate(self, character):
@@ -57,8 +57,8 @@ class GeneticAlgorithm:
     def cross(self, p1, p2):
         return self.cruce.apply(p1, p2)
 
-    def nextGeneration(self, population, children, b):
-        return self.implementacion.apply(population, children, self.reemplazo1, self.reemplazo2, b)
+    def nextGeneration(self, population, children, b, gen):
+        return self.implementacion.apply(population, children, self.reemplazo1, self.reemplazo2, b, gen)
 
     def isTerminated(self, chs):
         return self.corte.apply(chs)
