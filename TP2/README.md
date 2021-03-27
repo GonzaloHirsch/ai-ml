@@ -129,12 +129,18 @@ Los nombres de los archivos con los datos deben ser:
 * `guantes.tsv` --> Archivo de Guantes
 * `pecheras.tsv` --> Archivo de Pecheras
 
+## Gráficos
+
+Para los gráficos, el programa genera una carpeta llamada `output`, en donde escribe un archivo `output.csv` para que el graficador lea los datos.
+
 ## Ejecución
 
 Para ejecutar el programa hay que correr:
 ```
 python main.py
 ```
+
+El programa, si configurado para que muestre el gráfico, va a generar una ventana con el gráfico.
 
 ## Dependencias
 

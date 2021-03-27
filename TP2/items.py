@@ -30,9 +30,7 @@ class Items:
         # Store all dataframes in a single arrray
         self.data = data
         # Precompute the amount of items in each class
-        self.limits = []
-        for d in data:
-            self.limits.append(len(d))
+        self.limits = [len(d) for d in data]
         # Store instance
         Items.__instance = self
 

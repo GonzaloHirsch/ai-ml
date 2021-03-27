@@ -27,9 +27,7 @@ class GeneticAlgorithm:
 
     # Generates an initial random population
     def generateInitialPopulation(self, n):
-        characters = []
-        for i in range(n):
-            characters.append(Character.generateRandomCharacter())
+        characters = [Character.generateRandomCharacter() for i in range(n)]
         return characters
 
     def select(self, characters, k, a, gen):

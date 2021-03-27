@@ -1,5 +1,5 @@
 {
-    "clase": "guerrero",
+    "clase": "defensor",
     "data": "./datasets/allitems-small",
     "gen": {
         "cruce": "anular",
@@ -19,7 +19,7 @@
         "criterio2": 20
     },
     "plot": {
-        "show": true,
+        "show": false,
         "sampling": 1000
     }
 }

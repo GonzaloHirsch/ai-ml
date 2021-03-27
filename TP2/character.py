@@ -1,5 +1,5 @@
 # Lib imports
-import math
+from math import tanh
 from itertools import count
 # Local imports
 from constants import Qualities, Clase, ItemTypes
@@ -70,7 +70,7 @@ class Character:
         for idx in range(0, len(self.genes) - 1):
             itemsValue += self.genes[idx].iloc[quality.value]
 
-        return multiplier * math.tanh(0.01 * itemsValue)
+        return multiplier * tanh(0.01 * itemsValue)
 
     # -----------------------------------------------------------------
     # ATTACK AND DEFENSE FUNCTIONS
@@ -135,12 +135,7 @@ class Character:
         items = Items.getInstance()
         config = Config.getInstance()
         # Generate all items for new character
-        gen = []
-        for item in ItemTypes:
-            if item != ItemTypes.ALTURA:
-                gen.append(items.getRandomItem(item))
-            else:
-                gen.append(items.getRandomHeight())
+        gen = [items.getRandomItem(item) if item != ItemTypes.ALTURA else items.getRandomHeight() for item in ItemTypes]
         # Return character, generated items should be in correct positions
         return Character(config.clase, gen[0], gen[1], gen[2], gen[3], gen[4], gen[5])
 

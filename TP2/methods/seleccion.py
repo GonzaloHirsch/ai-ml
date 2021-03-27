@@ -77,20 +77,15 @@ class Seleccion:
 
 
     def __seleccionRuleta(chs, k, gen):
-        fitnesses = np.array([])
         # Store the fitness of the characters in an array
-        for character in chs:
-            fitnesses = np.append(fitnesses, character.fitness)
+        fitnesses = np.array([ch.fitness for ch in chs])
         return Seleccion.__seleccionRuletaInternal(chs, fitnesses, k)
         
 
     def __seleccionUniversal(chs, k, gen):
-        fitnesses = np.array([])
-        result = []
-
         # Store the fitness of the characters in an array
-        for character in chs:
-            fitnesses = np.append(fitnesses, character.fitness)
+        fitnesses = np.array([ch.fitness for ch in chs])
+        result = []
 
         # Calculated the accumulated relative fitnesses
         accumulated = np.cumsum(getRelativeFitnesses(fitnesses))
@@ -155,10 +150,8 @@ class Seleccion:
         heap = Seleccion.__getSortedCharacters(chs)
         heaplist = [heapq.heappop(heap)[2] for i in range(n)]
         # Get pseudo fitnesses
-        fitnesses = np.array([])
         # Store the fitness of the characters in an array
-        for i in range(n):
-            fitnesses = np.append(fitnesses, Seleccion.__getPseudoFitnessByRank(n, i + 1))
+        fitnesses = np.array([Seleccion.__getPseudoFitnessByRank(n, i + 1) for i in range(n)])
         return Seleccion.__seleccionRuletaInternal(heaplist, fitnesses, k)
 
     # -----------------------------------------------------------------

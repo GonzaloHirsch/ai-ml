@@ -6,8 +6,6 @@ def getRelativeFitnesses(fitnesses):
 
 # Calculates minimum fitness and the average fitness
 def getFitnessStats(chs):
-    fitnesses = np.array([])
     # Store the fitness of the characters in an array
-    for ch in chs:
-        fitnesses = np.append(fitnesses, ch.fitness)
+    fitnesses = np.array([ch.fitness for ch in chs])
     return np.amin(fitnesses), np.average(fitnesses)
