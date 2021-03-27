@@ -19,28 +19,28 @@ def main():
 
     parents = ga.select(population, config.k, config.a)
 
-    for i in range(len(parents)):
-        print('BEFORE')
-        print(parents[i])
-        parents[i] = ga.mutate(parents[i])
-        print('AFTER')
-        print(parents[i])
+    # for i in range(len(parents)):
+    #     print('BEFORE')
+    #     print(parents[i])
+    #     parents[i] = ga.mutate(parents[i])
+    #     print('AFTER')
+    #     print(parents[i])
 
-    print('ALL')
-    for p in parents:
-        print(p)
-
+    # print('ALL')
     # for p in parents:
     #     print(p)
 
-    # print("BEFORE")
-    # print(parents[0])
-    # print(parents[1])
+    for p in parents:
+        print(p)
 
-    # n1, n2 = ga.cross(parents[0], parents[1])
-    # print("AFTER")
-    # print(n1)
-    # print(n2)
+    print("BEFORE")
+    print(parents[0])
+    print(parents[1])
+
+    n1, n2 = ga.cross(parents[0], parents[1])
+    print("AFTER")
+    print(n1)
+    print(n2)
 
 
     # App flow

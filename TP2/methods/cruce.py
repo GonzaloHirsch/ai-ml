@@ -9,6 +9,10 @@ class Cruce:
         self.cru = cru
         self.cruce = self.cruces[cru]
 
+    def __crossGeneAtIdx(g1, g2, idx):
+        g1[idx], g2[idx] = g2[idx], g1[idx]
+        return g1, g2
+
     # -----------------------------------------------------------------
     # CRUCE FUNCTIONS
     # -----------------------------------------------------------------
@@ -18,29 +22,29 @@ class Cruce:
 
     def __crucePunto2(p1, p2):
         # Calculate crossing points
-        point1 = int(uniform(0, len(p1.gene)))
-        point2 = int(uniform(0, len(p1.gene)))
+        point1 = int(uniform(0, len(p1.genes)))
+        point2 = int(uniform(0, len(p1.genes)))
         # Swap them to get always point1 <= point2
         if point1 > point2:
             point1, point2 = point2, point1
-        # Generate list of new genes for each one
-        new1Gene = []
-        new2Gene = []
         print(point1, point2)
+
+        # Generate list of new genes for each one
+        newGene1 = list.copy(p1.genes)
+        newGene2 = list.copy(p2.genes)
+
         # Make the gene crossing
-        for i in range(len(p1.gene)):
-            if i < point1 or i > point2:
-                new1Gene.append(p1.gene[i])
-                new2Gene.append(p2.gene[i])
-            elif i <= point2:
-                new1Gene.append(p2.gene[i])
-                new2Gene.append(p1.gene[i])
+        for i in range(point1, point2+1):
+            Cruce.__crossGeneAtIdx(newGene1, newGene2, i)
+
         # Create new characters
-        new1 = Character.fromList(p1.clase, new1Gene)
-        new2 = Character.fromList(p2.clase, new2Gene)
-        return new1, new2
+        child1 = Character.fromList(p1.clase, newGene1)
+        child2 = Character.fromList(p2.clase, newGene2)
+        return child1, child2
 
     def __cruceAnular(p1, p2):
+
+
         return p1, p2
 
     def __cruceUniforme(p1, p2):
