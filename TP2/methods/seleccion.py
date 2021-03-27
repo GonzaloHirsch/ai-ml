@@ -1,6 +1,6 @@
 # Lib imports
 import random
-from math import ceil
+from math import ceil, exp
 import numpy as np
 import heapq
 from itertools import count
@@ -38,6 +38,18 @@ class Seleccion:
 
     def __getPseudoFitnessByRank(n, k):
         return (n - k)/n
+
+    def __getBoltzmannTemperature(temp0, tempC, k, gen):
+        # T = Tc + (T0 - Tc)*e^-k*gen
+        return tempC + (temp0 - tempC)*exp(-1 * k * gen)
+
+    def __getPseudoFitnessBoltzmann(chs, temperature):
+        # e^(f(i) / T) pseudo-fitness
+        fitnesses = np.array([exp(chr.fitness / temperature) for chr in chs])
+        # mean value
+        avgFitness = np.mean(fitnesses)
+        # return e^(f(i) / T) / avgFitness
+        return np.array([fitness / avgFitness for fitness in fitnesses])
 
     # Internal roulette selection given the characters, fitnesses and k
     def __seleccionRuletaInternal(chs, fitnesses, k):
@@ -100,7 +112,20 @@ class Seleccion:
         return result
 
     def __seleccionBoltzmann(chs, k, gen):
-        return chs
+        # initial temperature
+        temp0 =  100
+        # base temperature
+        tempC = 10
+        # time constant of decay
+        cteK = 0.5
+
+        # get temperature
+        temperature = Seleccion.__getBoltzmannTemperature(temp0, tempC, cteK, gen)
+        
+        # Get pseudo fitnesses
+        fitnesses = Seleccion.__getPseudoFitnessBoltzmann(chs, temperature)
+
+        return Seleccion.__seleccionRuletaInternal(chs, fitnesses, k)
 
     def __seleccionTorneoDeterminista(chs, k, gen):
         # number of characters to choose randomly
