@@ -35,7 +35,7 @@ class Mutacion:
         # If less than probability, mutate
         if rnd <= conf.pm:
             # Generate copy of items
-            genes = list.copy(ch.genes)
+            genes = [*ch.rawGenes]
             # Iterate item types and get all new items
             for idx in range(0, len(genes)):
                 genes[idx] = Mutacion.__getRandomGene(idx)
@@ -53,7 +53,7 @@ class Mutacion:
             # Generate a random property to alter
             geneIdx = int(random.uniform(0, len(ItemTypes)))
             # Generate gene copy
-            genes = list.copy(ch.genes)
+            genes = [*ch.rawGenes]
             # Set the gene in the new genes
             genes[geneIdx] = Mutacion.__getRandomGene(geneIdx)
             # Generate new character instance
@@ -76,7 +76,7 @@ class Mutacion:
             # Idx of gene to be altered
             genesToAlter = random.sample(range(0, len(ch.genes)), amountToAlter)
             # Generate gene copy
-            genes = list.copy(ch.genes)
+            genes = [*ch.rawGenes]
             
             for geneIdx in genesToAlter:
                 # Set the gene in the new genes
@@ -93,7 +93,7 @@ class Mutacion:
         conf = Config.getInstance()
 
         # Generate copy of items
-        genes = list.copy(ch.genes)
+        genes = [*ch.rawGenes]
 
         # Iterate item types
         for idx in range(0, len(genes)):

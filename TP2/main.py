@@ -6,7 +6,6 @@ from matplotlib.animation import FuncAnimation
 import threading
 import os
 # Local imports
-from character import Character
 import inputParser as parser
 from geneticAlgorithm import GeneticAlgorithm
 from helper import getFitnessStats
@@ -97,12 +96,13 @@ if __name__ == "__main__":
     config = parser.parseConfiguration(CONFIG_INPUT)
     # Prepare output file
     prepareOutput()
+    main(config)
 
     # Create the thread for the processing
-    x = threading.Thread(target=main, args=(config,))
-    x.start()
+    #x = threading.Thread(target=main, args=(config,))
+    #x.start()
 
     # Show plot if configured to
-    if config.show:
+    #if config.show:
         # Run animation on main thread
-        run_animation(config.sampling)
+    #    run_animation(config.sampling)

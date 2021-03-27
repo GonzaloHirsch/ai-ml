@@ -1,6 +1,6 @@
 {
     "clase": "defensor",
-    "data": "./datasets/allitems-small",
+    "data": "./datasets/allitems-big",
     "gen": {
         "cruce": "anular",
         "mutacion": "gen",
@@ -19,7 +19,7 @@
         "criterio2": 20
     },
     "plot": {
-        "show": false,
+        "show": true,
         "sampling": 1000
     }
 }

@@ -125,3 +125,13 @@ class Corte(enum.Enum):
 
    def __str__(self):
       return str(self.value)
+
+# Precomputed data to accelerate lookups
+
+MULTIPLIERS = {
+   Qualities.FU.value: 100,
+   Qualities.AG.value: 1,
+   Qualities.EX.value: 0.6,
+   Qualities.RE.value: 1,
+   Qualities.VI.value: 100
+}

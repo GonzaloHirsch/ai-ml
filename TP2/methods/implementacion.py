@@ -1,8 +1,7 @@
 # Lib imports
 from math import ceil, floor
 # Local imports
-from constants import ItemTypes, Implementacion
-from config import Config
+from constants import Implementacion
 
 class Implementacion:
     def __init__(self, impl):
