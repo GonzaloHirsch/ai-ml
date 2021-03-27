@@ -4,13 +4,13 @@
     "gen": {
         "cruce": "uniforme",
         "mutacion": "completa",
-        "seleccion": ["ruleta", "elite"],
+        "seleccion": ["ruleta", "universal"],
         "reemplazo": ["universal", "ranking"],
         "implementacion": "parent",
         "corte": "cantidad"
     },
     "nums": {
-        "A": 1,
+        "A": 0,
         "B": 0.6,
         "N": 5,
         "K": 2,

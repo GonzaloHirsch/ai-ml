@@ -80,7 +80,24 @@ class Seleccion:
         return result
 
     def __seleccionUniversal(chs, k):
-        return chs
+        fitnesses = np.array([])
+        result = []
+
+        # Store the fitness of the characters in an array
+        for character in chs:
+            fitnesses = np.append(fitnesses, character.fitness)
+
+        # Calculated the accumulated relative fitnesses
+        accumulated = np.cumsum(getRelativeFitnesses(fitnesses))
+
+        # Create K random ri values between 0 and 1
+        # And get the position in the accumulated array of each r value
+        for i in range(0, k):
+            ri = (random.uniform(0, 1) + i)/k
+            idx = Seleccion.__getPositionInAccumulatedFitness(accumulated, ri)
+            result.append(chs[idx])
+
+        return result
 
     def __seleccionBoltzmann(chs, k):
         return chs

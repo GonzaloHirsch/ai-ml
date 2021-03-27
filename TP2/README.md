@@ -6,8 +6,8 @@ Implementacion de algoritmos genéticos para optimizar la configuración de un p
 
 Selecci ́on de padres y reemplazo de individuos*
 - [ ] Elite - G
-- [ ] Ruleta - F
-- [ ] Universal - J
+- [x] Ruleta - F
+- [ ] Universal - F
 - [ ] Boltzmann - J
 - [ ] Torneos (ambas versiones) - J
 - [ ] Ranking - G
@@ -38,7 +38,7 @@ Criterios de corte
 
 General
 - [x] ~~parseo + configuracion - G~~
-- [ ] clase character - F
+- [x] clase character - F
 
 ## Requerimientos
 
