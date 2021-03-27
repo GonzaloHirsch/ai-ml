@@ -2,7 +2,7 @@
 from math import tanh
 from itertools import count
 # Local imports
-from constants import Qualities, Clase, ItemTypes
+from constants import Qualities, Clase, ItemTypes, MULTIPLIERS
 from items import Items
 from config import Config
 
@@ -50,25 +50,12 @@ class Character:
         for quality in Qualities:
             self.qualities[quality.value] = self.__calculateQuality(quality)
 
-    def __getQualityMultiplier(self, quality):
-        if Qualities.FU == quality:
-            return 100
-        elif Qualities.AG == quality:
-            return 1
-        elif Qualities.EX == quality:
-            return 0.6
-        elif Qualities.RE == quality:
-            return 1
-        elif Qualities.VI == quality:
-            return 100
-
-
     def __calculateQuality(self, quality):
         itemsValue = 0
-        multiplier = self.__getQualityMultiplier(quality)
+        multiplier = MULTIPLIERS[quality.value]
 
         for idx in range(0, len(self.genes) - 1):
-            itemsValue += self.genes[idx].iloc[quality.value]
+            itemsValue += self.genes[idx].values[quality.value]
 
         return multiplier * tanh(0.01 * itemsValue)
 

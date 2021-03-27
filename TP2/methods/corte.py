@@ -3,9 +3,9 @@ from random import uniform
 import time
 import heapq
 from itertools import count
-
+import numpy as np
 # Local imports
-from constants import ItemTypes, Corte
+from constants import Corte
 from config import Config
 
 class Corte:
@@ -15,8 +15,6 @@ class Corte:
     generations = None
     # Corte estructura variables
     generationsOverLimit = None
-    currentStat = None
-    charactersDistribution = None
 
     def __init__(self, cte):
         self.cte = cte
@@ -51,33 +49,25 @@ class Corte:
 
     def __corteEstructura(chs):
         # First time called, init variables
-        if Corte.charactersDistribution == None:
-            Corte.charactersDistribution = {}
+        if Corte.generationsOverLimit == None:
             Corte.generationsOverLimit = 0
-            Corte.currentStat = 0
             return False
         # Getting variables
         config = Config.getInstance()
         n = len(chs)
-        # Store counts of characters per hash
-        for ch in chs:
-            # Check if the character is there or not, store count of characters
-            if ch in Corte.charactersDistribution:
-                Corte.charactersDistribution[ch] += 1
-            else:
-                Corte.charactersDistribution[ch] = 1
-        # Compute distributions
-        max = 0
-        for dist in Corte.charactersDistribution.values():
-            val = dist / n
-            if val > max:
-                max = val
+        # Compute hashes for each
+        hashes = np.array([hash(ch) for ch in chs])
+        # Count instances of each one
+        unique, counts = np.unique(hashes, return_counts=True)
+        # Calculate frequency
+        counts = counts/n
+        # Get maximum
+        max = np.max(counts)
         # Check if the current percentage is bigger that the limit
         if max >= config.crit1:
             Corte.generationsOverLimit += 1
         else:
             Corte.generationsOverLimit = 0
-        Corte.currentStat = max
         return Corte.generationsOverLimit >= config.crit2
 
     def __corteContenido(chs):

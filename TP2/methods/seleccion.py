@@ -4,8 +4,8 @@ from math import ceil
 import numpy as np
 import heapq
 from itertools import count
+import bisect
 # Local imports
-from config import Config
 from constants import Seleccion
 from helper import getRelativeFitnesses
 
@@ -31,10 +31,11 @@ class Seleccion:
         return heap
 
     def __getPositionInAccumulatedFitness(accumulated, ri):
-        for i in range(0, len(accumulated)):
-            if ri < accumulated[i]:
-                return i
-        return -1
+        return bisect.bisect_left(accumulated, ri)
+        # for i in range(0, len(accumulated)):
+        #     if ri < accumulated[i]:
+        #         return i
+        # return -1
 
     def __getPseudoFitnessByRank(n, k):
         return (n - k)/n
