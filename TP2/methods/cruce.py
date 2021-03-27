@@ -75,14 +75,6 @@ class Cruce:
         # Create new characters
         child1 = Character.fromList(p1.clase, newGene1)
         child2 = Character.fromList(p2.clase, newGene2)
-
-        print(P, L)
-        print('Before')
-        print(p1)
-        print(p2)
-        print('After')
-        print(child1)
-        print(child2)
         return child1, child2
 
     def __cruceUniforme(p1, p2):
