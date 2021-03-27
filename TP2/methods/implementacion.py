@@ -13,7 +13,8 @@ class Implementacion:
     # IMPLEMENTACION FUNCTIONS
     # -----------------------------------------------------------------
 
-    def __fillAll(population, children, selection1, selection2, n, k, b):
+    def __fillAll(population, children, selection1, selection2, b):
+        n = len(population)
         # Population is previous population + the K children that were created
         characters = population + children
         # A percentage of the new population will be chosen with one method and the rest with another
@@ -24,7 +25,7 @@ class Implementacion:
         # Resulting new generation is the sum of both populations retrieved
         return list1 + list2
 
-    def __fillParent(population, children, selection1, selection2, n, k, b):
+    def __fillParent(population, children, selection1, selection2, b):
         return True
 
     # -----------------------------------------------------------------
@@ -33,8 +34,10 @@ class Implementacion:
 
     # Exposed method to calculate
     # Input: entire population, children, selection method 1, selection method 2, b percentage
+    # n --> len(population)
+    # k --> len(children)
     # Output: next gen
-    def apply(self, population, children, selection1, selection2, n, k, b):
+    def apply(self, population, children, selection1, selection2, b):
         return self.implementacion(population, children, selection1, selection2, n, k, b)
 
     # Map with pointers to the functions
