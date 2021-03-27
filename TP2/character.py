@@ -15,6 +15,7 @@ class Character:
         self.fitness = 0
 
         self.gene = [arma, botas, casco, guantes, pechera, height]
+        self.clase = clase
         
         self.qualities = {
             Qualities.FU.value: 0, 
@@ -28,6 +29,10 @@ class Character:
         self.calculateCompleteFitness()
 
         Character.INSTANCES += 1
+
+    @staticmethod
+    def fromList(clase, gene):
+        return Character(clase, gene[0], gene[1], gene[2], gene[3], gene[4], gene[5])
 
     # -----------------------------------------------------------------
     # GENE FUNCTIONS
@@ -47,7 +52,6 @@ class Character:
     def calculateQualities(self):
         for quality in Qualities:
             self.qualities[quality.value] = self.__calculateQuality(quality)
-
 
     def __getQualityMultiplier(self, quality):
         if Qualities.FU == quality:

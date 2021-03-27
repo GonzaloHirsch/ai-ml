@@ -21,10 +21,12 @@ def main():
 
     print("BEFORE")
     print(parents[0])
+    print(parents[1])
 
-    nparent = ga.mutate(parents[0])
+    n1, n2 = ga.cross(parents[0], parents[1])
     print("AFTER")
-    print(nparent)
+    print(n1)
+    print(n2)
 
 
     # App flow
