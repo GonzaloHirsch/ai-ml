@@ -13,7 +13,7 @@ class Config:
             raise Exception("Cannot create another instance of config")
 
         self.clase = clase
-        self.data = data
+        self.data = data    # Path to datasets
         self.cruce = cruce
         self.mutacion = mutacion
         self.seleccion = seleccion

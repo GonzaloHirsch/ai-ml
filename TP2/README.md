@@ -4,28 +4,27 @@ Implementacion de algoritmos genéticos para optimizar la configuración de un p
 
 ## Tareas
 
-Selecci ́on de padres y reemplazo de individuos*
-- [ ] Elite - G
-- [x] Ruleta - F
-- [ ] Universal - F
+Selección de padres y reemplazo de individuos
+- [x] ~~Elite - G~~
+- [X] ~~Ruleta - F~~
+- [X] ~~Universal - F~~
 - [ ] Boltzmann - J
 - [ ] Torneos (ambas versiones) - J
 - [ ] Ranking - G
 
-Operadores gen ́eticos
-- [ ] Cruce - F
+Operadores genéticos
 - [ ] Cruce de un punto - J
-- [ ] Cruce de dos puntos - G
+- [x] ~~Cruce de dos puntos - G~~
 - [ ] Cruce anular - F
 - [ ] Cruce uniforme - J
 
-Mutaci ́on
+Mutación
 - [x] ~~Gen - G~~
 - [ ] Multigen Limitada - F
 - [ ] Multigen Uniforme - J
 - [x] ~~Completa - G~~
 
-Implementaci ́on
+Implementación
 - [ ] Fill-All - F
 - [ ] Fill-Parent - J
 
@@ -38,7 +37,7 @@ Criterios de corte
 
 General
 - [x] ~~parseo + configuracion - G~~
-- [x] clase character - F
+- [x] ~~clase character - F~~
 
 ## Requerimientos
 

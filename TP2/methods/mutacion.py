@@ -4,6 +4,7 @@ import random
 from items import Items
 from config import Config
 from constants import ItemTypes, Mutacion
+from character import Character
 
 class Mutacion:
     def __init__(self, mut):
@@ -22,6 +23,8 @@ class Mutacion:
         rnd = random.uniform(0, 1)
         # If less than probability, mutate
         if rnd <= conf.pm:
+            # Generate copy of items
+            genes = list.copy(ch.gene)
             # Iterate item types and get all new items
             for item in ItemTypes:
                 # Get new random item for that type
@@ -29,10 +32,9 @@ class Mutacion:
                     newItem = items.getRandomItem(item)
                 else:
                     newItem = items.getRandomHeight()
-                # Set the gene in the character
-                ch.setGene(item, newItem)
-            # Update fitness in character
-            ch.calculateCompleteFitness()
+                genes[item.value] = newItem
+            # Create new character instance
+            ch = Character.fromList(ch.clase, genes)
         return ch
 
     def __mutacionGen(ch):
@@ -52,10 +54,12 @@ class Mutacion:
                 newItem = items.getRandomItem(item)
             else:
                 newItem = items.getRandomHeight()
-            # Set the gene in the character
-            ch.setGene(item, newItem)
-            # Update fitness in character
-            ch.calculateCompleteFitness()
+            # Generate gene copy
+            genes = list.copy(ch.gene)
+            # Set the gene in the new genes
+            genes[item.value] = newItem
+            # Generate new character instance
+            ch = Character.fromList(ch.clase, genes)
         return ch
 
     def __mutacionLimitada(ch):

@@ -2,7 +2,7 @@
     "clase": "guerrero",
     "data": "./datasets/allitems-small",
     "gen": {
-        "cruce": "uniforme",
+        "cruce": "2 puntos",
         "mutacion": "completa",
         "seleccion": ["ruleta", "universal"],
         "reemplazo": ["universal", "ranking"],
@@ -12,8 +12,8 @@
     "nums": {
         "A": 0,
         "B": 0.6,
-        "N": 5,
-        "K": 2,
+        "N": 3,
+        "K": 5,
         "Pm": 0.5
     }
 }

@@ -3,6 +3,7 @@ import random
 from math import ceil
 import numpy as np
 import heapq
+from itertools import count
 # Local imports
 from config import Config
 from constants import Seleccion
@@ -23,7 +24,8 @@ class Seleccion:
     # Returns a sorted character heap
     # Items are (fitness, id, character)
     def __getSortedCharacters(chs):
-        heap = [(ch.fitness * -1, ch.id, ch) for ch in chs]
+        cnt = count(start=0, step=1)
+        heap = [(ch.fitness * -1, next(cnt), ch) for ch in chs]
         heapq.heapify(heap)
         return heap
 

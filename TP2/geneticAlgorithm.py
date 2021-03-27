@@ -4,6 +4,7 @@ import numpy as np
 # Local imports
 from methods.mutacion import Mutacion
 from methods.seleccion import Seleccion
+from methods.cruce import Cruce
 from character import Character
 
 class GeneticAlgorithm:
@@ -12,6 +13,7 @@ class GeneticAlgorithm:
         self.mutacion = Mutacion(config.mutacion)
         self.seleccion1 = Seleccion(config.seleccion[0])
         self.seleccion2 = Seleccion(config.seleccion[1])
+        self.cruce = Cruce(config.cruce)
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS
@@ -33,3 +35,6 @@ class GeneticAlgorithm:
         list1 = self.seleccion1.apply(characters, k1)
         list2 = self.seleccion2.apply(characters, k2)
         return list1 + list2
+
+    def cross(self, p1, p2):
+        return self.cruce.apply(p1, p2)
