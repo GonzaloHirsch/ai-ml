@@ -15,7 +15,7 @@ Selección de padres y reemplazo de individuos
 Operadores genéticos
 - [X] ~~Cruce de un punto - J~~
 - [x] ~~Cruce de dos puntos - G~~
-- [ ] Cruce anular - F
+- [x] ~~Cruce anular - F~~
 - [ ] Cruce uniforme - J
 
 Mutación
@@ -30,7 +30,7 @@ Implementación
 
 Criterios de corte
 - [x] ~~Tiempo - G~~
-- [ ] Cantidad de generaciones - F
+- [x] ~~Cantidad de generaciones - F~~
 - [ ] Solución aceptable - J
 - [ ] Estructura - G
 - [ ] Contenido - F
