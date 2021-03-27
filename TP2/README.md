@@ -32,7 +32,7 @@ Criterios de corte
 - [x] ~~Tiempo - G~~
 - [x] ~~Cantidad de generaciones - F~~
 - [ ] Solución aceptable - J
-- [ ] Estructura - G
+- [x] ~~Estructura - G~~
 - [x] ~~Contenido - F~~
 
 General
