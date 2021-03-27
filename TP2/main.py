@@ -33,9 +33,9 @@ def animate(i):
     plt.tight_layout()
 
 # Function to run the animation
-def run_animation():
+def run_animation(sampling):
     plt.style.use('fivethirtyeight')
-    ani = FuncAnimation(plt.gcf(), animate, interval=250)
+    ani = FuncAnimation(plt.gcf(), animate, interval=sampling)
     plt.tight_layout()
     plt.show()
 
@@ -105,4 +105,4 @@ if __name__ == "__main__":
     # Show plot if configured to
     if config.show:
         # Run animation on main thread
-        run_animation()
+        run_animation(config.sampling)

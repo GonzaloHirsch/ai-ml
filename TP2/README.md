@@ -77,7 +77,8 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         "criterio2": 10
     },
     "plot": {
-        "show": true
+        "show": true,
+        "sampling": 1000
     }
 }
 ```
@@ -115,6 +116,7 @@ Dentro del objeto `nums` debe ir:
 
 Dentro del objeto `plot` debe ir:
 * `show` --> Determina si se muestra el gráfico en tiempo real, `true` o `false`
+* `sampling` --> Intervalo (en milisegundos) de tiempo en el que el gráfico toma datos, es decir, cada X milisegundos actualiza
 
 ## Dataset
 

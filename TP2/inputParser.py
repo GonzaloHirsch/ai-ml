@@ -45,6 +45,7 @@ def parseConfiguration(configPath):
             pm=nums[ConfigOptions.PM.value],
             crit1=nums[ConfigOptions.CRITERIO_1.value],
             crit2=nums[ConfigOptions.CRITERIO_2.value],
-            show=plot[ConfigOptions.SHOW.value]
+            show=plot[ConfigOptions.SHOW.value],
+            sampling=plot[ConfigOptions.SAMPLING.value]
         )
     return config

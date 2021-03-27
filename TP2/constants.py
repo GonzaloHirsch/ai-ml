@@ -64,6 +64,7 @@ class ConfigOptions(enum.Enum):
    CRITERIO_2 = "criterio2"
    PLOT = "plot"
    SHOW = "show"
+   SAMPLING = "sampling"
 
    def __str__(self):
       return str(self.value)
