@@ -43,9 +43,34 @@ class Cruce:
         return child1, child2
 
     def __cruceAnular(p1, p2):
+        # Variables
+        P = int(uniform(0, len(p1.genes)))
+        L = int(uniform(0, len(p1.genes)/2))
+        idx = P
 
+        # Generate list of new genes for each one
+        newGene1 = list.copy(p1.genes)
+        newGene2 = list.copy(p2.genes)
 
-        return p1, p2
+        while L > 0:
+            # Return to the beginning if the end was reached
+            if idx == len(p1.genes):
+                idx = 0
+            Cruce.__crossGeneAtIdx(newGene1, newGene2, idx)
+            L -= 1
+        
+        # Create new characters
+        child1 = Character.fromList(p1.clase, newGene1)
+        child2 = Character.fromList(p2.clase, newGene2)
+
+        print(P, L)
+        print('Before')
+        print(p1)
+        print(p2)
+        print('After')
+        print(child1)
+        print(child2)
+        return child1, child2
 
     def __cruceUniforme(p1, p2):
         return p1, p2
