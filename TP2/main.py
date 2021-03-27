@@ -17,8 +17,14 @@ def main():
     # Generate the initial random population
     population = ga.generateInitialPopulation(config.n)
 
+    generation = 0
+
+    for p in population:
+        print(p)
+
     # Iterate while terminal condition is not met
     while not ga.isTerminated(population):
+        print('GENERATION #' + str(generation))
         # Select parents for next generation
         parents = ga.select(population, config.k, config.a)
         # Cross parents to generate children
@@ -27,7 +33,11 @@ def main():
         for i in range(len(children)):
             children[i] = ga.mutate(children[i])
         # Select next generation
-        population = ga.nextGeneration(population, children, config.n, config.k, config.b)
+        population = ga.nextGeneration(population, children, config.b)
+        generation += 1
+
+    for p in population:
+        print(p)
     
 # App entrypoint
 if __name__ == "__main__":

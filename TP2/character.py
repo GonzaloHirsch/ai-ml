@@ -11,6 +11,7 @@ class Character:
         # Determine fitness function
         self.calculateFitness = self.__getFitnessMethod(clase)
         self.fitness = 0
+        self.computedHash = None
 
         self.genes = [arma, botas, casco, guantes, pechera, height]
         self.clase = clase
@@ -152,3 +153,10 @@ class Character:
         s = '%s{%s}' % (type(self).__name__, subs)
         return s
     
+    def __computeHashString(self):
+        return hash((self.genes[0].name, self.genes[1].name, self.genes[2].name, self.genes[3].name, self.genes[4].name, round(self.genes[5], 2)))
+        
+    def __hash__(self):
+        if self.computedHash == None:
+            self.computedHash = self.__computeHashString()
+        return self.computedHash

@@ -9,11 +9,11 @@ Selección de padres y reemplazo de individuos
 - [x] ~~Ruleta - F~~
 - [x] ~~Universal - F~~
 - [ ] Boltzmann - J
-- [ ] Torneos (ambas versiones) - J
+- [X] ~~Torneos (ambas versiones) - J~~
 - [x] ~~Ranking - G~~
 
 Operadores genéticos
-- [ ] Cruce de un punto - J
+- [X] ~~Cruce de un punto - J~~
 - [x] ~~Cruce de dos puntos - G~~
 - [ ] Cruce anular - F
 - [ ] Cruce uniforme - J
