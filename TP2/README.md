@@ -33,7 +33,7 @@ Criterios de corte
 - [x] ~~Cantidad de generaciones - F~~
 - [ ] Solución aceptable - J
 - [ ] Estructura - G
-- [ ] Contenido - F
+- [x] ~~Contenido - F~~
 
 General
 - [x] ~~parseo + configuracion - G~~
