@@ -1,15 +1,13 @@
 # Lib imports
-import math  
+import math
+from itertools import count
 # Local imports
 from constants import Qualities, Clase, ItemTypes
 from items import Items
 from config import Config
 
 class Character:
-    INSTANCES = 0
     def __init__(self, clase, arma, botas, casco, guantes, pechera, height):
-        self.id = Character.INSTANCES
-
         # Determine fitness function
         self.calculateFitness = self.__getFitnessMethod(clase)
         self.fitness = 0
@@ -27,8 +25,6 @@ class Character:
 
         # Calculate fitness & qualities
         self.calculateCompleteFitness()
-
-        Character.INSTANCES += 1
 
     @staticmethod
     def fromList(clase, gene):

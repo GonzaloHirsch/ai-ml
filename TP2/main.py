@@ -17,16 +17,30 @@ def main():
     # Generate the initial random population
     population = ga.generateInitialPopulation(config.n)
 
-    parents = ga.select(population, config.k, config.a)    
+    parents = ga.select(population, config.k, config.a)
 
-    print("BEFORE")
-    print(parents[0])
-    print(parents[1])
+    for i in range(len(parents)):
+        print('BEFORE')
+        print(parents[i])
+        parents[i] = ga.mutate(parents[i])
+        print('AFTER')
+        print(parents[i])
 
-    n1, n2 = ga.cross(parents[0], parents[1])
-    print("AFTER")
-    print(n1)
-    print(n2)
+    print('ALL')
+    for p in parents:
+        print(p)
+
+    # for p in parents:
+    #     print(p)
+
+    # print("BEFORE")
+    # print(parents[0])
+    # print(parents[1])
+
+    # n1, n2 = ga.cross(parents[0], parents[1])
+    # print("AFTER")
+    # print(n1)
+    # print(n2)
 
 
     # App flow

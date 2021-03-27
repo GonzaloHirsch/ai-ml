@@ -14,7 +14,7 @@ Selección de padres y reemplazo de individuos
 
 Operadores genéticos
 - [ ] Cruce de un punto - J
-- [ ] Cruce de dos puntos - G
+- [x] ~~Cruce de dos puntos - G~~
 - [ ] Cruce anular - F
 - [ ] Cruce uniforme - J
 

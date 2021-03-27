@@ -26,6 +26,7 @@ class Cruce:
         # Generate list of new genes for each one
         new1Gene = []
         new2Gene = []
+        print(point1, point2)
         # Make the gene crossing
         for i in range(len(p1.gene)):
             if i < point1 or i > point2:
