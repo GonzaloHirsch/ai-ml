@@ -18,7 +18,21 @@ class Cruce:
     # -----------------------------------------------------------------
 
     def __crucePunto1(p1, p2):
-        return p1, p2
+        # get crossing point
+        point = int(uniform(0, len(p1.genes)))
+
+        # Generate list of new genes for each one
+        newGene1 = list.copy(p1.genes)
+        newGene2 = list.copy(p2.genes)
+
+        # gene crossing
+        for i in range(point, p1.genes):
+            Cruce.__crossGeneAtIdx(newGene1, newGene2, i)
+
+        # Create new characters
+        child1 = Character.fromList(p1.clase, newGene1)
+        child2 = Character.fromList(p2.clase, newGene2)
+        return child1, child2
 
     def __crucePunto2(p1, p2):
         # Calculate crossing points
