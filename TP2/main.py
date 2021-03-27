@@ -26,53 +26,8 @@ def main():
         # Mutate children
         for i in range(len(children)):
             children[i] = ga.mutate(children[i])
-        # Determine fill method
         # Select next generation
-        population = ga.replace(population, config.n, config.b)
-
-    
-
-    print("POPU")
-    for p in population:
-        print(p)
-
-    
-
-    # for i in range(len(parents)):
-    #     print('BEFORE')
-    #     print(parents[i])
-    #     parents[i] = ga.mutate(parents[i])
-    #     print('AFTER')
-    #     print(parents[i])
-
-    # print('ALL')
-    # for p in parents:
-    #     print(p)
-
-    print("PARENTS")
-    for p in parents:
-        print(p)
-
-    # print("BEFORE")
-    # print(parents[0])
-    # print(parents[1])
-
-    # n1, n2 = ga.cross(parents[0], parents[1])
-    # print("AFTER")
-    # print(n1)
-    # print(n2)
-
-
-    # App flow
-    # Generate initial population
-    # Character.generateRandomCharacter()
-    # While condition not met
-    # Select parents
-    # Cross
-    # mutate
-    # select next iteration
-    
-
+        population = ga.nextGeneration(population, children, config.b)
     
 # App entrypoint
 if __name__ == "__main__":
