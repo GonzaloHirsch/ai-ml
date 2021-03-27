@@ -88,6 +88,23 @@ class Mutacion:
         return ch
 
     def __mutacionUniforme(ch):
+
+        # Recover instances
+        conf = Config.getInstance()
+
+        # Generate copy of items
+        genes = list.copy(ch.genes)
+
+        # Iterate item types
+        for idx in range(0, len(genes)):
+            rnd = random.uniform(0, 1)
+            # If less than probability, mutate
+            if rnd <= conf.pm:
+                genes[idx] = Mutacion.__getRandomGene(idx)
+
+        # Create new character instance
+        ch = Character.fromList(ch.clase, genes)
+
         return ch
 
     # -----------------------------------------------------------------

@@ -16,12 +16,12 @@ Operadores genéticos
 - [X] ~~Cruce de un punto - J~~
 - [x] ~~Cruce de dos puntos - G~~
 - [x] ~~Cruce anular - F~~
-- [ ] Cruce uniforme - J
+- [x] ~~Cruce uniforme - J~~
 
 Mutación
 - [x] ~~Gen - G~~
 - [x] ~~Multigen Limitada - F~~
-- [ ] Multigen Uniforme - J
+- [x] ~~Multigen Uniforme - J~~
 - [x] ~~Completa - G~~
 
 Implementación
