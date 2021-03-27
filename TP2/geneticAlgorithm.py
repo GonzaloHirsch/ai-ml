@@ -1,5 +1,6 @@
 # Lib imports
 from math import ceil, floor
+import numpy as np
 # Local imports
 from methods.mutacion import Mutacion
 from methods.seleccion import Seleccion

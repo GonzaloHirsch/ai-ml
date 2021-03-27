@@ -1,10 +1,12 @@
 # Lib imports
 import random
 from math import ceil
+import numpy as np
 import heapq
 # Local imports
 from config import Config
 from constants import Seleccion
+from helper import getRelativeFitnesses
 
 class Seleccion:
     def __init__(self, sel):
@@ -24,6 +26,14 @@ class Seleccion:
         heap = [(ch.fitness * -1, ch.id, ch) for ch in chs]
         heapq.heapify(heap)
         return heap
+
+    def __getPositionInAccumulatedFitness(accumulated, ri):
+
+        for i in range(0, len(accumulated)):
+            if ri < accumulated[i]:
+                return i
+
+        return -1
 
     # -----------------------------------------------------------------
     # SELECCION FUNCTIONS
@@ -48,8 +58,26 @@ class Seleccion:
             i += 1
         return result
 
+
     def __seleccionRuleta(chs, k):
-        return chs
+        fitnesses = np.array([])
+        result = []
+
+        # Store the fitness of the characters in an array
+        for character in chs:
+            fitnesses = np.append(fitnesses, character.fitness)
+
+        # Calculated the accumulated relative fitnesses
+        accumulated = np.cumsum(getRelativeFitnesses(fitnesses))
+
+        # Create K random ri values between 0 and 1
+        # And get the position in the accumulated array of each r value
+        for i in range(0, k):
+            ri = random.uniform(0, 1)
+            idx = Seleccion.__getPositionInAccumulatedFitness(accumulated, ri)
+            result.append(chs[idx])
+
+        return result
 
     def __seleccionUniversal(chs, k):
         return chs

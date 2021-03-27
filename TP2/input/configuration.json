@@ -4,7 +4,7 @@
     "gen": {
         "cruce": "uniforme",
         "mutacion": "completa",
-        "seleccion": ["elite", "elite"],
+        "seleccion": ["ruleta", "elite"],
         "reemplazo": ["universal", "ranking"],
         "implementacion": "parent",
         "corte": "cantidad"
