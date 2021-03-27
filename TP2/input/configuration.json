@@ -5,17 +5,17 @@
         "cruce": "2 puntos",
         "mutacion": "gen",
         "seleccion": ["ruleta", "ranking"],
-        "reemplazo": ["universal", "ranking"],
+        "reemplazo": ["ruleta", "ranking"],
         "implementacion": "all",
         "corte": "cantidad"
     },
     "nums": {
-        "A": 1,
-        "B": 0,
-        "N": 10,
-        "K": 5,
-        "Pm": 0.5,
-        "criterio1": 10,
+        "A": 0.5,
+        "B": 0.5,
+        "N": 100,
+        "K": 25,
+        "Pm": 0.2,
+        "criterio1": 100,
         "criterio2": 10
     }
 }

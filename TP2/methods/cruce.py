@@ -41,7 +41,6 @@ class Cruce:
         # Swap them to get always point1 <= point2
         if point1 > point2:
             point1, point2 = point2, point1
-        print(point1, point2)
 
         # Generate list of new genes for each one
         newGene1 = list.copy(p1.genes)

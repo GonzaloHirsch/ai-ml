@@ -1,5 +1,5 @@
+# Lib imports
 from math import ceil, floor
-
 # Local imports
 from constants import ItemTypes, Implementacion
 from config import Config
@@ -38,7 +38,7 @@ class Implementacion:
     # k --> len(children)
     # Output: next gen
     def apply(self, population, children, selection1, selection2, b):
-        return self.implementacion(population, children, selection1, selection2, n, k, b)
+        return self.implementacion(population, children, selection1, selection2, b)
 
     # Map with pointers to the functions
     implementaciones = {
