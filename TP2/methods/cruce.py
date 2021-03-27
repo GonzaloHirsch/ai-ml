@@ -80,7 +80,20 @@ class Cruce:
         return child1, child2
 
     def __cruceUniforme(p1, p2):
-        return p1, p2
+        # Generate list of new genes for each one
+        newGene1 = list.copy(p1.genes)
+        newGene2 = list.copy(p2.genes)
+
+        # gene crossing
+        for i in range(len(p1.genes)):
+            r = random.uniform(0, 1)
+            if r > 0.5:
+                Cruce.__crossGeneAtIdx(newGene1, newGene2, i)
+                
+        # Create new characters
+        child1 = Character.fromList(p1.clase, newGene1)
+        child2 = Character.fromList(p2.clase, newGene2)
+        return child1, child2
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS

@@ -1,6 +1,9 @@
 # Lib imports
 from random import uniform
 import time
+import heapq
+from itertools import count
+
 # Local imports
 from constants import ItemTypes, Corte
 from config import Config
@@ -78,7 +81,29 @@ class Corte:
         return Corte.generationsOverLimit >= config.crit2
 
     def __corteContenido(chs):
-        return True
+        config = Config.getInstance()
+
+        delta = config.crit1
+        generationCount = config.crit2
+
+        # Sorting by best fitness
+        cnt = count(start=0, step=1)
+        heap = [(ch.fitness * -1, next(cnt), ch) for ch in chs]
+        heapq.heapify(heap)       
+
+        bestFitness = heapq.heappop(heap)[0] * -1
+
+        if Corte.currentStat == None:
+            Corte.currentStat = bestFitness
+            Corte.generations = 0
+        
+        if (Corte.currentStat - bestFitness) <= delta and (Corte.currentStat - bestFitness) >= (-1*delta):
+            Corte.generations += 1
+        else:
+            Corte.currentStat = bestFitness
+            Corte.generations = 0
+
+        return True if Corte.generations >= generationCount else False
 
     # -----------------------------------------------------------------
     # EXPOSED FUNCTIONS
