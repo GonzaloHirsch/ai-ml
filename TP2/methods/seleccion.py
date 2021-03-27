@@ -108,10 +108,46 @@ class Seleccion:
         return chs
 
     def __seleccionTorneoDeterminista(chs, k):
-        return chs
+        # number of characters to choose randomly
+        m = 2
+
+        result = []
+        for i in range(k):
+            # choose the characters
+            selectedChs = [random.choice(chs) for i in range(m)]
+            bestCh = selectedChs[0]
+            for ch in selectedChs:
+                if ch.fitness > bestCh.fitness:
+                    bestCh = ch
+            result.append(bestCh)
+
+        return result
 
     def __seleccionTorneoProbabilistico(chs, k):
-        return chs
+        # treshold under which the best fitted character will be selected
+        treshold = 0.75
+
+        result = []
+        for i in range(k):
+            # choose the characters
+            selectedChs = [random.choice(chs) for i in range(2)]
+
+            # determine which character is selected
+            r = random.uniform(0, 1)
+            best = True
+            if r > treshold:
+                best = False
+
+            # select the character
+            selected = selectedChs[0]
+            if selectedChs[0].fitness > selectedChs[1].fitness:
+                selected = selectedChs[0] if best else selectedChs[1]
+            else:
+                selected = selectedChs[1] if best else selectedChs[0]
+            
+            result.append(selected)
+
+        return result
 
     def __seleccionRanking(chs, k):
         n = len(chs)
