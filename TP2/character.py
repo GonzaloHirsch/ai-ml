@@ -13,7 +13,8 @@ class Character:
         self.fitness = 0
         self.computedHash = None
 
-        self.genes = [arma, botas, casco, guantes, pechera, height]
+        self.rawGenes = [arma, botas, casco, guantes, pechera, height]
+        self.genes = [arma[0], botas[0], casco[0], guantes[0], pechera[0], height]
         self.clase = clase
         
         self.qualities = {
@@ -36,7 +37,8 @@ class Character:
     # -----------------------------------------------------------------
 
     def setGene(self, itemType, newValue):
-        self.genes[itemType.value] = newValue
+        self.rawGenes[itemType.value] = newValue
+        self.genes[itemType.value] = newValue[0]
 
     # -----------------------------------------------------------------
     # QUALITIES FUNCTIONS
@@ -55,7 +57,7 @@ class Character:
         multiplier = MULTIPLIERS[quality.value]
 
         for idx in range(0, len(self.genes) - 1):
-            itemsValue += self.genes[idx].values[quality.value]
+            itemsValue += self.genes[idx][quality.value]
 
         return multiplier * tanh(0.01 * itemsValue)
 
@@ -131,12 +133,12 @@ class Character:
     # -----------------------------------------------------------------
 
     def __str__(self):
-        subs = 'fitness=%s => arma=%s, botas=%s, casco=%s, guantes=%s, pechera=%s, height=%s' % (self.fitness, self.genes[0].name, self.genes[1].name, self.genes[2].name, self.genes[3].name, self.genes[4].name, self.genes[5])
+        subs = 'fitness=%s => arma=%s, botas=%s, casco=%s, guantes=%s, pechera=%s, height=%s' % (self.fitness, self.rawGenes[0][1], self.rawGenes[1][1], self.rawGenes[2][1], self.rawGenes[3][1], self.rawGenes[4][1], self.rawGenes[5])
         s = '%s{%s}' % (type(self).__name__, subs)
         return s
     
     def __computeHashString(self):
-        return hash((self.genes[0].name, self.genes[1].name, self.genes[2].name, self.genes[3].name, self.genes[4].name, round(self.genes[5], 2)))
+        return hash((self.rawGenes[0][1], self.rawGenes[1][1], self.rawGenes[2][1], self.rawGenes[3][1], self.rawGenes[4][1], round(self.rawGenes[5], 2)))
         
     def __hash__(self):
         if self.computedHash == None:

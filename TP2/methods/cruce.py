@@ -23,8 +23,8 @@ class Cruce:
         point = int(uniform(0, len(p1.genes)))
 
         # Generate list of new genes for each one
-        newGene1 = [*p1.genes]
-        newGene2 = [*p2.genes]
+        newGene1 = [*p1.rawGenes]
+        newGene2 = [*p2.rawGenes]
 
         # gene crossing
         for i in range(point, p1.genes):
@@ -44,8 +44,8 @@ class Cruce:
             point1, point2 = point2, point1
 
         # Generate list of new genes for each one
-        newGene1 = [*p1.genes]
-        newGene2 = [*p2.genes]
+        newGene1 = [*p1.rawGenes]
+        newGene2 = [*p2.rawGenes]
 
         # Make the gene crossing
         for i in range(point1, point2+1):
@@ -63,8 +63,8 @@ class Cruce:
         idx = P
 
         # Generate list of new genes for each one
-        newGene1 = [*p1.genes]
-        newGene2 = [*p2.genes]
+        newGene1 = [*p1.rawGenes]
+        newGene2 = [*p2.rawGenes]
 
         while L > 0:
             # Return to the beginning if the end was reached
@@ -81,8 +81,8 @@ class Cruce:
 
     def __cruceUniforme(p1, p2):
         # Generate list of new genes for each one
-        newGene1 = [*p1.genes]
-        newGene2 = [*p2.genes]
+        newGene1 = [*p1.rawGenes]
+        newGene2 = [*p2.rawGenes]
 
         # gene crossing
         for i in range(len(p1.genes)):
