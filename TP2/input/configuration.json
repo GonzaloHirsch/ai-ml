@@ -2,8 +2,8 @@
     "clase": "defensor",
     "data": "./datasets/allitems-big",
     "gen": {
-        "cruce": "anular",
-        "mutacion": "gen",
+        "cruce": "2 puntos",
+        "mutacion": "completa",
         "seleccion": ["elite", "ranking"],
         "reemplazo": ["elite", "ranking"],
         "implementacion": "all",
