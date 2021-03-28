@@ -45,7 +45,17 @@ class Corte:
         return Corte.generations >= Config.getInstance().crit1
 
     def __corteAceptable(chs):
-        return True
+        config = Config.getInstance()
+
+        # get the best fitness
+        cnt = count(start=0, step=1)
+        heap = [(ch.fitness * -1, next(cnt), ch) for ch in chs]
+        heapq.heapify(heap)       
+
+        bestFitness = heapq.heappop(heap)[0] * -1
+        
+        # return true if bestFitness reaches criteria.
+        return bestFitness >= config.crit1
 
     def __corteEstructura(chs):
         # First time called, init variables

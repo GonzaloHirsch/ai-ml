@@ -8,7 +8,7 @@ Selección de padres y reemplazo de individuos
 - [x] ~~Elite - G~~
 - [x] ~~Ruleta - F~~
 - [x] ~~Universal - F~~
-- [ ] Boltzmann - J
+- [x] ~~Boltzmann - J~~
 - [X] ~~Torneos (ambas versiones) - J~~
 - [x] ~~Ranking - G~~
 
@@ -26,12 +26,12 @@ Mutación
 
 Implementación
 - [x] ~~Fill-All - F~~
-- [ ] Fill-Parent - J
+- [x] ~~Fill-Parent - J~~
 
 Criterios de corte
 - [x] ~~Tiempo - G~~
 - [x] ~~Cantidad de generaciones - F~~
-- [ ] Solución aceptable - J
+- [x] ~~Solución aceptable - J~~
 - [x] ~~Estructura - G~~
 - [x] ~~Contenido - F~~
 
