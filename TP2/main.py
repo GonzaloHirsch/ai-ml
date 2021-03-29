@@ -20,14 +20,14 @@ def plotPoints(axes, fig, sampling):
     axes[0].set_xlabel("Generación")
     axes[0].set_ylabel("Fitness")
     axes[0].set_title("Fitness por Generación")
-    axes[0].text(gens[-1], avgs[-1],round(avgs[-1],2))
+    axes[0].text(gens[-1], avgs[-1] + 0.5, round(avgs[-1],2), horizontalalignment='right')
     axes[1].plot(gens, divs, 'r', label='Diversidad', linewidth=2)
     axes[1].legend(loc='lower left')
     axes[1].plot(gens[-1], divs[-1], 'ko', linewidth=2)
     axes[1].set_xlabel("Generación")
     axes[1].set_ylabel("Cantidad de Personajes Únicos")
     axes[1].set_title("Diversidad por Generación")
-    axes[1].text(gens[-1], divs[-1], divs[-1])
+    axes[1].text(gens[-1], divs[-1] + 5, divs[-1])
     fig.tight_layout()
     plt.pause(sampling)
 
@@ -60,7 +60,7 @@ def main():
 
     # Plotting
     if config.show:
-        plt.style.use('fivethirtyeight')
+        plt.style.use('seaborn-whitegrid')
         fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12,5))
         
     try:
