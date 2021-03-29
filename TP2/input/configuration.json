@@ -4,22 +4,22 @@
     "gen": {
         "cruce": "2 puntos",
         "mutacion": "completa",
-        "seleccion": ["elite", "ranking"],
-        "reemplazo": ["elite", "ranking"],
+        "seleccion": ["ruleta", "ranking"],
+        "reemplazo": ["ruleta", "ranking"],
         "implementacion": "all",
         "corte": "estructura"
     },
     "nums": {
-        "A": 0.5,
-        "B": 0.5,
+        "A": 0.9,
+        "B": 0.1,
         "N": 500,
         "K": 400,
         "Pm": 0.1,
-        "criterio1": 0.75,
+        "criterio1": 0.9,
         "criterio2": 20
     },
     "plot": {
         "show": true,
-        "sampling": 1000
+        "sampling": 0.01
     }
 }

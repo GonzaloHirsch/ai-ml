@@ -1,108 +1,97 @@
 # Lib imports
-import csv
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-import threading
-import os
 # Local imports
 import inputParser as parser
 from geneticAlgorithm import GeneticAlgorithm
-from helper import getFitnessStats
+from helper import getFitnessStats, getDiversityStats, getBestCharacter
 
 # Variables pointing to configs
 CONFIG_INPUT = "input/configuration.json"
-DATA_OUTPUT = "output/output.csv"
-OUTPUT_DIR = "output/"
-OUTPUT_FIELDNAMES = ["generacion", "minimo", "promedio"]
+mins, avgs, divs, gens = [], [], [], []
 
-# Function to run frame by frame
-def animate(i):
-    data = pd.read_csv(DATA_OUTPUT)
-    x = data[OUTPUT_FIELDNAMES[0]]
-    min = data[OUTPUT_FIELDNAMES[1]]
-    avg = data[OUTPUT_FIELDNAMES[2]]
-    plt.cla()
-    plt.plot(x, min, 'r', label='Mínima', linewidth=2)
-    plt.plot(x, avg, 'g', label='Promedio', linewidth=2)
-    plt.xlabel("Generación")
-    plt.ylabel("Fitness")
-    plt.title("Fitness por Generación")
-    plt.legend(loc='lower right')
-    plt.tight_layout()
+def plotPoints(axes, fig, sampling):
+    axes[0].clear()
+    axes[1].clear()
+    axes[0].plot(gens, mins, 'r', label='Mínima', linewidth=2)
+    axes[0].plot(gens, avgs, 'g', label='Promedio', linewidth=2)
+    axes[0].legend(loc='lower right')
+    axes[0].plot(gens[-1], avgs[-1], 'ko', linewidth=2)
+    axes[0].set_xlabel("Generación")
+    axes[0].set_ylabel("Fitness")
+    axes[0].set_title("Fitness por Generación")
+    axes[0].text(gens[-1], avgs[-1],round(avgs[-1],2))
+    axes[1].plot(gens, divs, 'r', label='Diversidad', linewidth=2)
+    axes[1].legend(loc='lower left')
+    axes[1].plot(gens[-1], divs[-1], 'ko', linewidth=2)
+    axes[1].set_xlabel("Generación")
+    axes[1].set_ylabel("Cantidad de Personajes Únicos")
+    axes[1].set_title("Diversidad por Generación")
+    axes[1].text(gens[-1], divs[-1], divs[-1])
+    fig.tight_layout()
+    plt.pause(sampling)
 
-# Function to run the animation
-def run_animation(sampling):
-    plt.style.use('fivethirtyeight')
-    ani = FuncAnimation(plt.gcf(), animate, interval=sampling)
-    plt.tight_layout()
-    plt.show()
+def prepareForPlot(population, generation, fig, axes, sampling):
+    # Calculate stats and write to file
+    min, average = getFitnessStats(population)
+    diversity = getDiversityStats(population)
+    mins.append(min)
+    avgs.append(average)
+    divs.append(diversity)
+    gens.append(generation)
+    # Plotting
+    plotPoints(axes, fig, sampling)
 
-# Makes sure the CSV file is prepared, create it if non existent
-def prepareOutput():
-    if not os.path.exists(OUTPUT_DIR):
-        os.makedirs(OUTPUT_DIR)
-    with open(DATA_OUTPUT, 'w+') as csv_file:
-        csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
-        csv_writer.writeheader()
-
-# Writes a row of data to the output file
-def writeRow(writer, gen, min, avg):
-    info = {
-        OUTPUT_FIELDNAMES[0]: gen,
-        OUTPUT_FIELDNAMES[1]: min,
-        OUTPUT_FIELDNAMES[2]: avg
-    }
-    writer.writerow(info)
-
-def main(config):
+def main():
+    print("Parsing input data...")
+    # Parse configuration files
+    config = parser.parseConfiguration(CONFIG_INPUT)
     # Parse item files, pass the path to folder
     parser.parseItems(config.data)
     # Generate instance of the genetic algorithm configuration
     ga = GeneticAlgorithm(config)
+    print("Starting algorithm")
+    print("Press ctrl + c to stop at any moment")
 
     # Generate the initial random population
     population = ga.generateInitialPopulation(config.n)
 
     generation = 0
-        
-    # Iterate while terminal condition is not met
-    while not ga.isTerminated(population):
-        print('GENERATION #' + str(generation))
-        # Calculate stats and write to file
-        min, average = getFitnessStats(population)
-        # Perform all with open file
-        with open(DATA_OUTPUT, 'a') as csv_file:
-            # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
-            writeRow(csv_writer, generation, min, average)
-        # Select parents for next generation
-        parents = ga.select(population, config.k, config.a, generation)
-        # Cross parents to generate children
-        children = ga.crossAll(parents)
-        # Mutate children
-        for i in range(len(children)):
-            children[i] = ga.mutate(children[i])
-        # Select next generation
-        population = ga.nextGeneration(population, children, config.b, generation)
-        generation += 1
 
-    for p in population:
-        print(p)
+    # Plotting
+    if config.show:
+        plt.style.use('fivethirtyeight')
+        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12,5))
+        
+    try:
+        # Iterate while terminal condition is not met
+        while not ga.isTerminated(population):
+            print('GENERATION #' + str(generation))
+            if config.show:
+                prepareForPlot(population, generation, fig, axes, config.sampling)
+            # Select parents for next generation
+            parents = ga.select(population, config.k, config.a, generation)
+            # Cross parents to generate children
+            children = ga.crossAll(parents)
+            # Mutate children
+            for i in range(len(children)):
+                children[i] = ga.mutate(children[i])
+            # Select next generation
+            population = ga.nextGeneration(population, children, config.b, generation)
+            generation += 1
+
+        if config.show:
+            prepareForPlot(population, generation, fig, axes, config.sampling)
+
+        print("Best configuration is:")
+        print(getBestCharacter(population))
+
+        if config.show:
+            print("Close the plot to stop program")
+            plt.show()
+    except KeyboardInterrupt:
+        print("Finishing up...")
     
 # App entrypoint
 if __name__ == "__main__":
-    # Parse configuration files
-    config = parser.parseConfiguration(CONFIG_INPUT)
-    # Prepare output file
-    prepareOutput()
-    main(config)
-
-    # Create the thread for the processing
-    #x = threading.Thread(target=main, args=(config,))
-    #x.start()
-
-    # Show plot if configured to
-    #if config.show:
-        # Run animation on main thread
-    #    run_animation(config.sampling)
+    main()

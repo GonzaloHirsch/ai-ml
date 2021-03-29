@@ -79,7 +79,7 @@ Dentro del objeto `nums` debe ir:
 
 Dentro del objeto `plot` debe ir:
 * `show` --> Determina si se muestra el gráfico en tiempo real, `true` o `false`
-* `sampling` --> Intervalo (en milisegundos) de tiempo en el que el gráfico toma datos, es decir, cada X milisegundos actualiza
+* `sampling` --> Intervalo (en segundos) de tiempo en el que el gráfico toma datos, es decir, cada X segundos actualiza --> Recomendable `0.05` o `0.01`
 
 ## Dataset
 
@@ -103,7 +103,9 @@ Para ejecutar el programa hay que correr:
 python main.py
 ```
 
-El programa, si configurado para que muestre el gráfico, va a generar una ventana con el gráfico.
+El programa, si configurado para que muestre el gráfico, va a generar una ventana con el gráfico. Para **velocidad**, es recomendable correr sin el gráfico en tiempo real. Para los **datos**, es recomendable correr con el gráfico en tiempo real.
+
+Para cortar la ejecución se puede hacer `ctrl + c` en cualquier momento desde la terminal.
 
 ## Dependencias
 
