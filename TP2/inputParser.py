@@ -43,6 +43,7 @@ def parseConfiguration(configPath):
             n=nums[ConfigOptions.N.value], 
             k=nums[ConfigOptions.K.value],
             pm=nums[ConfigOptions.PM.value],
+            pcruce=nums[ConfigOptions.P_CRUCE.value],
             crit1=nums[ConfigOptions.CRITERIO_1.value],
             crit2=nums[ConfigOptions.CRITERIO_2.value],
             show=plot[ConfigOptions.SHOW.value],

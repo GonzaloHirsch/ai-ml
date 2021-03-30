@@ -4,22 +4,49 @@
     "gen": {
         "cruce": "2 puntos",
         "mutacion": "completa",
-        "seleccion": ["ruleta", "ranking"],
-        "reemplazo": ["ruleta", "ranking"],
+        "seleccion": [
+            {
+                "name": "torneo prob",
+                "params": {
+                    "threshold": 0.75
+                }
+            },
+            {
+                "name": "boltzmann",
+                "params": {
+                    "t0": 100,
+                    "tbase": 10,
+                    "kdecay": 0.5
+                }
+            }
+        ],
+        "reemplazo": [
+            {
+                "name": "torneo det",
+                "params": {
+                    "M": 2
+                }
+            },
+            {
+                "name": "ranking",
+                "params": {}
+            }
+        ],
         "implementacion": "all",
         "corte": "estructura"
     },
     "nums": {
         "A": 0.9,
         "B": 0.1,
-        "N": 500,
-        "K": 400,
-        "Pm": 0.1,
+        "N": 5000,
+        "K": 3500,
+        "Pm": 0.05,
+        "Pcruce": 0.5,
         "criterio1": 0.9,
         "criterio2": 20
     },
     "plot": {
-        "show": true,
+        "show": false,
         "sampling": 0.01
     }
 }

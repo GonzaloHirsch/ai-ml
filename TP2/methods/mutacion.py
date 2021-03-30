@@ -65,7 +65,6 @@ class Mutacion:
         # Recover instances
         conf = Config.getInstance()
 
-        # TODO IS M a parameter?
         M = len(ch.genes) + 1
         # Generate random number
         rnd = random.uniform(0, 1)

@@ -6,13 +6,14 @@ import heapq
 from itertools import count
 import bisect
 # Local imports
-from constants import Seleccion
+from constants import Seleccion as SeleccionEnum, ConfigOptions
 from helper import getRelativeFitnesses
 
 class Seleccion:
-    def __init__(self, sel):
+    def __init__(self, sel, extra = None):
         self.sel = sel
-        self.seleccion = self.selecciones[sel]
+        self.seleccion = self.__getSeleccionFunction(sel)
+        self.extra = extra
 
     # -----------------------------------------------------------------
     # HELPER FUNCTIONS
@@ -32,10 +33,6 @@ class Seleccion:
 
     def __getPositionInAccumulatedFitness(accumulated, ri):
         return bisect.bisect_left(accumulated, ri)
-        # for i in range(0, len(accumulated)):
-        #     if ri < accumulated[i]:
-        #         return i
-        # return -1
 
     def __getPseudoFitnessByRank(n, k):
         return (n - k)/n
@@ -69,7 +66,7 @@ class Seleccion:
     # SELECCION FUNCTIONS
     # -----------------------------------------------------------------
 
-    def __seleccionElite(chs, k, gen):
+    def __seleccionElite(self, chs, k, gen):
         n = len(chs)
         result = []
         # Sort characters
@@ -89,13 +86,13 @@ class Seleccion:
         return result
 
 
-    def __seleccionRuleta(chs, k, gen):
+    def __seleccionRuleta(self, chs, k, gen):
         # Store the fitness of the characters in an array
         fitnesses = np.array([ch.fitness for ch in chs])
         return Seleccion.__seleccionRuletaInternal(chs, fitnesses, k)
         
 
-    def __seleccionUniversal(chs, k, gen):
+    def __seleccionUniversal(self, chs, k, gen):
         # Store the fitness of the characters in an array
         fitnesses = np.array([ch.fitness for ch in chs])
         result = []
@@ -112,13 +109,13 @@ class Seleccion:
 
         return result
 
-    def __seleccionBoltzmann(chs, k, gen):
+    def __seleccionBoltzmann(self, chs, k, gen):
         # initial temperature
-        temp0 =  100
+        temp0 = self.extra[ConfigOptions.T0.value]
         # base temperature
-        tempC = 10
+        tempC = self.extra[ConfigOptions.TBASE.value]
         # time constant of decay
-        cteK = 0.5
+        cteK = self.extra[ConfigOptions.K_DECAY.value]
 
         # get temperature
         temperature = Seleccion.__getBoltzmannTemperature(temp0, tempC, cteK, gen)
@@ -128,9 +125,9 @@ class Seleccion:
 
         return Seleccion.__seleccionRuletaInternal(chs, fitnesses, k)
 
-    def __seleccionTorneoDeterminista(chs, k, gen):
+    def __seleccionTorneoDeterminista(self, chs, k, gen):
         # number of characters to choose randomly
-        m = 2
+        m = self.extra[ConfigOptions.M_IND.value]
 
         result = []
         for i in range(k):
@@ -144,9 +141,9 @@ class Seleccion:
 
         return result
 
-    def __seleccionTorneoProbabilistico(chs, k, gen):
+    def __seleccionTorneoProbabilistico(self, chs, k, gen):
         # treshold under which the best fitted character will be selected
-        treshold = 0.75
+        treshold = self.extra[ConfigOptions.THRESHOLD.value]
 
         result = []
         for i in range(k):
@@ -170,7 +167,7 @@ class Seleccion:
 
         return result
 
-    def __seleccionRanking(chs, k, gen):
+    def __seleccionRanking(self, chs, k, gen):
         n = len(chs)
         # Sort by fitness and convert to sorted list
         heap = Seleccion.__getSortedCharacters(chs)
@@ -189,14 +186,18 @@ class Seleccion:
     def apply(self, chs, k, gen):
         return self.seleccion(chs, k, gen)
 
-    # Map with pointers to the functions
-    selecciones = {
-        Seleccion.ELITE.value: __seleccionElite,
-        Seleccion.RULETA.value: __seleccionRuleta,
-        Seleccion.UNIVERSAL.value: __seleccionUniversal,
-        Seleccion.BOLTZMANN.value: __seleccionBoltzmann,
-        Seleccion.TORNEO_DET.value: __seleccionTorneoDeterminista,
-        Seleccion.TORNEO_PROB.value: __seleccionTorneoProbabilistico,
-        Seleccion.RANKING.value: __seleccionRanking
-    }
+    def __getSeleccionFunction(self, sel):
+        # Map with pointers to the functions
+        selecciones = {
+            SeleccionEnum.ELITE.value: self.__seleccionElite,
+            SeleccionEnum.RULETA.value: self.__seleccionRuleta,
+            SeleccionEnum.UNIVERSAL.value: self.__seleccionUniversal,
+            SeleccionEnum.BOLTZMANN.value: self.__seleccionBoltzmann,
+            SeleccionEnum.TORNEO_DET.value: self.__seleccionTorneoDeterminista,
+            SeleccionEnum.TORNEO_PROB.value: self.__seleccionTorneoProbabilistico,
+            SeleccionEnum.RANKING.value: self.__seleccionRanking
+        }
+        return selecciones[sel]
+
+    
             

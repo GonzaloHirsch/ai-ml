@@ -18,30 +18,57 @@ pip install -r requirements.txt
 ## Configuración
 
 La configuración del programa se realiza desde el archivo `input/configuration.json`, el formato del archivo tiene que ser el siguiente:
-```
+```json
 {
-    "clase": "guerrero",
-    "data": "./datasets/allitems-small",
+    "clase": "defensor",
+    "data": "./datasets/allitems-big",
     "gen": {
-        "cruce": "uniforme",
-        "mutacion": "limitada",
-        "seleccion": ["elite", "ruleta"],
-        "reemplazo": ["universal", "ranking"],
-        "implementacion": "parent",
-        "corte": "cantidad"
+        "cruce": "2 puntos",
+        "mutacion": "completa",
+        "seleccion": [
+            {
+                "name": "torneo prob",
+                "params": {
+                    "threshold": 0.75
+                }
+            },
+            {
+                "name": "boltzmann",
+                "params": {
+                    "t0": 100,
+                    "tbase": 10,
+                    "kdecay": 0.5
+                }
+            }
+        ],
+        "reemplazo": [
+            {
+                "name": "torneo det",
+                "params": {
+                    "M": 2
+                }
+            },
+            {
+                "name": "ranking",
+                "params": {}
+            }
+        ],
+        "implementacion": "all",
+        "corte": "estructura"
     },
     "nums": {
-        "A": 0.4,
-        "B": 0.6,
-        "N": 3,
-        "K": 4,
+        "A": 0.9,
+        "B": 0.1,
+        "N": 5000,
+        "K": 3500,
         "Pm": 0.05,
-        "criterio1": 10,
-        "criterio2": 10
+        "Pcruce": 0.5,
+        "criterio1": 0.9,
+        "criterio2": 20
     },
     "plot": {
-        "show": true,
-        "sampling": 1000
+        "show": false,
+        "sampling": 0.01
     }
 }
 ```
@@ -53,17 +80,36 @@ Los posibles valores de cada campo son:
 Dentro del objeto `gen` debe ir:
 * `cruce` --> 1 valor de [`1 punto`, `2 puntos`, `anular`, `uniforme`]
 * `mutacion` --> 1 valor de [`gen`, `limitada`, `uniforme`, `completa`]
-* `seleccion` --> 2 valores de [`elite`, `ruleta`, `universal`, `boltzmann`, `torneo det`, `torneo prob`, `ranking`] (en formato array)
-* `reemplazo` --> 2 valores de [`elite`, `ruleta`, `universal`, `boltzmann`, `torneo det`, `torneo prob`, `ranking`] (en formato array)
+* `seleccion` --> 2 objetos JSON del estilo mostrado:
+    * `name` --> 1 valor de [`elite`, `ruleta`, `universal`, `boltzmann`, `torneo det`, `torneo prob`, `ranking`]
+    * `params` --> Parámetros en formato JSON específicos a cada algoritmo (si no tiene parámetros dejar la propiedad `params` pero vacía(`{}`))
+        * Para `boltzmann`:
+            * `t0` --> Temperatura inicial
+            * `tbase` --> Temperatura base 
+            * `kdecay` --> Factor de decaiminiento
+        * Para `torneo prob`:
+            * `threshold` --> Threshold del algoritmo
+        * Para `torneo det`:
+            * `M` --> Numero entero mayor a 0, cantidad de individuos por ronda
+    ```json
+    {
+        "name": ...,
+        "params": {
+            ...
+        }
+    }
+    ```
+* `reemplazo` --> Misma descripción que `seleccion`
 * `implementacion` --> 1 valor de [`all`,`parent`]
 * `corte` --> 1 valor de [`tiempo`, `cantidad`, `aceptable`, `estructura`, `contenido`]
 
 Dentro del objeto `nums` debe ir:
 * `A` --> Número decimal entre 0 y 1
 * `B` --> Número decimal entre 0 y 1
-* `N` --> Número entero mayor a 0
-* `K` --> Número entero mayor a 0
-* `Pm` --> Número decimal entre 0 y 1
+* `N` --> Número entero mayor a 0, cantidad de personajes en población
+* `K` --> Número entero mayor a 0, cantidad de padres a seleccionar
+* `Pm` --> Número decimal entre 0 y 1, probabilidad de mutacion
+* `Pcruce` --> Número decimal entre 0 y 1, probabilidad en cruce uniforme
 * `criterio1` --> Número decimal/entero, sirve para los parámetros de corte, dependiendo del valor de `corte` representa
     * `corte = tiempo` --> Tiempo en segundos que se deja corriendo
     * `corte = cantidad` --> Cantidad de generaciones usadas

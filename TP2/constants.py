@@ -60,11 +60,19 @@ class ConfigOptions(enum.Enum):
    N = "N"
    K = "K"
    PM = "Pm"
+   P_CRUCE = "Pcruce"
    CRITERIO_1 = "criterio1"
    CRITERIO_2 = "criterio2"
    PLOT = "plot"
    SHOW = "show"
    SAMPLING = "sampling"
+   NAME = "name"
+   PARAMS = "params"
+   T0 = "t0"
+   TBASE = "tbase"
+   THRESHOLD = "threshold"
+   K_DECAY = "kdecay"
+   M_IND = "M"
 
    def __str__(self):
       return str(self.value)

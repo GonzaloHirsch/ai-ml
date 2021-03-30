@@ -4,6 +4,7 @@ from math import ceil
 # Local imports
 from constants import Cruce
 from character import Character
+from config import Config
 
 class Cruce:
     def __init__(self, cru):
@@ -83,11 +84,12 @@ class Cruce:
         # Generate list of new genes for each one
         newGene1 = [*p1.rawGenes]
         newGene2 = [*p2.rawGenes]
+        config = Config.getInstance()
 
         # gene crossing
         for i in range(len(p1.genes)):
             r = uniform(0, 1)
-            if r > 0.5:
+            if r > config.pcruce:
                 Cruce.__crossGeneAtIdx(newGene1, newGene2, i)
                 
         # Create new characters

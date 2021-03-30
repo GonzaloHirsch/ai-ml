@@ -12,10 +12,10 @@ class GeneticAlgorithm:
     def __init__(self, config):
         self.config = config
         self.mutacion = Mutacion(config.mutacion)
-        self.seleccion1 = Seleccion(config.seleccion[0])
-        self.seleccion2 = Seleccion(config.seleccion[1])
-        self.reemplazo1 = Seleccion(config.reemplazo[0])
-        self.reemplazo2 = Seleccion(config.reemplazo[1])
+        self.seleccion1 = Seleccion(config.seleccion[0], config.seleccionParams[0])
+        self.seleccion2 = Seleccion(config.seleccion[1], config.seleccionParams[1])
+        self.reemplazo1 = Seleccion(config.reemplazo[0], config.reemplazoParams[0])
+        self.reemplazo2 = Seleccion(config.reemplazo[1], config.reemplazoParams[1])
         self.cruce = Cruce(config.cruce)
         self.corte = Corte(config.corte)
         self.implementacion = Implementacion(config.implementacion)
