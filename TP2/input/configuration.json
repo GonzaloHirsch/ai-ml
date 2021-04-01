@@ -1,5 +1,5 @@
 {
-    "clase": "defensor",
+    "clase": "guerrero",
     "data": "./datasets/allitems-big",
     "gen": {
         "cruce": "2 puntos",
@@ -12,7 +12,7 @@
                 }
             },
             {
-                "name": "boltzmann",
+                "name": "ruleta",
                 "params": {
                     "t0": 100,
                     "tbase": 10,
@@ -22,7 +22,7 @@
         ],
         "reemplazo": [
             {
-                "name": "torneo det",
+                "name": "elite",
                 "params": {
                     "M": 2
                 }
@@ -32,21 +32,21 @@
                 "params": {}
             }
         ],
-        "implementacion": "all",
+        "implementacion": "parent",
         "corte": "estructura"
     },
     "nums": {
         "A": 0.5,
         "B": 0.5,
-        "N": 1000,
-        "K": 500,
+        "N": 100,
+        "K": 50,
         "Pm": 0.05,
         "Pcruce": 0.5,
-        "criterio1": 0.9,
-        "criterio2": 20
+        "criterio1": 0.8,
+        "criterio2": 10
     },
     "plot": {
-        "show": true,
+        "show": false,
         "sampling": 0.01
     }
 }
