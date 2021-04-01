@@ -6,7 +6,7 @@
         "mutacion": "completa",
         "seleccion": [
             {
-                "name": "torneo prob",
+                "name": "universal",
                 "params": {
                     "threshold": 0.75
                 }
@@ -36,17 +36,17 @@
         "corte": "estructura"
     },
     "nums": {
-        "A": 0.9,
-        "B": 0.1,
-        "N": 5000,
-        "K": 3500,
+        "A": 0.5,
+        "B": 0.5,
+        "N": 1000,
+        "K": 500,
         "Pm": 0.05,
         "Pcruce": 0.5,
         "criterio1": 0.9,
         "criterio2": 20
     },
     "plot": {
-        "show": false,
+        "show": true,
         "sampling": 0.01
     }
 }
