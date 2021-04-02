@@ -28,7 +28,7 @@ class Cruce:
         newGene2 = [*p2.rawGenes]
 
         # gene crossing
-        for i in range(point, p1.genes):
+        for i in range(point, len(p1.genes)):
             Cruce.__crossGeneAtIdx(newGene1, newGene2, i)
 
         # Create new characters
@@ -89,7 +89,7 @@ class Cruce:
         # gene crossing
         for i in range(len(p1.genes)):
             r = uniform(0, 1)
-            if r > config.pcruce:
+            if r <= config.pcruce:
                 Cruce.__crossGeneAtIdx(newGene1, newGene2, i)
                 
         # Create new characters
