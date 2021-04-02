@@ -38,15 +38,15 @@
     "nums": {
         "A": 0.5,
         "B": 0.5,
-        "N": 100,
-        "K": 50,
-        "Pm": 0.05,
+        "N": 10000,
+        "K": 7500,
+        "Pm": 0.5,
         "Pcruce": 0.5,
         "criterio1": 0.8,
         "criterio2": 10
     },
     "plot": {
-        "show": false,
+        "show": true,
         "sampling": 0.01
     }
 }
