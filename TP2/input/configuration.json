@@ -8,24 +8,22 @@
             {
                 "name": "universal",
                 "params": {
+                    "t0": 150,
+                    "tbase": 5,
+                    "kdecay": 0.03,
+                    "M": 2,
                     "threshold": 0.75
                 }
             },
             {
                 "name": "ruleta",
-                "params": {
-                    "t0": 100,
-                    "tbase": 10,
-                    "kdecay": 0.5
-                }
+                "params": {}
             }
         ],
         "reemplazo": [
             {
                 "name": "elite",
-                "params": {
-                    "M": 2
-                }
+                "params": {}
             },
             {
                 "name": "ranking",
@@ -36,7 +34,7 @@
         "corte": "cantidad"
     },
     "nums": {
-        "A": 0.5,
+        "A": 1,
         "B": 0.5,
         "N": 10000,
         "K": 7500,
