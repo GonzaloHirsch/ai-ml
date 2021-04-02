@@ -3,7 +3,7 @@
     "data": "./datasets/allitems-big",
     "gen": {
         "cruce": "2 puntos",
-        "mutacion": "completa",
+        "mutacion": "uniforme",
         "seleccion": [
             {
                 "name": "universal",
@@ -33,20 +33,20 @@
             }
         ],
         "implementacion": "parent",
-        "corte": "estructura"
+        "corte": "cantidad"
     },
     "nums": {
         "A": 0.5,
         "B": 0.5,
         "N": 10000,
         "K": 7500,
-        "Pm": 0.5,
+        "Pm": 0.01,
         "Pcruce": 0.5,
-        "criterio1": 0.8,
+        "criterio1": 150,
         "criterio2": 10
     },
     "plot": {
-        "show": true,
+        "show": false,
         "sampling": 0.01
     }
 }
