@@ -6,7 +6,7 @@
         "mutacion": "uniforme",
         "seleccion": [
             {
-                "name": "universal",
+                "name": "elite",
                 "params": {
                     "t0": 150,
                     "tbase": 5,
@@ -31,7 +31,7 @@
             }
         ],
         "implementacion": "parent",
-        "corte": "cantidad"
+        "corte": "aceptable"
     },
     "nums": {
         "A": 1,
@@ -40,11 +40,11 @@
         "K": 7500,
         "Pm": 0.05,
         "Pcruce": 0.5,
-        "criterio1": 150,
+        "criterio1": 44,
         "criterio2": 10
     },
     "plot": {
-        "show": false,
+        "show": true,
         "sampling": 0.01
     }
 }
