@@ -6,7 +6,7 @@
         "mutacion": "uniforme",
         "seleccion": [
             {
-                "name": "elite",
+                "name": "ruleta",
                 "params": {
                     "t0": 150,
                     "tbase": 5,
@@ -44,7 +44,7 @@
         "criterio2": 10
     },
     "plot": {
-        "show": true,
+        "show": false,
         "sampling": 0.01
     }
 }

@@ -12,8 +12,8 @@ from helper import getFitnessStats, getDiversityStats, getBestCharacter
 # Variables pointing to configs
 CONFIG_INPUT = "input/configuration.json"
 OUTPUT_DIR = "output/"
-OUTPUT_FIELDNAMES = ["generacion", "minimo", "promedio", "diversidad"]
-mins, avgs, divs, gens = [], [], [], []
+OUTPUT_FIELDNAMES = ["generacion", "minimo", "promedio", "diversidad", "max"]
+mins, avgs, divs, gens, maxs = [], [], [], [], []
 
 # Makes sure the CSV file is prepared, create it if non existent
 def prepareOutput(filename):
@@ -30,7 +30,8 @@ def writeAll(writer):
             OUTPUT_FIELDNAMES[0]: gens[i],
             OUTPUT_FIELDNAMES[1]: mins[i],
             OUTPUT_FIELDNAMES[2]: avgs[i],
-            OUTPUT_FIELDNAMES[3]: divs[i]
+            OUTPUT_FIELDNAMES[3]: divs[i],
+            OUTPUT_FIELDNAMES[3]: maxs[i]
         }
         writer.writerow(info)
 
@@ -56,12 +57,13 @@ def plotPoints(axes, fig, sampling):
     plt.pause(sampling)
 
 def storeData(population, generation):
-    min, average = getFitnessStats(population)
+    min, average, max = getFitnessStats(population)
     diversity = getDiversityStats(population)
     mins.append(min)
     avgs.append(average)
     divs.append(diversity)
     gens.append(generation)
+    maxs.append(max)
 
 def main():
     print("Parsing input data...")
@@ -108,6 +110,7 @@ def main():
             population = ga.nextGeneration(population, children, config.b, generation)
             generation += 1
 
+        storeData(population, generation)
         if config.show:
             plotPoints(axes, fig, config.sampling)
 

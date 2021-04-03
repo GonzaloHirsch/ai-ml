@@ -1,4 +1,4 @@
-from numpy import sum, amin, array, average, unique
+from numpy import sum, amin, array, average, unique, amax
 
 def getRelativeFitnesses(fitnesses):
     total = sum(fitnesses)
@@ -8,7 +8,7 @@ def getRelativeFitnesses(fitnesses):
 def getFitnessStats(chs):
     # Store the fitness of the characters in an array
     fitnesses = array([ch.fitness for ch in chs])
-    return amin(fitnesses), average(fitnesses)
+    return amin(fitnesses), average(fitnesses), amax(fitnesses)
 
 # Calculate different combinations present
 def getDiversityStats(chs):
