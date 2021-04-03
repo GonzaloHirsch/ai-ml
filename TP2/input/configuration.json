@@ -6,13 +6,13 @@
         "mutacion": "uniforme",
         "seleccion": [
             {
-                "name": "ruleta",
+                "name": "universal",
                 "params": {
                     "t0": 150,
                     "tbase": 5,
                     "kdecay": 0.03,
                     "M": 2,
-                    "threshold": 0.75
+                    "threshold": 0.5
                 }
             },
             {
@@ -30,8 +30,8 @@
                 "params": {}
             }
         ],
-        "implementacion": "parent",
-        "corte": "aceptable"
+        "implementacion": "all",
+        "corte": "cantidad"
     },
     "nums": {
         "A": 1,
@@ -40,7 +40,7 @@
         "K": 7500,
         "Pm": 0.05,
         "Pcruce": 0.5,
-        "criterio1": 44,
+        "criterio1": 150,
         "criterio2": 10
     },
     "plot": {

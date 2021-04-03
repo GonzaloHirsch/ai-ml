@@ -31,7 +31,7 @@ def writeAll(writer):
             OUTPUT_FIELDNAMES[1]: mins[i],
             OUTPUT_FIELDNAMES[2]: avgs[i],
             OUTPUT_FIELDNAMES[3]: divs[i],
-            OUTPUT_FIELDNAMES[3]: maxs[i]
+            OUTPUT_FIELDNAMES[4]: maxs[i]
         }
         writer.writerow(info)
 
