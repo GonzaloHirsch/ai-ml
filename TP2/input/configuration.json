@@ -6,36 +6,32 @@
         "mutacion": "uniforme",
         "seleccion": [
             {
-                "name": "universal",
-                "params": {
-                    "t0": 150,
-                    "tbase": 5,
-                    "kdecay": 0.03,
-                    "M": 2,
-                    "threshold": 0.5
-                }
+                "name": "ranking",
+                "params": { }
             },
             {
                 "name": "ruleta",
-                "params": {}
+                "params": { }
             }
         ],
         "reemplazo": [
             {
                 "name": "elite",
-                "params": {}
+                "params": { }
             },
             {
-                "name": "ranking",
-                "params": {}
+                "name": "torneo prob",
+                "params": {
+                    "threshold": 0.5
+                }
             }
         ],
         "implementacion": "all",
         "corte": "cantidad"
     },
     "nums": {
-        "A": 1,
-        "B": 0.5,
+        "A": 0.25,
+        "B": 0.6,
         "N": 10000,
         "K": 7500,
         "Pm": 0.05,
