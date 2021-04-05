@@ -67,11 +67,11 @@ class Character:
 
     def calculateAttackModifier(self):
         h = self.genes[-1]
-        return 0.7 - (3 * h - 5)**4 + (3 * h - 5)**2 + h/4
+        return 0.7 - (((3 * h) - 5)**4) + (((3 * h) - 5)**2) + (h/4)
 
     def calculateDefenseModifier(self):
         h = self.genes[-1]
-        return 1.9 + (2.5 * h - 4.16)**4 + (2.5 * h - 4.16)**2 - (3*h)/10
+        return 1.9 + (((2.5 * h) - 4.16)**4) - (((2.5 * h) - 4.16)**2) - ((3*h)/10)
 
     def calculateAttack(self):
         f = self.qualities[Qualities.FU.value]
