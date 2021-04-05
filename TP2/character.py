@@ -80,9 +80,9 @@ class Character:
         return (a + e) * f * self.calculateAttackModifier()
 
     def calculateDefense(self):
-        r = self.qualities[Qualities.FU.value]
-        e = self.qualities[Qualities.AG.value]
-        v = self.qualities[Qualities.EX.value]
+        r = self.qualities[Qualities.RE.value]
+        v = self.qualities[Qualities.VI.value]
+        e = self.qualities[Qualities.EX.value]
         return (r + e) * v * self.calculateDefenseModifier()
 
     # -----------------------------------------------------------------
