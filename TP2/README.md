@@ -140,7 +140,9 @@ Los nombres de los archivos con los datos deben ser:
 
 ## Gráficos
 
-Para los gráficos, el programa genera una carpeta llamada `output`, en donde escribe un archivo `output.csv` para que el graficador lea los datos.
+El programa grafica en tiempo real, pero también genera archivos CSV en una carpeta `output`, en donde genera los archivos con un timestamp.
+
+**NOTA**: En algunas distribuciones de linux no funciona el gráfico por la falta de un packete de linux, se puede instalar con [esta guía](https://riptutorial.com/tkinter/example/3206/installation-or-setup) y debería funcionar
 
 ## Ejecución
 
