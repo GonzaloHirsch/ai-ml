@@ -1,0 +1,9 @@
+{
+    "files": {
+        "input": "path",
+        "desired": "path"
+    },
+    "activation": "",
+    "multilayer": "",
+    "learningRate": "" 
+}
