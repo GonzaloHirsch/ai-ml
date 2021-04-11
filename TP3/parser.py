@@ -3,6 +3,7 @@ import numpy as np
 import json
 # Local imports
 from constants import FILES, ConfigOptions
+from config import Config
 
 # Function to parse a file and split and store contents
 # Returns a np.array with all data
@@ -25,16 +26,16 @@ def parseConfiguration(configPath):
         
         # Get submaps inside config
         files = data[FILES]
-        inputData = data[ConfigOptions.INPUT_DATA.value]
-        desiredData = data[ConfigOptions.DESIRED_DATA.value]
+        inputData = files[ConfigOptions.INPUT_DATA.value]
+        desiredData = files[ConfigOptions.DESIRED_DATA.value]
         iterations = data[ConfigOptions.ITERATIONS.value]
         activation = data[ConfigOptions.ACTIVATION.value]
-        learningRate = data[Config.LEARNING_RATE.value]
-        multilayer = data[Config.MULTILAYER.value]
+        learningRate = data[ConfigOptions.LEARNING_RATE.value]
+        multilayer = data[ConfigOptions.MULTILAYER.value]
         
         # Create config
         config = Config(
-            input=inputData,
+            inputs=inputData,
             desired=desiredData,
             iterations=iterations,
             activation=activation,
