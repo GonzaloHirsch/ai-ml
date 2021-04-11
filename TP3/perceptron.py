@@ -26,8 +26,8 @@ class Perceptron:
         dActivation = self.derivative(summation)
         return self.learningRate * (desired - prediction) * dActivation * np.transpose(inputs)
 
-    def correctWeights(self, inputs, desired, summation): 
-        self.weights += self.weightCorrectionFactor(inputs, desired, summation)
+    def correctWeights(self, inputs, desired, prediction, summation): 
+        self.weights += self.weightCorrectionFactor(inputs, desired, prediction, summation)
 
     def calculateError(self, desired, prediction):
         return ((desired - prediction)**2) * 0.5

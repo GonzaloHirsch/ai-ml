@@ -1,4 +1,5 @@
 import parser
+from perceptron import Perceptron
 
 CONFIG_INPUT = "input/configuration.json"
 
@@ -6,18 +7,22 @@ def main():
     print("Parsing input data...")
     # Parse configuration files
     config = parser.parseConfiguration(CONFIG_INPUT)
-    inputs = parser.parseInput(config.input, True)
+    trainingInput = parser.parseInput(config.input, True)
     labels = parser.parseInput(config.desired, False)
+    perceptron = Perceptron(trainingInput.size, config.activation, config.learningRate)
+                
+    try:
+        for _ in range(config.iterations):
+            for inputs, label in zip(trainingInput, labels):
+                summation = perceptron.summation(inputs)
 
-    # Llamar a train
+                prediction = perceptron.activate(summation)
 
-def train():
-    # Nested for loops
-        # summation
-        # activation
-        # correct weights
-        # error
-    return
+                perceptron.correctWeights(inputs, label, prediction, summation)
+    except KeyboardInterrupt:
+        print("Finishing up...")
+    
+    
 
 # App entrypoint
 if __name__ == "__main__":
