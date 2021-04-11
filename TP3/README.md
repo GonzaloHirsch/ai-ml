@@ -2,13 +2,13 @@
 
 ## Tareas
 
-* [ ] Configuracion --> Tipo de funcion, path a al archivo de input y al de output, multicapa o no --> F
+* [X] ~~Configuracion --> Tipo de funcion, path a al archivo de input y al de output, multicapa o no --> F~~
 * [X] ~~Parseo --> G~~
 * [ ] Perceptron
-    1. [ ] Inicializar --> Inicias los weights --> G
+    1. [X] ~~Inicializar --> Inicias los weights --> G~~
     2. [ ] Propagate --> Recibir los puntos --> J
-    3. [ ] Error --> G
-    4. [ ] Correccion --> F
+    3. [X] ~~Error --> G~~
+    4. [X] ~~Correccion --> F~~
 * [ ] Main --> Condicion de corte y flujo del programa --> J
 
 ## Requerimientos

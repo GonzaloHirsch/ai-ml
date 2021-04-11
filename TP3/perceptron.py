@@ -29,9 +29,8 @@ class Perceptron:
     def correctWeights(self, inputs, desired, summation): 
         self.weights += self.weightCorrectionFactor(inputs, desired, summation)
 
-    # TODO
-    def calculateError(self):
-        return
+    def calculateError(self, desired, prediction):
+        return ((desired - prediction)**2) * 0.5
 
     # -----------------------------------------------------------------
     # ACTIVATION FUNCTIONS
