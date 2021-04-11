@@ -26,6 +26,7 @@ def parseConfiguration(configPath):
         files = data[FILES]
         inputData = data[ConfigOptions.INPUT_DATA.value]
         desiredData = data[ConfigOptions.DESIRED_DATA.value]
+        iterations = data[ConfigOptions.ITERATIONS.value]
         activation = data[ConfigOptions.ACTIVATION.value]
         learningRate = data[Config.LEARNING_RATE.value]
         multilayer = data[Config.MULTILAYER.value]
@@ -34,6 +35,7 @@ def parseConfiguration(configPath):
         config = Config(
             input=inputData,
             desired=desiredData,
+            iterations=iterations,
             activation=activation,
             learningRate=learningRate,
             multilayer=multilayer 

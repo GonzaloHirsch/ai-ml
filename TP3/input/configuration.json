@@ -3,6 +3,7 @@
         "input": "path",
         "desired": "path"
     },
+    "iterations": 10,
     "activation": "",
     "multilayer": "",
     "learningRate": "" 

@@ -16,6 +16,7 @@ class ActivationOptions(enum.Enum):
 class ConfigOptions(enum.Enum):
    INPUT_DATA = "input"
    DESIRED_DATA = "desired"
+   ITERATIONS = "iterations"
    ACTIVATION = "activation"
    LEARNING_RATE = "learningRate"
    MULTILAYER = "multilayer"

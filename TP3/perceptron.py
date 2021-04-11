@@ -1,40 +1,56 @@
 # Lib imports
-from math import tanh
+from math import tanh, copysign
 import numpy as np
 # Local imports
 from ActivationOptions from constants
 
 class Perceptron:
-    def __init__(self, weightsAmount, activationMethod):
+    def __init__(self, weightsAmount, activationMethod, learningRate):
 
-        self.weights = np.zeros(weightsAmount)
+        self.weights = np.zeros(weightsAmount) # Size N
         self.activation = activations[activationMethod]
+        self.learningRate = learningRate
 
-    def __simpleActivation():
-        return
+    def predict(self, inputs):
+        summation = self.summation(inputs)        
+        return self.activation(summation)
 
-    def __linearActivation():
-        return
+    def correctWeights(self, inputs, desired, prediction): 
+        self.weights = self.weights + self.weightCorrectionFactor(inputs, desired, prediction)
 
-    def __nonLinearActivation():
+    # TODO
+    def calculateError(self):
         return
 
     # -----------------------------------------------------------------
     # HELPER FUNCTIONS
     # -----------------------------------------------------------------
 
-    # def __str__(self):
-    #     subs = 'fitness=%s => arma=%s, botas=%s, casco=%s, guantes=%s, pechera=%s, height=%s' % (self.fitness, self.rawGenes[0][1], self.rawGenes[1][1], self.rawGenes[2][1], self.rawGenes[3][1], self.rawGenes[4][1], self.rawGenes[5])
-    #     s = '%s{%s}' % (type(self).__name__, subs)
-    #     return s
-    
-    # def __computeHashString(self):
-    #     return hash((self.rawGenes[0][1], self.rawGenes[1][1], self.rawGenes[2][1], self.rawGenes[3][1], self.rawGenes[4][1], round(self.rawGenes[5], 2)))
+    def summation(self, inputs):
+        # Input shape (1, N)
+        # Weight shape (N, 1)
+        return np.dot(inputs, self.weights) 
         
-    # def __hash__(self):
-    #     if self.computedHash == None:
-    #         self.computedHash = self.__computeHashString()
-    #     return self.computedHash
+    def __simpleActivation(summation):
+        # Summation = number
+        # Activation = number
+        return copysign(1, summation)
+
+    def __linearActivation(summation):
+        return
+
+    def __nonLinearActivation(summation):
+        return
+
+    def weightCorrectionFactor(self, inputs, desired, prediction):
+        # Inpute shape (1, N)
+        # Return type (N, 1)
+        return self.learningRate * (desired - prediction) * np.transpose(inputs)
+
+    def __str__(self):
+        subs = 'weights=%s, learningRate=%s' % (self.weights, self.weights)
+        s = '%s{%s}' % (type(self).__name__, subs)
+        return s
 
     activations = {
         ActivationOptions.SIMPLE.value: __simpleActivation, 
