@@ -2,20 +2,21 @@
 import numpy as np
 import json
 # Local imports
-from constants import FILES
-from constant import ConfigOptions
+from constants import FILES, ConfigOptions
 
 # Function to parse a file and split and store contents
 # Returns a np.array with all data
-def parseInput(filepath):
+def parseInput(filepath, addExtraInput = False):
     with open(filepath) as f:
         # Read all lines
         lines = f.readlines()
         data = []
         for line in lines:
-            data.append(np.array([float(elem) for elem in line.strip().split()]))
+            if addExtraInput:
+                data.append(np.array([1.0] + [float(elem) for elem in line.strip().split()]))
+            else:
+                data.append(np.array([float(elem) for elem in line.strip().split()]))
     return np.array(data)
-
 
 # Parses the configuration
 def parseConfiguration(configPath):
