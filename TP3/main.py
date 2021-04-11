@@ -13,6 +13,10 @@ def main():
 
 def train():
     # Nested for loops
+        # summation
+        # activation
+        # correct weights
+        # error
     return
 
 # App entrypoint
