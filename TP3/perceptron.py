@@ -2,14 +2,14 @@
 from math import tanh, copysign
 import numpy as np
 # Local imports
-from ActivationOptions from constants
+from constants import ActivationOptions 
 
 class Perceptron:
     def __init__(self, weightsAmount, activationMethod, learningRate):
 
         self.weights = np.zeros(weightsAmount) # Size N
-        self.activation = activations[activationMethod]
-        self.derivative = derivatives[activationMethod]
+        self.activation = self.activations[activationMethod]
+        self.derivative = self.derivatives[activationMethod]
         self.learningRate = learningRate
 
     def summation(self, inputs):
@@ -73,5 +73,5 @@ class Perceptron:
     derivatives = {
         ActivationOptions.SIMPLE.value: __dSimpleActivation, 
         ActivationOptions.LINEAR.value: __dLinearActivation, 
-        ActivationOptions.NON_LINEAR.value: __dNonLinearCorrection
+        ActivationOptions.NON_LINEAR.value: __dNonLinearActivation
     }
