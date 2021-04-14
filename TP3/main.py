@@ -10,15 +10,23 @@ def main():
     trainingInput = parser.parseInput(config.input, True)
     labels = parser.parseInput(config.desired, False)
     perceptron = Perceptron(trainingInput.size, config.activation, config.learningRate)
+
+    iterations = 0
+    error = 1
                 
     try:
-        for _ in range(config.iterations):
+        while iterations < config.iterations and error > 0:
             for inputs, label in zip(trainingInput, labels):
+
                 summation = perceptron.summation(inputs)
 
                 prediction = perceptron.activate(summation)
 
                 perceptron.correctWeights(inputs, label, prediction, summation)
+
+                error  = perceptron.calculateError(label, prediction)
+
+
     except KeyboardInterrupt:
         print("Finishing up...")
     
