@@ -28,12 +28,12 @@ def main():
 
                 error = perceptron.calculateError(label, prediction)
             iterations += 1
+        print("Weights", perceptron.weights)
 
     except KeyboardInterrupt:
         print("Finishing up...")
     
     
-
 # App entrypoint
 if __name__ == "__main__":
     main()
