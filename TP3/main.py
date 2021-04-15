@@ -9,7 +9,8 @@ def main():
     config = parser.parseConfiguration(CONFIG_INPUT)
     trainingInput = parser.parseInput(config.input, True)
     labels = parser.parseInput(config.desired, False)
-    perceptron = Perceptron(trainingInput.size, config.activation, config.learningRate)
+    # Create with shape because of N points of M components being NxM
+    perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate)
 
     iterations = 0
     error = 1
