@@ -20,6 +20,7 @@ class ConfigOptions(enum.Enum):
    ACTIVATION = "activation"
    LEARNING_RATE = "learningRate"
    MULTILAYER = "multilayer"
+   ERROR_LIMIT = "error"
 
    def __str__(self):
       return str(self.value)

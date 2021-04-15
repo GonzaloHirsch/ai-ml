@@ -6,5 +6,6 @@
     "iterations": 10,
     "activation": "simple",
     "multilayer": false,
-    "learningRate": 0.02 
+    "learningRate": 0.02,
+    "error": 0.40
 }

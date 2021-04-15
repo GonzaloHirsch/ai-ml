@@ -32,6 +32,7 @@ def parseConfiguration(configPath):
         activation = data[ConfigOptions.ACTIVATION.value]
         learningRate = data[ConfigOptions.LEARNING_RATE.value]
         multilayer = data[ConfigOptions.MULTILAYER.value]
+        error = data[ConfigOptions.ERROR_LIMIT.value]
         
         # Create config
         config = Config(
@@ -40,6 +41,7 @@ def parseConfiguration(configPath):
             iterations=iterations,
             activation=activation,
             learningRate=learningRate,
-            multilayer=multilayer 
+            multilayer=multilayer,
+            error=error
         )
     return config
