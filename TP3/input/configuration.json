@@ -3,7 +3,7 @@
         "input": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
         "desired": "datasets/TP3-ej1-Salida-deseada-and.txt"
     },
-    "iterations": 10,
+    "iterations": 100,
     "activation": "simple",
     "multilayer": false,
     "learningRate": 0.02,

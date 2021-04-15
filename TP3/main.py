@@ -17,6 +17,7 @@ def main():
                 
     try:
         while iterations < config.iterations and error > config.error:
+            print("Iteration #" + str(iterations))
             for inputs, label in zip(trainingInput, labels):
 
                 summation = perceptron.summation(inputs)
@@ -25,7 +26,8 @@ def main():
 
                 perceptron.correctWeights(inputs, label, prediction, summation)
 
-                error  = perceptron.calculateError(label, prediction)
+                error = perceptron.calculateError(label, prediction)
+            iterations += 1
 
     except KeyboardInterrupt:
         print("Finishing up...")
