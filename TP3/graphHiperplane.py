@@ -4,8 +4,8 @@ import matplotlib.animation as animation
 
 x = np.linspace(-2,2,100)
 
-INPUT_FILE = "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt"
-WEIGHTS_FILE = "output/run_input4_simple_0.02_1618536398.2610319.csv"
+INPUT_FILE = "datasets/TP3-ej1-Conjuntoentrenamiento-xor.txt"
+WEIGHTS_FILE = "output/run_input4_simple_0.02_1618538302.2997105.csv"
 
 def calculateHiperplanes(filename):
     f = open(filename, 'r')
