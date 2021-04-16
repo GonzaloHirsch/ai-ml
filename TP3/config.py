@@ -25,7 +25,7 @@ class Config:
         self.learningRate = learningRate
         self.multilayer = multilayer
         self.error = error
-        self.layers = layers
+        self.layers = [[layer[ConfigOptions.ACTIVATION.value], layer[ConfigOptions.PERCEPTRONS.value]] for layer in layers]
         self.normalizeDesired = normalizeDesired
 
         Config.__instance = self

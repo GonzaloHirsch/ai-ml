@@ -12,7 +12,7 @@ def parseInput(filepath, addExtraInput = False, flatten = 1, normalize = False):
         # Read all lines
         lines = f.readlines()
         data = []
-        subdata = []
+        subdata = [1] if addExtraInput else []
         # Count rows for flattening
         rowCount = 0
         for line in lines:
@@ -21,14 +21,11 @@ def parseInput(filepath, addExtraInput = False, flatten = 1, normalize = False):
                 data.append(np.array([1.0] + [float(elem) for elem in line.strip().split()]))
             elif addExtraInput and flatten > 1:
                 # Append to sub data
-                if rowCount == 1:
-                    subdata.append(np.array([1.0] + [float(elem) for elem in line.strip().split()]))
-                else:
-                    subdata.append(np.array([float(elem) for elem in line.strip().split()]))
+                subdata = subdata + [float(elem) for elem in line.strip().split()]
                 # Flatten the array
                 if rowCount == flatten:
                     data.append(np.array(subdata).flatten())
-                    subdata = []
+                    subdata = [1] if addExtraInput else []
                     rowCount = 0
             else:
                 data.append(np.array([float(elem) for elem in line.strip().split()]))

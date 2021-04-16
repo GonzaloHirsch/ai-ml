@@ -18,8 +18,8 @@
             "perceptrons": 10
         },
         {
-            "activation": "simple",
-            "perceptrons": 10
+            "activation": "linear",
+            "perceptrons": 100
         }
     ]
 }
