@@ -7,8 +7,12 @@ def main():
     print("Parsing input data...")
     # Parse configuration files
     config = parser.parseConfiguration(CONFIG_INPUT)
-    trainingInput = parser.parseInput(config.input, True)
-    labels = parser.parseInput(config.desired, False)
+    # Parse input
+    trainingInput = parser.parseInput(config.input, addExtraInput=True, flatten=config.flatten, normalize=False)
+    labels = parser.parseInput(config.desired, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
+    # Parse input test
+    trainingInputTest = parser.parseInput(config.inputTest, addExtraInput=True, flatten=config.flatten, normalize=False)
+    labelsTest = parser.parseInput(config.desiredTest, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
     # Create with shape because of N points of M components being NxM
     perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate)
 

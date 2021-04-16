@@ -1,8 +1,11 @@
 {
     "files": {
-        "input": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
-        "desired": "datasets/TP3-ej1-Salida-deseada-and.txt",
-        "flatten": 1
+        "input": "datasets/TP3-ej3-Conjuntoentrenamiento.txt",
+        "desired": "datasets/TP3-ej3-Salida-deseada.txt",
+        "inputTest": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
+        "desiredTest": "datasets/TP3-ej1-Salida-deseada-and.txt",
+        "flatten": 7,
+        "normalizeDesired": false
     },
     "iterations": 100,
     "activation": "simple",
