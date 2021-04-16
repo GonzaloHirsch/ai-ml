@@ -1,7 +1,30 @@
+import csv
+import time
+import os
+
 import parser
 from perceptron import Perceptron
 
 CONFIG_INPUT = "input/configuration.json"
+OUTPUT_DIR = "output/"
+OUTPUT_FIELDNAMES = ["weights"]
+weights = []
+
+# Makes sure the CSV file is prepared, create it if non existent
+def prepareOutput(filename):
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+    with open(filename, 'w+') as csv_file:
+        csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
+        csv_writer.writeheader()
+
+# Writes a row of data to the output file
+def writeAll(writer):
+    for i in range(len(weights)):
+        info = {
+            OUTPUT_FIELDNAMES[0]: weights[i],
+        }
+        writer.writerow(info)
 
 def main():
     print("Parsing input data...")
@@ -9,8 +32,16 @@ def main():
     config = parser.parseConfiguration(CONFIG_INPUT)
     trainingInput = parser.parseInput(config.input, True)
     labels = parser.parseInput(config.desired, False)
-    # Create with shape because of N points of M components being NxM
+    # Create with shape because of N points of M components being 
     perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate)
+
+    # For graphing
+    weights.append(perceptron.getWeights())
+    print(weights)
+
+    # Define output file and prepare output
+    filename = OUTPUT_DIR + ('run_input%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
+    prepareOutput(filename)
 
     iterations = 0
     error = 1
@@ -19,7 +50,6 @@ def main():
         while iterations < config.iterations and error > config.error:
             print("Iteration #" + str(iterations))
             for inputs, label in zip(trainingInput, labels):
-
                 summation = perceptron.summation(inputs)
 
                 prediction = perceptron.activate(summation)
@@ -28,6 +58,15 @@ def main():
 
                 error = perceptron.calculateError(label, prediction)
             iterations += 1
+
+            weights.append(perceptron.getWeights())
+            print(weights)
+
+        # Write output
+        with open(filename, 'a') as csv_file:
+            # Get instance of the writer
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
+            writeAll(csv_writer)
 
     except KeyboardInterrupt:
         print("Finishing up...")

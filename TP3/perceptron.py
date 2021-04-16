@@ -12,6 +12,9 @@ class Perceptron:
         self.derivative = self.derivatives[activationMethod]
         self.learningRate = learningRate
 
+    def getWeights(self):
+        return np.copy(self.weights)
+
     def summation(self, inputs):
         # Input shape (1, N)
         # Weight shape (N, 1)
