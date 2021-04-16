@@ -33,6 +33,7 @@ def main():
                 error = perceptron.calculateError(label, prediction)
             iterations += 1
         print("Weights", perceptron.weights)
+        print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
