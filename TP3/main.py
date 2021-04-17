@@ -101,9 +101,6 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             weights.append(perceptron.getWeights())
             iterations += 1
 
-        print("Weights", perceptron.weights)
-        print("Error", error)
-
         # Write output
         with open(filename, 'a') as csv_file:
             # Get instance of the writer
@@ -111,6 +108,9 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             writeAll(csv_writer)
 
         testPerceptron(perceptron, trainingInput, labels, config.delta)
+
+        print("Weights", perceptron.weights)
+        print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")

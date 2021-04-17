@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from mpl_toolkits.mplot3d import Axes3D
 import argparse
 
 EJ1_XOR = "xor1"
@@ -19,7 +20,7 @@ def calculateR2Hiperplanes(filename):
     iterativeHiperplanes = []
     index = 0
     for line in f:
-        weights = line.lstrip("[").rstrip("]\n").split()
+        weights = line.lstrip("[").rstrip("]\n\r").split()
         if index > 0:
             if len(weights) != 3:
                 print("Can only graph in 2D")
@@ -48,7 +49,7 @@ def calculateR3Hiperplanes(filename):
     iterativeHiperplanes = []
     index = 0
     for line in f:
-        weights = line.lstrip("[").rstrip("]\n").split()
+        weights = line.lstrip("[").rstrip("]\n\r").split()
         if index > 0:
             if len(weights) != 4:
                 print("Can only graph in 3D")
@@ -82,15 +83,15 @@ def getInputFromFile(inputFile):
             data.append(np.array([float(elem) for elem in line.strip().split()]))
     return np.array(data)
 
-def graphR2Hiperplane(inputs, hiperplanes):
+def graphR2Hiperplane(inputs, desired, hiperplanes):
     fig, ax = plt.subplots()
 
-    for coordinate in inputs:
-        ax.plot(coordinate[0], coordinate[1], 'bo')
+    for i in range(inputs.shape[0]):
+        color = [0, 0, 1] if desired[i] > 0 else [1, 0, 0]
+        ax.plot(inputs[i][0], inputs[i][1], 'o', c=color)
    
     ax.set_xlabel('x', color='#1C2833')
     ax.set_ylabel('y', color='#1C2833')
-    ax.legend(loc='upper left')
     ax.grid()
 
     line, = ax.plot(x, hiperplanes[0], '-r', label='Iteration 0')
@@ -101,15 +102,15 @@ def graphR2Hiperplane(inputs, hiperplanes):
         return line,
 
     ani = animation.FuncAnimation(
-        fig, animate, interval=1000, blit=True, save_count=50)
+        fig, animate, interval=200, blit=True, save_count=50)
 
     plt.show()
 
-def graphR3Hiperplane(inputs, hiperplanes):
+def graphR3Hiperplane(inputs, desired, hiperplanes):
 
-    plot_args = {'rstride': 1, 'cstride': 1, 'cmap': 'magma', 
-             'linewidth': 0.01, 'antialiased': True, 'color': 'w',
-             'shade': True}
+    plot_args = {'rstride': 1, 'cstride': 1, 
+             'linewidth': 0.01, 'antialiased': True, 'color': [1,0,0],
+             'shade': True, 'rstride': 10, 'cstride': 10, 'alpha': 0.75}
 
     X, Y = np.meshgrid(x2, y2)
     Z = hiperplanes[0]
@@ -123,22 +124,23 @@ def graphR3Hiperplane(inputs, hiperplanes):
     ax.set_zlim(-5,5)
     ax.set_zlim(-5,5)
     
-    for coordinate in inputs:
-        ax.plot(coordinate[0], coordinate[1], coordinate[2], 'ro')
+    maxd = desired.max()
+    for i in range(inputs.shape[0]):
+        color = [1, desired[i][0]/maxd, 0.5]
+        ax.plot(inputs[i][0], inputs[i][1], inputs[i][2], 'o', c=color)
    
     ax.grid()
 
     plot = [ax.plot_surface(X, Y, Z, **plot_args)]
 
     def animate(i, hiperplanes, plot):
-        print(i)
         if (i < len(hiperplanes)):
             plot[0].remove()
             plot[0] = ax.plot_surface(X, Y, hiperplanes[i], **plot_args)
         return plot,
 
     ani = animation.FuncAnimation(
-        fig, animate, interval=1000, blit=False, fargs=(hiperplanes, plot), save_count=50)
+        fig, animate, interval=200, blit=False, fargs=(hiperplanes, plot), save_count=50)
 
     plt.show()
 
@@ -162,26 +164,30 @@ def main():
 
     if args.inputFile == EJ1_XOR:
         print("Hiperplane for data set ej1 XOR...")
-        INPUT_FILE = "datasets/TP3-ej1-Conjuntoentrenamiento-xor"
+        INPUT_FILE = "datasets/TP3-ej1-Conjuntoentrenamiento-xor.txt"
+        DESIRED_FILE = "datasets/TP3-ej1-Salida-deseada-xor.txt"
     elif args.inputFile == EJ1_AND:
         print("Hiperplane for data set ej1 AND...")
-        INPUT_FILE = "datasets/TP3-ej1-Conjuntoentrenamiento-and"
+        INPUT_FILE = "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt"
+        DESIRED_FILE = "datasets/TP3-ej1-Salida-deseada-and.txt"
     elif args.inputFile == EJ2:
         print("Hiperplane for data set ej 2...")
         INPUT_FILE = "datasets/TP3-ej2-Conjuntoentrenamiento.txt"
+        DESIRED_FILE = "datasets/TP3-ej2-Salida-deseada.txt"
         is2d = False
     elif args.inputFile == EJ3:
         print("Cannot graph this input")
         exit(0)        
 
     inputs = getInputFromFile(INPUT_FILE)
+    desired = getInputFromFile(DESIRED_FILE)
 
-    if (is2d):
+    if is2d:
         hiperplanes = calculateR2Hiperplanes(WEIGHT_FILE)
-        graphR2Hiperplane(inputs, hiperplanes)
+        graphR2Hiperplane(inputs, desired, hiperplanes)
     else:
         hiperplanes = calculateR3Hiperplanes(WEIGHT_FILE)
-        graphR3Hiperplane(inputs, hiperplanes)
+        graphR3Hiperplane(inputs, desired, hiperplanes)
 
 # call main
 if __name__ == '__main__':
