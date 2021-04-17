@@ -1,18 +1,19 @@
 {
     "files": {
-        "input": "datasets/TP3-ej1-Conjuntoentrenamiento-xor.txt",
-        "desired": "datasets/TP3-ej1-Salida-deseada-xor.txt",
+        "input": "datasets/TP3-ej2-Conjuntoentrenamiento.txt",
+        "desired": "datasets/TP3-ej2-Salida-deseada.txt",
         "inputTest": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
         "desiredTest": "datasets/TP3-ej1-Salida-deseada-and.txt",
         "flatten": 0,
         "normalizeDesired": true
     },
     "iterations": 5000,
-    "activation": "simple",
+    "activation": "nonlinear",
     "learningRate": 0.01,
     "beta": 1,
+    "deltaDesired": 0.05,
     "error": 0.005,
-    "multilayer": true,
+    "multilayer": false,
     "layers": [
         {
             "activation": "simple",

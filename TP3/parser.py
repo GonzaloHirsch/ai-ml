@@ -58,6 +58,7 @@ def parseConfiguration(configPath):
         multilayer = data[ConfigOptions.MULTILAYER.value]
         error = data[ConfigOptions.ERROR_LIMIT.value]
         beta = data[ConfigOptions.BETA.value]
+        delta = data[ConfigOptions.DELTA_DESIRED.value]
         
         # Create config
         config = Config(
@@ -73,6 +74,7 @@ def parseConfiguration(configPath):
             layers=layers,
             flatten=flatten,
             normalizeDesired=normalizeDesired,
-            beta=beta
+            beta=beta,
+            delta=delta
         )
     return config

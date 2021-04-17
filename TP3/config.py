@@ -11,7 +11,7 @@ class Config:
             raise Exception("No config instance available")
         return Config.__instance
 
-    def __init__(self, inputs, inputsTest, flatten, desired, desiredTest, iterations, activation, learningRate, multilayer, error, layers, normalizeDesired, beta):
+    def __init__(self, inputs, inputsTest, flatten, desired, desiredTest, iterations, activation, learningRate, multilayer, error, layers, normalizeDesired, beta, delta):
         if Config.__instance != None:
             raise Exception("Cannot create another instance of config")
 
@@ -28,6 +28,7 @@ class Config:
         self.error = error
         self.layers = [[layer[ConfigOptions.ACTIVATION.value], layer[ConfigOptions.PERCEPTRONS.value]] for layer in layers]
         self.normalizeDesired = normalizeDesired
+        self.delta = delta
 
         Config.__instance = self
     

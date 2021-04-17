@@ -53,6 +53,21 @@ def writeAll(writer):
 # SINGLE LAYER
 # ----------------------------
 
+def predict(perceptron, trainData):
+    summation = perceptron.summation(trainData)
+    prediction = perceptron.activate(summation)
+    return summation, prediction
+
+def testPerceptron(perceptron, trainingInput, labels, delta):
+    # Get accuracy
+    print("Test Results:")
+    accuracy = 0
+    for i in range(len(trainingInput)):
+        summ, activ = predict(perceptron, trainingInput[i])
+        print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ, "Status:", "OK" if abs(labels[i] - activ) <= delta else "ERROR")
+        accuracy += 1 if abs(labels[i] - activ) <= delta else 0
+    print(accuracy, "out of", trainingInput.shape[0])
+
 def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     # Create with shape because of N points of M components being NxM
     perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate, config.beta)
@@ -69,10 +84,10 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     try:
         while iterations < config.iterations and error > config.error:
             print("Iteration #" + str(iterations))
-            x_i = random.randint(0,trainingInput.shape[0] - 1)
+            x_i = random.randint(0, trainingInput.shape[0] - 1)
 
-            summation = perceptron.summation(trainingInput[x_i])
-            prediction = perceptron.activate(summation)
+            # Make the prediction
+            summation, prediction = predict(perceptron, trainingInput[x_i])
 
             # Correct Perceptron weights.
             perceptron.correctWeights(trainingInput[x_i], labels[x_i], prediction, summation)
@@ -80,22 +95,22 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             # Calculate error.
             error = 0
             for inputs, label in zip(trainingInput, labels):
-                summation = perceptron.summation(inputs)
-                prediction = perceptron.activate(summation)
+                summation, prediction = predict(perceptron, inputs)
                 error += perceptron.calculateError(label, prediction)
 
-
             weights.append(perceptron.getWeights())
-            print("Weights", perceptron.weights)
-            print("Error", error)
-
             iterations += 1
+
+        print("Weights", perceptron.weights)
+        print("Error", error)
 
         # Write output
         with open(filename, 'a') as csv_file:
             # Get instance of the writer
             csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
             writeAll(csv_writer)
+
+        testPerceptron(perceptron, trainingInput, labels, config.delta)
 
     except KeyboardInterrupt:
         print("Finishing up...")
@@ -128,7 +143,7 @@ def createNetwork(config, inputSize):
         lastLayer = layer
     return np.array(network, dtype = object)
 
-
+# Method to forward propagate into the network
 def forwardPropagate(network, trainingInput, networkSize, itemIndex):
     activationValues = []
     summationValues = []
@@ -144,6 +159,16 @@ def forwardPropagate(network, trainingInput, networkSize, itemIndex):
             activations = [1] + activations
         activationValues.append(np.array(activations))
     return summationValues, activationValues
+
+def testNetwork(network, networkSize, trainingInput, labels, delta):
+    # Get accuracy
+    print("Test Results:")
+    accuracy = 0
+    for i in range(len(trainingInput)):
+        summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
+        print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ[-1][0], "Status:", "OK" if abs(labels[i] - activ[-1][0]) <= delta else "ERROR")
+        accuracy += 1 if abs(labels[i] - activ[-1][0]) <= delta else 0
+    print(accuracy, "out of", trainingInput.shape[0])
 
 # Trains the multilayer network
 def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest):
@@ -204,18 +229,8 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
             # Increase iterations
             iterations += 1
 
-        # Get accuracy
-        print("Results:")
-        accuracy = 0
-        for i in range(len(trainingInput)):
-            summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
-            print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ[-1][0], "Status:", "OK" if labels[i] == activ[-1][0] else "ERROR")
-            accuracy += 1 if labels[i] == activ[-1][0] else 0
-            print()
-        print(accuracy, "out of", trainingInput.shape[0])
-
-        print("Weights", perceptron.weights)
         print("Error", error)
+        testNetwork(network, networkSize, trainingInput, labels, config.delta)
 
     except KeyboardInterrupt:
         print("Finishing up...")

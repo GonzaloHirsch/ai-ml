@@ -27,6 +27,7 @@ class ConfigOptions(enum.Enum):
    MULTILAYER = "multilayer"
    ERROR_LIMIT = "error"
    BETA = "beta"
+   DELTA_DESIRED = "deltaDesired"
 
    def __str__(self):
       return str(self.value)
