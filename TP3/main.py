@@ -34,6 +34,10 @@ def writeAll(writer):
 # TRAININGS
 # -----------------------------------------------------------------
 
+# ----------------------------
+# SINGLE LAYER
+# ----------------------------
+
 def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     # Create with shape because of N points of M components being NxM
     perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate)
@@ -73,6 +77,9 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     except KeyboardInterrupt:
         print("Finishing up...")
 
+# ----------------------------
+# MULTI LAYER
+# ----------------------------
 
 def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest):
     # Create with shape because of N points of M components being NxM
