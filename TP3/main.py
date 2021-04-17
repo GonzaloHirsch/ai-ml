@@ -60,7 +60,6 @@ def predict(perceptron, trainData):
 
 def testPerceptron(perceptron, trainingInput, labels, delta):
     # Get accuracy
-    print("Test Results:")
     accuracy = 0
     for i in range(len(trainingInput)):
         summ, activ = predict(perceptron, trainingInput[i])
@@ -107,7 +106,11 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
             writeAll(csv_writer)
 
+        print("\nTraining Results:")
         testPerceptron(perceptron, trainingInput, labels, config.delta)
+
+        print("\nTraining Results:")
+        testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta)
 
         print("Weights", perceptron.weights)
         print("Error", error)
@@ -162,7 +165,6 @@ def forwardPropagate(network, trainingInput, networkSize, itemIndex):
 
 def testNetwork(network, networkSize, trainingInput, labels, delta):
     # Get accuracy
-    print("Test Results:")
     accuracy = 0
     for i in range(len(trainingInput)):
         summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
@@ -208,7 +210,7 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
                     # Add 1 to index to take into account bias
                     usefulWeights = np.array([p.weights[subindex + 1] for p in network[index + 1]])
                     # Calculate backpropagation for next layer in iteration
-                    data.append(perceptron.backpropagate(summationValues[index][subindex], usefulWeights, np.transpose(backpropagationValues[index + 1])))
+                    data.append(perceptron.backpropagate(summationValues[index][subindex], usefulWeights, backpropagationValues[index + 1]))
                 # Add all backpropagation values
                 backpropagationValues[index] = np.array(data)
             
@@ -229,8 +231,13 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
             # Increase iterations
             iterations += 1
 
-        print("Error", error)
+        print("\nTraining Results:")
         testNetwork(network, networkSize, trainingInput, labels, config.delta)
+
+        print("\nLearning Results:")
+        testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta)
+
+        print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
