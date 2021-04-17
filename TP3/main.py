@@ -1,6 +1,7 @@
 import csv
 import time
 import os
+import random
 
 import parser
 from perceptron import Perceptron
@@ -54,19 +55,27 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     try:
         while iterations < config.iterations and error > config.error:
             print("Iteration #" + str(iterations))
+            x_i = random.randint(0,trainingInput.shape[0] - 1)
+
+            summation = perceptron.summation(trainingInput[x_i])
+            prediction = perceptron.activate(summation)
+
+            # Correct Perceptron weights.
+            perceptron.correctWeights(trainingInput[x_i], labels[x_i], prediction, summation)
+            
+            # Calculate error.
+            error = 0
             for inputs, label in zip(trainingInput, labels):
                 summation = perceptron.summation(inputs)
-
                 prediction = perceptron.activate(summation)
+                error += perceptron.calculateError(label, prediction)
 
-                perceptron.correctWeights(inputs, label, prediction, summation)
-
-                error = perceptron.calculateError(label, prediction)
-            iterations += 1
 
             weights.append(perceptron.getWeights())
             print("Weights", perceptron.weights)
             print("Error", error)
+
+            iterations += 1
 
         # Write output
         with open(filename, 'a') as csv_file:
