@@ -5,12 +5,13 @@ import numpy as np
 from constants import ActivationOptions 
 
 class Perceptron:
-    def __init__(self, weightsAmount, activationMethod, learningRate):
+    def __init__(self, weightsAmount, activationMethod, learningRate, beta):
         
+        self.beta = beta
         self.activationMethod = activationMethod
-        self.weights = np.zeros(weightsAmount) # Size N
-        self.activation = self.activations[activationMethod]
-        self.derivative = self.derivatives[activationMethod]
+        self.weights = np.random.rand(weightsAmount) * np.sqrt(1/weightsAmount)
+        self.activation = self.getActivationFunction(activationMethod)
+        self.derivative = self.getDerivativeFunction(activationMethod)
         self.learningRate = learningRate
 
     def getWeights(self):
@@ -49,42 +50,50 @@ class Perceptron:
     # ACTIVATION FUNCTIONS
     # -----------------------------------------------------------------
         
-    def __simpleActivation(summation):
+    def __simpleActivation(self, summation):
         # Summation = number
         # Activation = number
         return copysign(1, summation)
 
     # Derivative
-    def __dSimpleActivation(summation):
+    def __dSimpleActivation(self, summation):
         return 1
 
-    def __linearActivation(summation):
-        return 1
-
-    # Derivative
-    def __dLinearActivation(summation):
-        return 1
-
-    def __nonLinearActivation(summation):
-        return 1
+    def __linearActivation(self, summation):
+        return summation
 
     # Derivative
-    def __dNonLinearActivation(summation):
+    def __dLinearActivation(self, summation):
         return 1
+
+    def __nonLinearActivation(self, summation):
+        return tanh(self.beta * summation)
+
+    # Derivative
+    def __dNonLinearActivation(self, summation):
+        return self.beta * (1 - (self.__nonLinearActivation(summation)**2))
 
     def __str__(self):
         subs = 'activation=%s, weights=%s, learningRate=%s' % (self.activationMethod, self.weights, self.learningRate)
         s = '%s{%s}' % (type(self).__name__, subs)
         return s
 
-    activations = {
-        ActivationOptions.SIMPLE.value: __simpleActivation, 
-        ActivationOptions.LINEAR.value: __linearActivation, 
-        ActivationOptions.NON_LINEAR.value: __nonLinearActivation
-    }
+    def getActivationFunction(self, activationMethod):
+        activations = {
+            ActivationOptions.SIMPLE.value: self.__simpleActivation, 
+            ActivationOptions.LINEAR.value: self.__linearActivation, 
+            ActivationOptions.NON_LINEAR.value: self.__nonLinearActivation
+        }
+        return activations[activationMethod]
 
-    derivatives = {
-        ActivationOptions.SIMPLE.value: __dSimpleActivation, 
-        ActivationOptions.LINEAR.value: __dLinearActivation, 
-        ActivationOptions.NON_LINEAR.value: __dNonLinearActivation
-    }
+    def getDerivativeFunction(self, activationMethod):
+        derivatives = {
+            ActivationOptions.SIMPLE.value: self.__dSimpleActivation, 
+            ActivationOptions.LINEAR.value: self.__dLinearActivation, 
+            ActivationOptions.NON_LINEAR.value: self.__dNonLinearActivation
+        }
+        return derivatives[activationMethod]
+
+    
+
+    

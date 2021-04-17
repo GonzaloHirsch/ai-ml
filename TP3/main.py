@@ -55,7 +55,7 @@ def writeAll(writer):
 
 def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     # Create with shape because of N points of M components being NxM
-    perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate)
+    perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate, config.beta)
     # For graphing
     weights.append(perceptron.getWeights())
 
@@ -123,7 +123,7 @@ def createNetwork(config, inputSize):
         else:
             weightCount = lastLayer[1] + 1
         # layer[0] = activation, layer[1] = perceptron count
-        network.append(np.array([Perceptron(weightCount, layer[0], config.learningRate) for x in range(0, layer[1])], dtype = Perceptron))
+        network.append(np.array([Perceptron(weightCount, layer[0], config.learningRate, config.beta) for x in range(0, layer[1])], dtype = Perceptron))
         # Store previous layer
         lastLayer = layer
     return np.array(network, dtype = object)
@@ -203,6 +203,16 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
             
             # Increase iterations
             iterations += 1
+
+        # Get accuracy
+        print("Results:")
+        accuracy = 0
+        for i in range(len(trainingInput)):
+            summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
+            print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ[-1][0], "Status:", "OK" if labels[i] == activ[-1][0] else "ERROR")
+            accuracy += 1 if labels[i] == activ[-1][0] else 0
+            print()
+        print(accuracy, "out of", trainingInput.shape[0])
 
         print("Weights", perceptron.weights)
         print("Error", error)

@@ -57,6 +57,7 @@ def parseConfiguration(configPath):
         learningRate = data[ConfigOptions.LEARNING_RATE.value]
         multilayer = data[ConfigOptions.MULTILAYER.value]
         error = data[ConfigOptions.ERROR_LIMIT.value]
+        beta = data[ConfigOptions.BETA.value]
         
         # Create config
         config = Config(
@@ -71,6 +72,7 @@ def parseConfiguration(configPath):
             error=error,
             layers=layers,
             flatten=flatten,
-            normalizeDesired=normalizeDesired
+            normalizeDesired=normalizeDesired,
+            beta=beta
         )
     return config
