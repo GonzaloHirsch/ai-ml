@@ -7,19 +7,23 @@
         "flatten": 0,
         "normalizeDesired": true
     },
-    "iterations": 100,
+    "iterations": 1,
     "activation": "simple",
     "learningRate": 0.02,
     "error": 0.005,
-    "multilayer": false,
+    "multilayer": true,
     "layers": [
         {
             "activation": "simple",
-            "perceptrons": 10
+            "perceptrons": 2
         },
         {
-            "activation": "linear",
-            "perceptrons": 100
+            "activation": "simple",
+            "perceptrons": 5
+        },
+        {
+            "activation": "simple",
+            "perceptrons": 1
         }
     ]
 }

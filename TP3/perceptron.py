@@ -6,7 +6,8 @@ from constants import ActivationOptions
 
 class Perceptron:
     def __init__(self, weightsAmount, activationMethod, learningRate):
-
+        
+        self.activationMethod = activationMethod
         self.weights = np.zeros(weightsAmount) # Size N
         self.activation = self.activations[activationMethod]
         self.derivative = self.derivatives[activationMethod]
@@ -63,7 +64,7 @@ class Perceptron:
         return
 
     def __str__(self):
-        subs = 'weights=%s, learningRate=%s' % (self.weights, self.weights)
+        subs = 'activation=%s, weights=%s, learningRate=%s' % (self.activationMethod, self.weights, self.learningRate)
         s = '%s{%s}' % (type(self).__name__, subs)
         return s
 

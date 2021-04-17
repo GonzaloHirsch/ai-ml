@@ -1,8 +1,10 @@
+# Lib imports
 import csv
 import time
 import os
+import numpy as np
 import random
-
+# Local imports
 import parser
 from perceptron import Perceptron
 
@@ -10,6 +12,18 @@ CONFIG_INPUT = "input/configuration.json"
 OUTPUT_DIR = "output/"
 OUTPUT_FIELDNAMES = ["weights"]
 weights = []
+
+# -----------------------------------------------------------------
+# DEBUG METHODS
+# -----------------------------------------------------------------
+
+def printNetwork(network):
+    count = 0
+    for layer in network:
+        print("LAYER #" + str(count))
+        for p in layer:
+            print(p)
+        count += 1
 
 # -----------------------------------------------------------------
 # FILE WRITING
@@ -90,41 +104,76 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
 # MULTI LAYER
 # ----------------------------
 
+# Dinamically builds a network
+# Receives:
+#   config --> Config object
+#   inputSize --> Number of inputs per training point with bias taken into account
+def createNetwork(config, inputSize):
+    network = []
+    isFirst = True
+    lastLayer = []
+    for layer in config.layers:
+        # If its the first layer, the bias is accounted in the input size
+        if isFirst:
+            weightCount = inputSize
+            # Modify first flag
+            isFirst = False
+        # If its another layer, the weights are the number of 
+        # perceptrons in previous layer + 1 (bias)
+        else:
+            weightCount = lastLayer[1] + 1
+        # layer[0] = activation, layer[1] = perceptron count
+        network.append(np.array([Perceptron(weightCount, layer[0], config.learningRate) for x in range(0, layer[1])], dtype = Perceptron))
+        # Store previous layer
+        lastLayer = layer
+    return np.array(network, dtype = object)
+
+# Trains the multilayer network
 def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest):
-    # Create with shape because of N points of M components being NxM
-    perceptron = Perceptron(trainingInput.shape[1], config.activation, config.learningRate)
-    # For graphing
-    weights.append(perceptron.getWeights())
+    # Create the network dinamically
+    network = createNetwork(config, trainingInput.shape[1])
 
-    # Define output file and prepare output
-    filename = OUTPUT_DIR + ('run_input%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
-    prepareOutput(filename)
-
+    # Store sizes to avoid multiple calls
+    trainingSize = trainingInput.shape[0]
+    networkSize = network.shape[0]
+    # Store an enumerate to avoid multiple operations
+    networkEnumerate = enumerate(network)
     iterations = 0
     error = 1
-                
     try:
         while iterations < config.iterations and error > config.error:
             print("Iteration #" + str(iterations))
-            for inputs, label in zip(trainingInput, labels):
-                summation = perceptron.summation(inputs)
+            # Picking random item
+            itemIndex = int(random.uniform(0, trainingSize))
+            # Propagate
+            activationValues = []
+            summationValues = []
+            for index, layer in networkEnumerate:
+                # Get data to pass to layer, use training input or activated data before
+                data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
+                # Perform all summations
+                summationValues.append(np.array([p.summation(data) for p in layer]))
+                # Perform all activations
+                activations = [layer[i].activate(summationValues[index][i]) for i in range(len(summationValues[index]))]
+                # If it's not the last layer, add bias to activations for next iterations
+                if index < networkSize - 1:
+                    activations = [1] + activations
+                activationValues.append(np.array(activations))
+                
+            print(summationValues)
+            print(activationValues)
+            # Backpropagate
+            # summation = perceptron.summation(inputs)
 
-                prediction = perceptron.activate(summation)
+            # prediction = perceptron.activate(summation)
 
-                perceptron.correctWeights(inputs, label, prediction, summation)
+            # perceptron.correctWeights(inputs, label, prediction, summation)
 
-                error = perceptron.calculateError(label, prediction)
+            # error = perceptron.calculateError(label, prediction)
             iterations += 1
 
-            weights.append(perceptron.getWeights())
-            print("Weights", perceptron.weights)
-            print("Error", error)
-
-        # Write output
-        with open(filename, 'a') as csv_file:
-            # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
-            writeAll(csv_writer)
+        print("Weights", perceptron.weights)
+        print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
