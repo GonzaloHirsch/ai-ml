@@ -50,7 +50,6 @@ def calculateR3Hiperplanes(filename):
     index = 0
     for line in f:
         weights = line.strip(" []\n\t\"\'\r").split(',')
-        print(weights)
         if index > 0:
             if len(weights) != 4:
                 print("Can only graph in 3D")
@@ -135,7 +134,6 @@ def graphR3Hiperplane(inputs, desired, hiperplanes):
     plot = [ax.plot_surface(X, Y, Z, **plot_args)]
 
     def animate(i, hiperplanes, plot):
-        print(i)
         if (i < len(hiperplanes)):
             plot[0].remove()
             plot[0] = ax.plot_surface(X, Y, hiperplanes[i], **plot_args)
