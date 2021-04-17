@@ -128,6 +128,23 @@ def createNetwork(config, inputSize):
         lastLayer = layer
     return np.array(network, dtype = object)
 
+
+def forwardPropagate(network, trainingInput, networkSize, itemIndex):
+    activationValues = []
+    summationValues = []
+    for index, layer in enumerate(network):
+        # Get data to pass to layer, use training input or activated data before
+        data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
+        # Perform all summations
+        summationValues.append(np.array([p.summation(data) for p in layer]))
+        # Perform all activations
+        activations = [layer[i].activate(summationValues[index][i]) for i in range(len(summationValues[index]))]
+        # If it's not the last layer, add bias to activations for next iterations
+        if index < networkSize - 1:
+            activations = [1] + activations
+        activationValues.append(np.array(activations))
+    return summationValues, activationValues
+
 # Trains the multilayer network
 def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest):
     # Create the network dinamically
@@ -136,40 +153,55 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
     # Store sizes to avoid multiple calls
     trainingSize = trainingInput.shape[0]
     networkSize = network.shape[0]
-    # Store an enumerate to avoid multiple operations
-    networkEnumerate = enumerate(network)
     iterations = 0
     error = 1
     try:
         while iterations < config.iterations and error > config.error:
             print("Iteration #" + str(iterations))
+            
             # Picking random item
             itemIndex = int(random.uniform(0, trainingSize))
+            
             # Propagate
-            activationValues = []
-            summationValues = []
-            for index, layer in networkEnumerate:
-                # Get data to pass to layer, use training input or activated data before
-                data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
-                # Perform all summations
-                summationValues.append(np.array([p.summation(data) for p in layer]))
-                # Perform all activations
-                activations = [layer[i].activate(summationValues[index][i]) for i in range(len(summationValues[index]))]
-                # If it's not the last layer, add bias to activations for next iterations
-                if index < networkSize - 1:
-                    activations = [1] + activations
-                activationValues.append(np.array(activations))
-                
-            print(summationValues)
-            print(activationValues)
+            summationValues, activationValues = forwardPropagate(network, trainingInput, networkSize, itemIndex)
+
+            # Calculate prediction to backpropagate
+            # Asume only 1 neuron in last layer and 1 result in collections
+            initialBackpropagation = network[-1][0].initialBackpropagate(summationValues[-1][0], labels[itemIndex], activationValues[-1][0])
+            
             # Backpropagate
-            # summation = perceptron.summation(inputs)
+            # Create array of fixed size and set last value
+            backpropagationValues = [None] * networkSize
+            backpropagationValues[-1] = np.array([initialBackpropagation])
+            # Use from size-2 to avoid out of bounds and last layer
+            # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
+            for index in range(networkSize - 2, -1, -1):
+                # Iterate each perceptron in layer
+                data = []
+                for subindex, perceptron in enumerate(network[index]):
+                    # Get all weights leaving that perceptron 
+                    # Add 1 to index to take into account bias
+                    usefulWeights = np.array([p.weights[subindex + 1] for p in network[index + 1]])
+                    # Calculate backpropagation for next layer in iteration
+                    data.append(perceptron.backpropagate(summationValues[index][subindex], usefulWeights, np.transpose(backpropagationValues[index + 1])))
+                # Add all backpropagation values
+                backpropagationValues[index] = np.array(data)
+            
+            # Correct weights
+            for index, layer in enumerate(network):
+                # Determine which data using depending on index
+                data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
+                # Call weight correction on each one
+                for subindex, p in enumerate(layer):
+                    p.correctHiddenWeights(backpropagationValues[index][subindex], data)
 
-            # prediction = perceptron.activate(summation)
-
-            # perceptron.correctWeights(inputs, label, prediction, summation)
-
-            # error = perceptron.calculateError(label, prediction)
+            # Calculate error
+            error = 0
+            for i in range(len(trainingInput)):
+                summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
+                error += perceptron.calculateError(labels[i], activ[-1][0])
+            
+            # Increase iterations
             iterations += 1
 
         print("Weights", perceptron.weights)

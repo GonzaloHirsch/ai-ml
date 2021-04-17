@@ -30,8 +30,17 @@ class Perceptron:
         dActivation = self.derivative(summation)
         return self.learningRate * (desired - prediction) * dActivation * np.transpose(inputs)
 
+    def backpropagate(self, summation, otherWeights, backpropagations):
+        return self.derivative(summation) * np.dot(otherWeights, backpropagations) 
+
+    def initialBackpropagate(self, summation, desired, prediction):
+        return self.derivative(summation) * (desired - prediction)
+
     def correctWeights(self, inputs, desired, prediction, summation): 
         self.weights += self.weightCorrectionFactor(inputs, desired, prediction, summation)
+
+    def correctHiddenWeights(self, backpropagation, prediction):
+        self.weights += (self.learningRate * backpropagation * prediction)
 
     def calculateError(self, desired, prediction):
         return ((desired - prediction)**2) * 0.5
@@ -50,18 +59,18 @@ class Perceptron:
         return 1
 
     def __linearActivation(summation):
-        return
+        return 1
 
     # Derivative
     def __dLinearActivation(summation):
-        return
+        return 1
 
     def __nonLinearActivation(summation):
-        return
+        return 1
 
     # Derivative
     def __dNonLinearActivation(summation):
-        return
+        return 1
 
     def __str__(self):
         subs = 'activation=%s, weights=%s, learningRate=%s' % (self.activationMethod, self.weights, self.learningRate)

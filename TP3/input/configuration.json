@@ -7,7 +7,7 @@
         "flatten": 0,
         "normalizeDesired": true
     },
-    "iterations": 1,
+    "iterations": 100,
     "activation": "simple",
     "learningRate": 0.02,
     "error": 0.005,
@@ -16,10 +16,6 @@
         {
             "activation": "simple",
             "perceptrons": 2
-        },
-        {
-            "activation": "simple",
-            "perceptrons": 5
         },
         {
             "activation": "simple",
