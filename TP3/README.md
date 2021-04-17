@@ -86,6 +86,18 @@ En la carpeta `datasets` se pueden encontrar archivos con datasets (todos tienen
     * `TP3-ej3-Conjuntoentrenamiento.txt`
     * `TP3-ej3-Salida-deseada.txt`
 
+## Graficar
+Para poder ver una animacion de los hiperplanos creados, ya sea de 2D o 3D, debe correr el siguiente comando:
+```
+python graphHiperplane.py -i <input> -w <archivo_de_weights>
+```
+* `input` --> Indica que datos de entrada debe tomar. Puede ser las siguientes opciones:
+    * `xor1` --> Dataset del ej1 XOR
+    * `and1` --> Dataset del ej1 AND
+    * `ej2` --> Dataset para el ej2
+    * `ej3` --> Dataset para el ej3. Esto cortara el programa porque no se puede graficar.
+* `archivo_de_weights` --> Nombre del archivo donde se imprimieron los pesos
+
 ## Dependencias
 
 Cada vez que se instala una librería nueva hacer:
