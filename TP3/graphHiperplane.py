@@ -108,9 +108,9 @@ def graphR2Hiperplane(inputs, desired, hiperplanes):
 
 def graphR3Hiperplane(inputs, desired, hiperplanes):
 
-    plot_args = {'rstride': 1, 'cstride': 1, 'cmap': 'magma', 
-             'linewidth': 0.01, 'antialiased': True, 'color': 'w',
-             'shade': True}
+    plot_args = {'rstride': 1, 'cstride': 1, 
+             'linewidth': 0.01, 'antialiased': True, 'color': [1,0,0],
+             'shade': True, 'rstride': 10, 'cstride': 10, 'alpha': 0.75}
 
     X, Y = np.meshgrid(x2, y2)
     Z = hiperplanes[0]
@@ -140,7 +140,7 @@ def graphR3Hiperplane(inputs, desired, hiperplanes):
         return plot,
 
     ani = animation.FuncAnimation(
-        fig, animate, interval=1000, blit=False, fargs=(hiperplanes, plot), save_count=50)
+        fig, animate, interval=200, blit=False, fargs=(hiperplanes, plot), save_count=50)
 
     plt.show()
 
