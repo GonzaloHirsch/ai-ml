@@ -20,7 +20,7 @@ def calculateR2Hiperplanes(filename):
     iterativeHiperplanes = []
     index = 0
     for line in f:
-        weights = line.strip(" []\n\t\"\'\r").split(',')
+        weights = line.lstrip("[").rstrip("]\n\r").split()
         if index > 0:
             if len(weights) != 3:
                 print("Can only graph in 2D")
@@ -49,7 +49,7 @@ def calculateR3Hiperplanes(filename):
     iterativeHiperplanes = []
     index = 0
     for line in f:
-        weights = line.strip(" []\n\t\"\'\r").split(',')
+        weights = line.lstrip("[").rstrip("]\n\r").split()
         if index > 0:
             if len(weights) != 4:
                 print("Can only graph in 3D")
