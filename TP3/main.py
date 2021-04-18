@@ -154,7 +154,7 @@ def forwardPropagate(network, trainingInput, networkSize, itemIndex):
         # Get data to pass to layer, use training input or activated data before
         data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
         # Perform all summations
-        summationValues.append(np.array([p.summation(data) for p in layer]))
+        summationValues.append(np.array([perceptron.summation(data) for perceptron in layer]))
         # Perform all activations
         activations = [layer[i].activate(summationValues[index][i]) for i in range(len(summationValues[index]))]
         # If it's not the last layer, add bias to activations for next iterations
@@ -194,6 +194,7 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
 
             # Calculate prediction to backpropagate
             # Asume only 1 neuron in last layer and 1 result in collections
+            # This is delta/phi M
             initialBackpropagation = network[-1][0].initialBackpropagate(summationValues[-1][0], labels[itemIndex], activationValues[-1][0])
             
             # Backpropagate
