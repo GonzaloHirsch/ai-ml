@@ -28,6 +28,8 @@ class ConfigOptions(enum.Enum):
    ERROR_LIMIT = "error"
    BETA = "beta"
    DELTA_DESIRED = "deltaDesired"
+   MOMENTUM = "momentum"
+   ALPHA = "alpha"
 
    def __str__(self):
       return str(self.value)

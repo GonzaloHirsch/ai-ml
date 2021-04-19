@@ -5,14 +5,17 @@ import numpy as np
 from constants import ActivationOptions 
 
 class Perceptron:
-    def __init__(self, weightsAmount, activationMethod, learningRate, beta):
+    def __init__(self, weightsAmount, activationMethod, learningRate, beta, momentum, alpha):
         
         self.beta = beta
+        self.alpha = alpha
         self.activationMethod = activationMethod
         self.weights = np.random.rand(weightsAmount) * np.sqrt(1/weightsAmount)
         self.activation = self.getActivationFunction(activationMethod)
         self.derivative = self.getDerivativeFunction(activationMethod)
         self.learningRate = learningRate
+        self.previousCorrection = np.zeros(weightsAmount)
+        self.useMomentum = momentum
 
     def getWeights(self):
         return np.copy(self.weights)
@@ -25,23 +28,36 @@ class Perceptron:
     def activate(self, summation):
         return self.activation(summation)
 
-    def weightCorrectionFactor(self, inputs, desired, prediction, summation):
-        # Inpute shape (1, N)
-        # Return type (N, 1)
-        dActivation = self.derivative(summation)
-        return self.learningRate * (desired - prediction) * dActivation * np.transpose(inputs)
-
     def backpropagate(self, summation, otherWeights, backpropagations):
         return self.derivative(summation) * np.dot(otherWeights, backpropagations) 
 
     def initialBackpropagate(self, summation, desired, prediction):
         return self.derivative(summation) * (desired - prediction)
 
+    def weightCorrectionFactor(self, inputs, desired, prediction, summation):
+        # Inpute shape (1, N)
+        # Return type (N, 1)
+        dActivation = self.derivative(summation)
+        return self.learningRate * (desired - prediction) * dActivation * np.transpose(inputs)
+
     def correctWeights(self, inputs, desired, prediction, summation): 
-        self.weights += self.weightCorrectionFactor(inputs, desired, prediction, summation)
+        correction = self.weightCorrectionFactor(inputs, desired, prediction, summation)
+        
+        if self.useMomentum:
+            correction += self.alpha * self.previousCorrection
+            self.previousCorrection = correction
+
+        self.weights += correction
 
     def correctHiddenWeights(self, backpropagation, prediction):
-        self.weights += (self.learningRate * backpropagation * prediction)
+        correction = (self.learningRate * backpropagation * prediction)
+        # Add correction used in momentum
+        if self.useMomentum:
+            correction += self.alpha * self.previousCorrection
+            self.previousCorrection = correction
+
+        # Updates weights and update the previousWeights
+        self.weights += correction
 
     def calculateError(self, desired, prediction):
         return ((desired - prediction)**2) * 0.5

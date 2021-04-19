@@ -56,9 +56,11 @@ def parseConfiguration(configPath):
         activation = data[ConfigOptions.ACTIVATION.value]
         learningRate = data[ConfigOptions.LEARNING_RATE.value]
         multilayer = data[ConfigOptions.MULTILAYER.value]
+        momentum = data[ConfigOptions.MOMENTUM.value]        
         error = data[ConfigOptions.ERROR_LIMIT.value]
         beta = data[ConfigOptions.BETA.value]
         delta = data[ConfigOptions.DELTA_DESIRED.value]
+        alpha = data[ConfigOptions.ALPHA.value]
         
         # Create config
         config = Config(
@@ -70,11 +72,13 @@ def parseConfiguration(configPath):
             activation=activation,
             learningRate=learningRate,
             multilayer=multilayer,
+            momentum=momentum,
             error=error,
             layers=layers,
             flatten=flatten,
             normalizeDesired=normalizeDesired,
             beta=beta,
-            delta=delta
+            delta=delta,
+            alpha=alpha,
         )
     return config
