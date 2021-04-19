@@ -209,9 +209,9 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
                 for subindex, perceptron in enumerate(network[index]):
                     # Get all weights leaving that perceptron 
                     # Add 1 to index to take into account bias
-                    usefulWeights = np.array([p.weights[subindex + 1] for p in network[index + 1]])
+                    outboundWeights = np.array([p.weights[subindex + 1] for p in network[index + 1]])
                     # Calculate backpropagation for next layer in iteration
-                    data.append(perceptron.backpropagate(summationValues[index][subindex], usefulWeights, backpropagationValues[index + 1]))
+                    data.append(perceptron.backpropagate(summationValues[index][subindex], outboundWeights, backpropagationValues[index + 1]))
                 # Add all backpropagation values
                 backpropagationValues[index] = np.array(data)
             
@@ -225,10 +225,11 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
 
             # Calculate error
             error = 0
+            perceptron = network[-1][0]
             for i in range(len(trainingInput)):
                 summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
                 error += perceptron.calculateError(labels[i], activ[-1][0])
-            
+            print("Error", error)
             # Increase iterations
             iterations += 1
 

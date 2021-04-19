@@ -59,6 +59,10 @@ class Perceptron:
         # Updates weights and update the previousWeights
         self.weights += correction
 
+    # -----------------------------------------------------------------
+    # ERROR FUNCTIONS
+    # -----------------------------------------------------------------
+
     def calculateError(self, desired, prediction):
         return ((desired - prediction)**2) * 0.5
 
