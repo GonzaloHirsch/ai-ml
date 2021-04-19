@@ -89,7 +89,7 @@ En la carpeta `datasets` se pueden encontrar archivos con datasets (todos tienen
 ## Graficar
 Para poder ver una animacion de los hiperplanos creados, ya sea de 2D o 3D, debe correr el siguiente comando:
 ```
-python graphHiperplane.py -i <input> -w <archivo_de_weights>
+python graphing.py -i <input> -w <archivo_de_weights>
 ```
 * `input` --> Indica que datos de entrada debe tomar. Puede ser las siguientes opciones:
     * `xor1` --> Dataset del ej1 XOR

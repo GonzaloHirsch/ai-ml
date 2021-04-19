@@ -83,6 +83,19 @@ def getInputFromFile(inputFile):
             data.append(np.array([float(elem) for elem in line.strip().split()]))
     return np.array(data)
 
+def getErrorInputFromFile(errorFile):
+    with open(errorFile) as f:
+        # Read all lines
+        lines = f.readlines()
+        iterations = []
+        errors = []
+        for line in lines:
+            data = line.rstrip("\n").split()
+            iterations.append(int(data[0]))
+            errors.append(float(data[1]))
+    return iterations, errors
+
+
 def graphR2Hiperplane(inputs, desired, hiperplanes):
     fig, ax = plt.subplots()
 
@@ -105,6 +118,7 @@ def graphR2Hiperplane(inputs, desired, hiperplanes):
         fig, animate, interval=200, blit=True, save_count=50)
 
     plt.show()
+
 
 def graphR3Hiperplane(inputs, desired, hiperplanes):
 
@@ -144,6 +158,17 @@ def graphR3Hiperplane(inputs, desired, hiperplanes):
 
     plt.show()
 
+def graphError(iterations, errors):
+    fig, ax = plt.subplots()
+
+    ax.set_xlabel('Iterations', color='#1C2833')
+    ax.set_ylabel('Error', color='#1C2833')
+    ax.grid()
+
+    ax.plot(iterations, errors, '-b')
+
+    plt.show()
+
 
 def main():
     # Command line args are in sys.argv[1], sys.argv[2] ..
@@ -152,15 +177,22 @@ def main():
     parser = argparse.ArgumentParser(description="Generating hiperplane animations")
 
     # add arguments
-    parser.add_argument('-i', dest='inputFile', required=True)
-    parser.add_argument('-w', dest='weightsFile', required=True)
+    parser.add_argument('-i', dest='inputFile', required=False)
+    parser.add_argument('-w', dest='weightsFile', required=False)
+    parser.add_argument('-e', dest='errorFile', required=False)
 
     args = parser.parse_args()
 
     INPUT_FILE = ''
-    WEIGHT_FILE = "output/" + args.weightsFile
 
     is2d = True
+
+    print(args)
+    if args.errorFile:
+        print("Graphing error per iteration")
+        iterations, errors = getErrorInputFromFile("output/" + args.errorFile)
+        graphError(iterations, errors)
+        exit(0)
 
     if args.inputFile == EJ1_XOR:
         print("Hiperplane for data set ej1 XOR...")
@@ -181,6 +213,8 @@ def main():
 
     inputs = getInputFromFile(INPUT_FILE)
     desired = getInputFromFile(DESIRED_FILE)
+
+    WEIGHT_FILE = "output/" + args.weightsFile
 
     if is2d:
         hiperplanes = calculateR2Hiperplanes(WEIGHT_FILE)
