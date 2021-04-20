@@ -10,8 +10,10 @@ from perceptron import Perceptron
 
 CONFIG_INPUT = "input/configuration.json"
 OUTPUT_DIR = "output/"
-OUTPUT_FIELDNAMES = ["weights"]
+OUTPUT_WEIGHTS_FIELDNAMES = ["weights"]
+OUTPUT_ERRORS_FIELDNAMES = ["iteration", "error"]
 weights = []
+errors = []
 
 # -----------------------------------------------------------------
 # DEBUG METHODS
@@ -30,18 +32,27 @@ def printNetwork(network):
 # -----------------------------------------------------------------
 
 # Makes sure the CSV file is prepared, create it if non existent
-def prepareOutput(filename):
+def prepareOutput(filename, fields):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
     with open(filename, 'w+') as csv_file:
-        csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fields)
         csv_writer.writeheader()
 
 # Writes a row of data to the output file
-def writeAll(writer):
+def writeAllWeights(writer):
     for i in range(len(weights)):
         info = {
-            OUTPUT_FIELDNAMES[0]: weights[i],
+            OUTPUT_WEIGHTS_FIELDNAMES[0]: weights[i]
+        }
+        writer.writerow(info)
+
+        # Writes a row of data to the output file
+def writeAllErrors(writer):
+    for i in range(len(errors)):
+        info = {
+            OUTPUT_ERRORS_FIELDNAMES[0]: i,
+            OUTPUT_ERRORS_FIELDNAMES[1]: errors[i],
         }
         writer.writerow(info)
 
@@ -74,8 +85,10 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     weights.append(perceptron.getWeights())
 
     # Define output file and prepare output
-    filename = OUTPUT_DIR + ('run_input%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
-    prepareOutput(filename)
+    filenameWeights = OUTPUT_DIR + ('run_input%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
+    filenameErrors = OUTPUT_DIR + ('run_errors%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
+    prepareOutput(filenameWeights, OUTPUT_WEIGHTS_FIELDNAMES)
+    prepareOutput(filenameErrors, OUTPUT_ERRORS_FIELDNAMES)
 
     iterations = 0
     error = 1
@@ -97,14 +110,23 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
                 summation, prediction = predict(perceptron, inputs)
                 error += perceptron.calculateError(label, prediction)
 
+            errors.append(error[0])
             weights.append(perceptron.getWeights())
+            print(perceptron.getWeights())
+
             iterations += 1
 
         # Write output
-        with open(filename, 'a') as csv_file:
+        with open(filenameWeights, 'a') as csv_file:
             # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_FIELDNAMES)
-            writeAll(csv_writer)
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_WEIGHTS_FIELDNAMES)
+            writeAllWeights(csv_writer)
+
+        # Write errors
+        with open(filenameErrors, 'a') as csv_file:
+            # Get instance of the writer
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_ERRORS_FIELDNAMES)
+            writeAllErrors(csv_writer)
 
         print("\nTraining Results:")
         testPerceptron(perceptron, trainingInput, labels, config.delta)
@@ -177,6 +199,10 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
     # Create the network dinamically
     network = createNetwork(config, trainingInput.shape[1])
 
+    # Define output file and prepare output
+    filenameErrors = OUTPUT_DIR + ('run_errors%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
+    prepareOutput(filenameErrors, OUTPUT_ERRORS_FIELDNAMES)
+
     # Store sizes to avoid multiple calls
     trainingSize = trainingInput.shape[0]
     networkSize = network.shape[0]
@@ -229,9 +255,15 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
             for i in range(len(trainingInput)):
                 summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
                 error += perceptron.calculateError(labels[i], activ[-1][0])
-            print("Error", error)
+            errors.append(error[0])
             # Increase iterations
             iterations += 1
+
+        # Write errors
+        with open(filenameErrors, 'a') as csv_file:
+            # Get instance of the writer
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_ERRORS_FIELDNAMES)
+            writeAllErrors(csv_writer)
 
         print("\nTraining Results:")
         testNetwork(network, networkSize, trainingInput, labels, config.delta)

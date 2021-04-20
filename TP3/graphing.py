@@ -89,10 +89,14 @@ def getErrorInputFromFile(errorFile):
         lines = f.readlines()
         iterations = []
         errors = []
+        index = 0
         for line in lines:
-            data = line.rstrip("\n").split()
-            iterations.append(int(data[0]))
-            errors.append(float(data[1]))
+            # Skip headers
+            if index > 0:
+                data = line.rstrip("\n").split(",")
+                iterations.append(int(data[0]))
+                errors.append(float(data[1]))
+            index += 1
     return iterations, errors
 
 

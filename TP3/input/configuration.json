@@ -1,14 +1,14 @@
 {
     "files": {
-        "input": "datasets/TP3-ej3-Conjuntoentrenamiento-A.txt",
-        "desired": "datasets/TP3-ej3-Salida-deseada-A.txt",
-        "inputTest": "datasets/TP3-ej3-Conjuntoentrenamiento-B.txt",
-        "desiredTest": "datasets/TP3-ej3-Salida-deseada-B.txt",
-        "flatten": 7,
+        "input": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
+        "desired": "datasets/TP3-ej1-Salida-deseada-and.txt",
+        "inputTest": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
+        "desiredTest": "datasets/TP3-ej1-Salida-deseada-and.txt",
+        "flatten": 1,
         "normalizeDesired": false
     },
     "iterations": 5000,
-    "activation": "linear",
+    "activation": "simple",
     "learningRate": 0.01,
     "beta": 1,
     "deltaDesired": 0,
