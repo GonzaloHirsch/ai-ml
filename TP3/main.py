@@ -60,6 +60,9 @@ def writeAllErrors(writer):
 # TRAININGS
 # -----------------------------------------------------------------
 
+def getRandomDatasetOrder(datasetLength):
+    return random.sample(range(0, datasetLength), datasetLength)
+
 # ----------------------------
 # SINGLE LAYER
 # ----------------------------
@@ -90,19 +93,22 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     prepareOutput(filenameWeights, OUTPUT_WEIGHTS_FIELDNAMES)
     prepareOutput(filenameErrors, OUTPUT_ERRORS_FIELDNAMES)
 
+    trainingSize = trainingInput.shape[0]
     iterations = 0
     error = 1
                 
     try:
         while iterations < config.iterations and error > config.error:
-            print("Iteration #" + str(iterations))
-            x_i = random.randint(0, trainingInput.shape[0] - 1)
+            print("Epoch #" + str(iterations))
+            # Getting a random index order
+            indexes = getRandomDatasetOrder(trainingSize)
 
-            # Make the prediction
-            summation, prediction = predict(perceptron, trainingInput[x_i])
+            for x_i in indexes:
+                # Make the prediction
+                summation, prediction = predict(perceptron, trainingInput[x_i])
 
-            # Correct Perceptron weights.
-            perceptron.correctWeights(trainingInput[x_i], labels[x_i], prediction, summation)
+                # Correct Perceptron weights.
+                perceptron.correctWeights(trainingInput[x_i], labels[x_i], prediction, summation)
             
             # Calculate error.
             error = 0
@@ -209,52 +215,55 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
     error = 1
     try:
         while iterations < config.iterations and error > config.error:
-            print("Iteration #" + str(iterations))
+            print("Epoch #" + str(iterations))
             
-            # Picking random item
-            itemIndex = int(random.uniform(0, trainingSize))
-            
-            # Propagate
-            summationValues, activationValues = forwardPropagate(network, trainingInput, networkSize, itemIndex)
+            # Getting a random index order
+            indexes = getRandomDatasetOrder(trainingSize)
 
-            # Calculate prediction to backpropagate
-            # Asume only 1 neuron in last layer and 1 result in collections
-            # This is delta/phi M
-            initialBackpropagation = network[-1][0].initialBackpropagate(summationValues[-1][0], labels[itemIndex], activationValues[-1][0])
+            for itemIndex in indexes:
             
-            # Backpropagate
-            # Create array of fixed size and set last value
-            backpropagationValues = [None] * networkSize
-            backpropagationValues[-1] = np.array([initialBackpropagation])
-            # Use from size-2 to avoid out of bounds and last layer
-            # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
-            for index in range(networkSize - 2, -1, -1):
-                # Iterate each perceptron in layer
-                data = []
-                for subindex, perceptron in enumerate(network[index]):
-                    # Get all weights leaving that perceptron 
-                    # Add 1 to index to take into account bias
-                    outboundWeights = np.array([p.weights[subindex + 1] for p in network[index + 1]])
-                    # Calculate backpropagation for next layer in iteration
-                    data.append(perceptron.backpropagate(summationValues[index][subindex], outboundWeights, backpropagationValues[index + 1]))
-                # Add all backpropagation values
-                backpropagationValues[index] = np.array(data)
-            
-            # Correct weights
-            for index, layer in enumerate(network):
-                # Determine which data using depending on index
-                data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
-                # Call weight correction on each one
-                for subindex, p in enumerate(layer):
-                    p.correctHiddenWeights(backpropagationValues[index][subindex], data)
+                # Propagate
+                summationValues, activationValues = forwardPropagate(network, trainingInput, networkSize, itemIndex)
 
-            # Calculate error
+                # Calculate prediction to backpropagate
+                # Asume only 1 neuron in last layer and 1 result in collections
+                # This is delta/phi M
+                initialBackpropagation = network[-1][0].initialBackpropagate(summationValues[-1][0], labels[itemIndex], activationValues[-1][0])
+                
+                # Backpropagate
+                # Create array of fixed size and set last value
+                backpropagationValues = [None] * networkSize
+                backpropagationValues[-1] = np.array([initialBackpropagation])
+                # Use from size-2 to avoid out of bounds and last layer
+                # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
+                for index in range(networkSize - 2, -1, -1):
+                    # Iterate each perceptron in layer
+                    data = []
+                    for subindex, perceptron in enumerate(network[index]):
+                        # Get all weights leaving that perceptron 
+                        # Add 1 to index to take into account bias
+                        outboundWeights = np.array([p.weights[subindex + 1] for p in network[index + 1]])
+                        # Calculate backpropagation for next layer in iteration
+                        data.append(perceptron.backpropagate(summationValues[index][subindex], outboundWeights, backpropagationValues[index + 1]))
+                    # Add all backpropagation values
+                    backpropagationValues[index] = np.array(data)
+                
+                # Correct weights
+                for index, layer in enumerate(network):
+                    # Determine which data using depending on index
+                    data = trainingInput[itemIndex] if index == 0 else activationValues[index - 1]
+                    # Call weight correction on each one
+                    for subindex, p in enumerate(layer):
+                        p.correctHiddenWeights(backpropagationValues[index][subindex], data)
+
+            # Calculate error once epoch is finished
             error = 0
             perceptron = network[-1][0]
             for i in range(len(trainingInput)):
                 summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
                 error += perceptron.calculateError(labels[i], activ[-1][0])
             errors.append(error[0])
+
             # Increase iterations
             iterations += 1
 

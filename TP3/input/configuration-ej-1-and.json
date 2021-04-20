@@ -7,7 +7,7 @@
         "flatten": 1,
         "normalizeDesired": false
     },
-    "iterations": 5000,
+    "iterations": 1250,
     "activation": "simple",
     "learningRate": 0.01,
     "beta": 1,
