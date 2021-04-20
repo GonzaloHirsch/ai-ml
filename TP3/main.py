@@ -4,6 +4,7 @@ import time
 import os
 import numpy as np
 import random
+from sys import stdout
 # Local imports
 import parser
 from perceptron import Perceptron
@@ -77,9 +78,9 @@ def testPerceptron(perceptron, trainingInput, labels, delta):
     accuracy = 0
     for i in range(len(trainingInput)):
         summ, activ = predict(perceptron, trainingInput[i])
-        print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ, "Status:", "OK" if abs(labels[i] - activ) <= delta else "ERROR")
+        # print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ, "Status:", "OK" if abs(labels[i] - activ) <= delta else "ERROR")
         accuracy += 1 if abs(labels[i] - activ) <= delta else 0
-    print(accuracy, "out of", trainingInput.shape[0])
+    print("Accuracy:", accuracy/trainingInput.shape[0])
 
 def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     # Create with shape because of N points of M components being NxM
@@ -99,7 +100,8 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
                 
     try:
         while iterations < config.iterations and error > config.error:
-            print("Epoch #" + str(iterations))
+            stdout.write("Epoch #" + str(iterations) + "\r")
+            stdout.flush()
             # Getting a random index order
             indexes = getRandomDatasetOrder(trainingSize)
 
@@ -133,14 +135,16 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_ERRORS_FIELDNAMES)
             writeAllErrors(csv_writer)
 
-        print("\nTraining Results:")
+        print("\n\n######################\nTESTING\n######################")
+
+        print("Training Results:")
         testPerceptron(perceptron, trainingInput, labels, config.delta)
 
-        print("\nTraining Results:")
+        print("Training Results:")
         testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta)
 
-        print("Weights", perceptron.weights)
-        print("Error", error)
+        # print("Weights", perceptron.weights)
+        # print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
@@ -195,9 +199,9 @@ def testNetwork(network, networkSize, trainingInput, labels, delta):
     accuracy = 0
     for i in range(len(trainingInput)):
         summ, activ = forwardPropagate(network, trainingInput, networkSize, i)
-        print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ[-1][0], "Status:", "OK" if abs(labels[i] - activ[-1][0]) <= delta else "ERROR")
+        # print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ[-1][0], "Status:", "OK" if abs(labels[i] - activ[-1][0]) <= delta else "ERROR")
         accuracy += 1 if abs(labels[i] - activ[-1][0]) <= delta else 0
-    print(accuracy, "out of", trainingInput.shape[0])
+    print("Accuracy:", accuracy/trainingInput.shape[0])
 
 # Trains the multilayer network
 def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest):
@@ -215,7 +219,8 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
     error = 1
     try:
         while iterations < config.iterations and error > config.error:
-            print("Epoch #" + str(iterations))
+            stdout.write("Epoch #" + str(iterations) + "\r")
+            stdout.flush()
             
             # Getting a random index order
             indexes = getRandomDatasetOrder(trainingSize)
@@ -273,13 +278,15 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
             csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_ERRORS_FIELDNAMES)
             writeAllErrors(csv_writer)
 
-        print("\nTraining Results:")
+        print("\n\n######################\nTESTING\n######################")
+
+        print("Training Results:")
         testNetwork(network, networkSize, trainingInput, labels, config.delta)
 
-        print("\nLearning Results:")
+        print("Learning Results:")
         testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta)
 
-        print("Error", error)
+        # print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
@@ -287,7 +294,6 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
 
 # Parses data and triggers training
 def main():
-    print("Parsing input data...")
     # Parse configuration files
     config = parser.parseConfiguration(CONFIG_INPUT)
     # Parse input
@@ -297,6 +303,7 @@ def main():
     trainingInputTest = parser.parseInput(config.inputTest, addExtraInput=True, flatten=config.flatten, normalize=False)
     labelsTest = parser.parseInput(config.desiredTest, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
     
+    print("######################\nTRAINING\n######################")
     if config.multilayer:
         trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest)
     else:
