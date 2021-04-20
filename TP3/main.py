@@ -112,7 +112,6 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
 
             errors.append(error[0])
             weights.append(perceptron.getWeights())
-            print(perceptron.getWeights())
 
             iterations += 1
 

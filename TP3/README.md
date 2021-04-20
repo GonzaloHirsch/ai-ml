@@ -29,7 +29,11 @@ La configuración del programa se realiza desde el archivo `input/configuration.
     "iterations": 100,
     "activation": "simple",
     "learningRate": 0.02,
+    "beta": 1,
+    "deltaDesired": 0,
     "error": 0.005,
+    "momentum": true,
+    "alpha": 0.8,
     "multilayer": false,
     "layers": [
         {
@@ -54,6 +58,10 @@ Los posibles valores de cada campo son:
 * `error` --> Número decimal menor a 1, cota de error (buen valor = `0.05`)
 * `multilayer` --> Indica si el problema se resuelve con un perceptron simple o uno multicapa. Puede ser `true` o `false` (`true` para el EJ3 y `false` para el resto)
 * `layers` --> Array de objetos JSON, configuración de las capas en caso de ser `multilayer: true`
+* `beta` --> Beta a ser usado en la función `tanh` siendo `tanh(beta * x)`
+* `deltaDesired` --> Delta para tener en cuenta cuando se hacen pruebas con la red, post entrenamiento
+* `momentum` --> Activa el momentum, `true` o `false`
+* `alpha` --> Alpha para el momentum, número entre 0 y 1
 
 Dentro del objeto `files` debe ir:
 * `input` --> Path desde el root del proyecto al archivo con los datos de prueba
@@ -89,14 +97,15 @@ En la carpeta `datasets` se pueden encontrar archivos con datasets (todos tienen
 ## Graficar
 Para poder ver una animacion de los hiperplanos creados, ya sea de 2D o 3D, debe correr el siguiente comando:
 ```
-python graphing.py -i <input> -w <archivo_de_weights>
+python graphing.py -i <input> -w <archivo_de_weights> -e <archivo_de_errores>
 ```
 * `input` --> Indica que datos de entrada debe tomar. Puede ser las siguientes opciones:
     * `xor1` --> Dataset del ej1 XOR
     * `and1` --> Dataset del ej1 AND
     * `ej2` --> Dataset para el ej2
     * `ej3` --> Dataset para el ej3. Esto cortara el programa porque no se puede graficar.
-* `archivo_de_weights` --> Nombre del archivo donde se imprimieron los pesos
+* `archivo_de_weights` --> Nombre del archivo donde se imprimieron los pesos (dentro de la carpeta `output`)
+* `archivo_de_errores` --> Nombre del archivo donde se imprimieron los errores (dentro de la carpeta `output`)
 
 ## Dependencias
 

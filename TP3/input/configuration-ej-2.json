@@ -5,16 +5,16 @@
         "inputTest": "datasets/TP3-ej2-Conjuntoentrenamiento.txt",
         "desiredTest": "datasets/TP3-ej2-Salida-deseada.txt",
         "flatten": 1,
-        "normalizeDesired": true
+        "normalizeDesired": false
     },
-    "iterations": 10000,
-    "activation": "nonlinear",
+    "iterations": 5000,
+    "activation": "simple",
     "learningRate": 0.01,
     "beta": 1,
-    "deltaDesired": 0.001,
+    "deltaDesired": 0,
     "error": 0.005,
     "multilayer": false,
-    "momentum": false,
+    "momentum": true,
     "alpha": 0.8,
     "layers": [
         {
