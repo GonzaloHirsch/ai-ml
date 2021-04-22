@@ -33,7 +33,7 @@ def parseInput(filepath, addExtraInput = False, flatten = 1, normalize = False):
     data = np.array(data)
     # Normalize between 0 - 1 by dividing by max
     if normalize:
-        data = data / data.max()
+        data = (data - data.min()) / (data.max() - data.min())
     return data
 
 # Parses the configuration
