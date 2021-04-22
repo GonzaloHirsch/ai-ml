@@ -90,20 +90,16 @@ def getRandomDatasetOrder(datasetLength):
 
 def getMetrics(labels, results, delta):
     # Predictions that were right and wrong
-    truePredictions = {}
+    truePredictions = {1: 0, -1: 0}
     # If label is 1 and result is -1, falsePredictions[1]++, it will store false
     # Results for other label
-    falsePredictions = {}
-    expectedPredictions = {}
+    falsePredictions = {1: 0, -1: 0}
+    expectedPredictions = {1: 0, -1: 0}
     accuracy = 0
     # Prepare structures for metrics
     for i in range(len(labels)):
         label = labels[i][0]
         # Count number of predictions in each that is expected
-        if not label in expectedPredictions:
-            expectedPredictions[label] = 0
-            truePredictions[label] = 0
-            falsePredictions[label] = 0
         expectedPredictions[label] += 1
         # If prediction is correct
         if abs(label - results[i]) <= delta:
@@ -121,7 +117,7 @@ def getMetrics(labels, results, delta):
     for key in truePredictions:
         # Initiate
         precision[key] = truePredictions[key]/((truePredictions[key] + falsePredictions[key * -1]) if (truePredictions[key] + falsePredictions[key * -1]) > 0 else 1)
-        recall[key] = truePredictions[key]/expectedPredictions[key]
+        recall[key] = truePredictions[key]/(expectedPredictions[key] if expectedPredictions[key] > 0 else 1)
         f1[key] = (2 * precision[key] * recall[key])/((precision[key] + recall[key]) if (precision[key] + recall[key]) > 0 else 1)
     return accuracy, precision, recall, f1
 
