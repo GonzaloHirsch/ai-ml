@@ -2,6 +2,7 @@ import enum
 
 FILES = "files"
 LAYERS = "layers"
+K_TRAINING = "kTraining"
 
 # Configurable options
 class ActivationOptions(enum.Enum):
@@ -16,6 +17,8 @@ class ActivationOptions(enum.Enum):
 class ConfigOptions(enum.Enum):
    INPUT_DATA = "input"
    DESIRED_DATA = "desired"
+   INPUT_TEST_DATA = "inputTest"
+   DESIRED_TEST_DATA = "desiredTest"
    FLATTEN_DATA = "flatten"
    NORMALIZE_DESIRED_DATA = "normalizeDesired"
    ITERATIONS = "iterations"
@@ -30,6 +33,8 @@ class ConfigOptions(enum.Enum):
    ALPHA = "alpha"
    BLOCK_AMOUNT = "blockAmount"
    TEST_BLOCK = "testBlock"
+   USE_K_TRAINING = "useKTraining"
+   CALCULATE_METRICS = "calculateMetrics"
 
    def __str__(self):
       return str(self.value)

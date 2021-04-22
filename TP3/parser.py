@@ -2,7 +2,7 @@
 import numpy as np
 import json
 # Local imports
-from constants import FILES, LAYERS, ConfigOptions
+from constants import FILES, LAYERS, K_TRAINING, ConfigOptions
 from config import Config
 
 # Function to parse a file and split and store contents
@@ -44,11 +44,18 @@ def parseConfiguration(configPath):
         # Get submaps inside config
         files = data[FILES]
         layers = data[LAYERS]
+        ktraining = data[K_TRAINING]
         # Get FILES data
         inputData = files[ConfigOptions.INPUT_DATA.value]
         desiredData = files[ConfigOptions.DESIRED_DATA.value]
+        inputDataTest = files[ConfigOptions.INPUT_TEST_DATA.value]
+        desiredDataTest = files[ConfigOptions.DESIRED_TEST_DATA.value]
         flatten = files[ConfigOptions.FLATTEN_DATA.value]
         normalizeDesired = files[ConfigOptions.NORMALIZE_DESIRED_DATA.value]
+        # Get K training data
+        blockAmount = ktraining[ConfigOptions.BLOCK_AMOUNT.value]
+        testBlock = ktraining[ConfigOptions.TEST_BLOCK.value]
+        useKTraining = ktraining[ConfigOptions.USE_K_TRAINING.value]
         # Get other data
         iterations = data[ConfigOptions.ITERATIONS.value]
         activation = data[ConfigOptions.ACTIVATION.value]
@@ -59,13 +66,14 @@ def parseConfiguration(configPath):
         beta = data[ConfigOptions.BETA.value]
         delta = data[ConfigOptions.DELTA_DESIRED.value]
         alpha = data[ConfigOptions.ALPHA.value]
-        blockAmount = data[ConfigOptions.BLOCK_AMOUNT.value]
-        testBlock = data[ConfigOptions.TEST_BLOCK.value]
+        calculateMetrics = data[ConfigOptions.CALCULATE_METRICS.value]
         
         # Create config
         config = Config(
             inputs=inputData,
+            inputsTest=inputDataTest,
             desired=desiredData,
+            desiredTest=desiredDataTest,
             iterations=iterations,
             activation=activation,
             learningRate=learningRate,
@@ -79,6 +87,8 @@ def parseConfiguration(configPath):
             delta=delta,
             alpha=alpha,
             blockAmount=blockAmount,
-            testBlock=testBlock
+            testBlock=testBlock,
+            useKTraining=useKTraining,
+            calculateMetrics=calculateMetrics
         )
     return config

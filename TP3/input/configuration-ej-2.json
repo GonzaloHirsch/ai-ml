@@ -5,6 +5,11 @@
         "flatten": 1,
         "normalizeDesired": false
     },
+    "kTraining": {
+        "useKTraining": true,
+        "blockAmount": 5,
+        "testBlock": 2
+    },
     "iterations": 500,
     "activation": "linear",
     "learningRate": 0.01,
@@ -13,9 +18,8 @@
     "error": 0.005,
     "multilayer": false,
     "momentum": false,
+    "calculateMetrics": false,
     "alpha": 0.8,
-    "blockAmount": 5,
-    "testBlock": 2,
     "layers": [
         {
             "activation": "simple",

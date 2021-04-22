@@ -15,6 +15,7 @@ OUTPUT_DIR = "output/"
 OUTPUT_WEIGHTS_FIELDNAMES = ["weights"]
 OUTPUT_ERRORS_FIELDNAMES = ["iteration", "error"]
 OUTPUT_METRICS_FIELDNAMES = ["iteration", "accuracy", "precision_T", "precision_F", "recall_T", "recall_F", "f1_T", "f1_F"]
+OUTPUT_ACCURACY_FIELDNAMES = ["iteration", "accuracy"]
 weights = []
 errors = []
 trainMetrics = []
@@ -32,10 +33,11 @@ def printNetwork(network):
             print(p)
         count += 1
 
-def printMetrics(accuracy, precision, recall, f1):
+def printMetrics(accuracy, precision = None, recall = None, f1 = None):
     print("Accuracy:", accuracy)
-    print(('Data for 1:\n\tPrecision: %s\n\tRecall: %s\n\tF1_score: %s' % (precision[1], recall[1], f1[1])))
-    print(('Data for -1:\n\tPrecision: %s\n\tRecall: %s\n\tF1_score: %s' % (precision[-1], recall[-1], f1[-1])))
+    if precision != None:
+        print(('Data for 1:\n\tPrecision: %s\n\tRecall: %s\n\tF1_score: %s' % (precision[1], recall[1], f1[1])))
+        print(('Data for -1:\n\tPrecision: %s\n\tRecall: %s\n\tF1_score: %s' % (precision[-1], recall[-1], f1[-1])))
 
 # -----------------------------------------------------------------
 # FILE WRITING
@@ -81,6 +83,15 @@ def writeAllMetrics(writer, metrics):
         }
         writer.writerow(info)
 
+def writeAccuracyMetrics(writer, metrics):
+    for i in range(len(metrics)):
+        m = metrics[i]
+        info = {
+            OUTPUT_ACCURACY_FIELDNAMES[0]: i,
+            OUTPUT_ACCURACY_FIELDNAMES[1]: m[0],
+        }
+        writer.writerow(info)
+
 # -----------------------------------------------------------------
 # TRAININGS
 # -----------------------------------------------------------------
@@ -88,7 +99,7 @@ def writeAllMetrics(writer, metrics):
 def getRandomDatasetOrder(datasetLength):
     return random.sample(range(0, datasetLength), datasetLength)
 
-def getMetrics(labels, results, delta):
+def getMetrics(labels, results, delta, calculateMetrics = True):
     # Predictions that were right and wrong
     truePredictions = {1: 0, -1: 0}
     # If label is 1 and result is -1, falsePredictions[1]++, it will store false
@@ -100,26 +111,30 @@ def getMetrics(labels, results, delta):
     for i in range(len(labels)):
         label = labels[i][0]
         # Count number of predictions in each that is expected
-        expectedPredictions[label] += 1
+        if calculateMetrics:
+            expectedPredictions[label] += 1
         # If prediction is correct
         if abs(label - results[i]) <= delta:
             accuracy += 1
-            truePredictions[label] += 1
+            if calculateMetrics:
+                truePredictions[label] += 1
         else:
-            falsePredictions[label] += 1
+            if calculateMetrics:
+                falsePredictions[label] += 1
     # Calculate metrics
     accuracy = accuracy / len(labels)
-    precision = {}
-    recall = {}
-    f1 = {}
-    # Asumes labels and keys are 1 and -1, interchangeable by multiplying by -1
-
-    for key in truePredictions:
-        # Initiate
-        precision[key] = truePredictions[key]/((truePredictions[key] + falsePredictions[key * -1]) if (truePredictions[key] + falsePredictions[key * -1]) > 0 else 1)
-        recall[key] = truePredictions[key]/(expectedPredictions[key] if expectedPredictions[key] > 0 else 1)
-        f1[key] = (2 * precision[key] * recall[key])/((precision[key] + recall[key]) if (precision[key] + recall[key]) > 0 else 1)
-    return accuracy, precision, recall, f1
+    if calculateMetrics:
+        precision = {}
+        recall = {}
+        f1 = {}
+        # Asumes labels and keys are 1 and -1, interchangeable by multiplying by -1
+        for key in truePredictions:
+            # Initiate
+            precision[key] = truePredictions[key]/((truePredictions[key] + falsePredictions[key * -1]) if (truePredictions[key] + falsePredictions[key * -1]) > 0 else 1)
+            recall[key] = truePredictions[key]/(expectedPredictions[key] if expectedPredictions[key] > 0 else 1)
+            f1[key] = (2 * precision[key] * recall[key])/((precision[key] + recall[key]) if (precision[key] + recall[key]) > 0 else 1)
+        return accuracy, precision, recall, f1
+    return accuracy, None, None, None
 
 
 # ----------------------------
@@ -131,7 +146,7 @@ def predict(perceptron, trainData):
     prediction = perceptron.activate(summation)
     return summation, prediction
 
-def testPerceptron(perceptron, trainingInput, labels, delta, printData = False):
+def testPerceptron(perceptron, trainingInput, labels, delta, printData = False, calculateMetrics = True):
     # Get accuracy
     activations = []
     for i in range(len(trainingInput)):
@@ -140,7 +155,7 @@ def testPerceptron(perceptron, trainingInput, labels, delta, printData = False):
             print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ, "Status:", "OK" if abs(labels[i] - activ) <= delta else "ERROR")
         activations.append(activ)
     # Get metrics
-    accuracy, precision, recall, f1 = getMetrics(labels, activations, delta)
+    accuracy, precision, recall, f1 = getMetrics(labels, activations, delta, calculateMetrics)
     return accuracy, precision, recall, f1
 
 def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
@@ -156,8 +171,8 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
     filenameTest = OUTPUT_DIR + ('run_test%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
     prepareOutput(filenameWeights, OUTPUT_WEIGHTS_FIELDNAMES)
     prepareOutput(filenameErrors, OUTPUT_ERRORS_FIELDNAMES)
-    prepareOutput(filenameTrain, OUTPUT_METRICS_FIELDNAMES)
-    prepareOutput(filenameTest, OUTPUT_METRICS_FIELDNAMES)
+    prepareOutput(filenameTrain, OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
+    prepareOutput(filenameTest, OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
 
     trainingSize = trainingInput.shape[0]
     iterations = 0
@@ -187,10 +202,10 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             weights.append(perceptron.getWeights())
 
             # Calculate metrics
-            accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInput, labels, config.delta)
-            trainMetrics.append([accuracy, precision, recall, f1])
-            accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta)
-            testMetrics.append([accuracy, precision, recall, f1])
+            accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInput, labels, config.delta, calculateMetrics=config.calculateMetrics)
+            trainMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
+            accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta, calculateMetrics=config.calculateMetrics)
+            testMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
 
             iterations += 1
 
@@ -209,23 +224,29 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
         print("\n\n######################\nTESTING\n######################")
 
         print("Training Results:")
-        accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInput, labels, config.delta, True)
+        accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInput, labels, config.delta, True, calculateMetrics=config.calculateMetrics)
         printMetrics(accuracy, precision, recall, f1)
         with open(filenameTrain, 'a') as csv_file:
             # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES)
-            writeAllMetrics(csv_writer, trainMetrics)
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
+            if config.calculateMetrics:
+                writeAllMetrics(csv_writer, trainMetrics)
+            else:
+                writeAccuracyMetrics(csv_writer, trainMetrics)
 
         print("Learning Results:")
-        accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta, True)
+        accuracy, precision, recall, f1 = testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta, True, calculateMetrics=config.calculateMetrics)
         printMetrics(accuracy, precision, recall, f1)
         with open(filenameTest, 'a') as csv_file:
             # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES)
-            writeAllMetrics(csv_writer, testMetrics)
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
+            if config.calculateMetrics:
+                writeAllMetrics(csv_writer, testMetrics)
+            else:
+                writeAccuracyMetrics(csv_writer, testMetrics)
 
         # print("Weights", perceptron.weights)
-        # print("Error", error)
+        print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
@@ -275,7 +296,7 @@ def forwardPropagate(network, trainingInput, networkSize, itemIndex):
         activationValues.append(np.array(activations))
     return summationValues, activationValues
 
-def testNetwork(network, networkSize, trainingInput, labels, delta, printData = False):
+def testNetwork(network, networkSize, trainingInput, labels, delta, printData = False, calculateMetrics = True):
     # Get accuracy
     accuracy = 0
     activations = []
@@ -285,7 +306,7 @@ def testNetwork(network, networkSize, trainingInput, labels, delta, printData = 
             print("Input:", trainingInput[i], "Label:", labels[i], "Result:", activ[-1][0], "Status:", "OK" if abs(labels[i] - activ[-1][0]) <= delta else "ERROR")
         activations.append(activ[-1][0])
     # Get metrics
-    accuracy, precision, recall, f1 = getMetrics(labels, activations, delta)
+    accuracy, precision, recall, f1 = getMetrics(labels, activations, delta, calculateMetrics)
     return accuracy, precision, recall, f1
 
 # Trains the multilayer network
@@ -298,8 +319,8 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
     filenameTrain = OUTPUT_DIR + ('run_train%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
     filenameTest = OUTPUT_DIR + ('run_test%s_%s_%s_%s.csv' % (trainingInput.shape[0], config.activation, config.learningRate, time.time()))
     prepareOutput(filenameErrors, OUTPUT_ERRORS_FIELDNAMES)
-    prepareOutput(filenameTrain, OUTPUT_METRICS_FIELDNAMES)
-    prepareOutput(filenameTest, OUTPUT_METRICS_FIELDNAMES)
+    prepareOutput(filenameTrain, OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
+    prepareOutput(filenameTest, OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
 
     # Store sizes to avoid multiple calls
     trainingSize = trainingInput.shape[0]
@@ -360,11 +381,11 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
 
             # Calculate metrics
             # Train metrics
-            accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInput, labels, config.delta)
-            trainMetrics.append([accuracy, precision, recall, f1])
+            accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInput, labels, config.delta, calculateMetrics=config.calculateMetrics)
+            trainMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
             # Test metrics
-            accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta)
-            testMetrics.append([accuracy, precision, recall, f1])
+            accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta, calculateMetrics=config.calculateMetrics)
+            testMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
 
             # Increase iterations
             iterations += 1
@@ -378,22 +399,28 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
         print("\n\n######################\nTESTING\n######################")
 
         print("Training Results:")
-        accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInput, labels, config.delta, True)
+        accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInput, labels, config.delta, printData=True, calculateMetrics=config.calculateMetrics)
         printMetrics(accuracy, precision, recall, f1)
         with open(filenameTrain, 'a') as csv_file:
             # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES)
-            writeAllMetrics(csv_writer, trainMetrics)
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
+            if config.calculateMetrics:
+                writeAllMetrics(csv_writer, trainMetrics)
+            else:
+                writeAccuracyMetrics(csv_writer, trainMetrics)
 
         print("Learning Results:")
-        accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta, True)
+        accuracy, precision, recall, f1 = testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta, printData=True, calculateMetrics=config.calculateMetrics)
         printMetrics(accuracy, precision, recall, f1)
         with open(filenameTest, 'a') as csv_file:
             # Get instance of the writer
-            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES)
-            writeAllMetrics(csv_writer, testMetrics)
+            csv_writer = csv.DictWriter(csv_file, fieldnames=OUTPUT_METRICS_FIELDNAMES if config.calculateMetrics else OUTPUT_ACCURACY_FIELDNAMES)
+            if config.calculateMetrics:
+                writeAllMetrics(csv_writer, testMetrics)
+            else:
+                writeAccuracyMetrics(csv_writer, testMetrics)
 
-        # print("Error", error)
+        print("Error", error)
 
     except KeyboardInterrupt:
         print("Finishing up...")
@@ -407,24 +434,31 @@ def main():
     inputs = parser.parseInput(config.input, addExtraInput=True, flatten=config.flatten, normalize=False)
     labels = parser.parseInput(config.desired, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
     
-    # block size of the test data
-    blockSize = floor(len(inputs)/config.blockAmount)
-    # start and end indexes of the test data
-    startTestIdx = config.testBlock * blockSize
-    endTestIdx = startTestIdx + blockSize
-    # if the end exceeds the range (due to uneven block size)
-    if (endTestIdx > len(inputs)):
-        endTestIdx = len(inputs)
-    # Indexes of the test data
-    testIdxs = np.arange(startTestIdx, endTestIdx)
+    if config.useKTraining:
+        # block size of the test data
+        blockSize = floor(len(inputs)/config.blockAmount)
+        # start and end indexes of the test data
+        startTestIdx = config.testBlock * blockSize
+        endTestIdx = startTestIdx + blockSize
+        # if the end exceeds the range (due to uneven block size)
+        if (endTestIdx > len(inputs)):
+            endTestIdx = len(inputs)
+        # Indexes of the test data
+        testIdxs = np.arange(startTestIdx, endTestIdx)
 
-    # Training data
-    trainingInputs = np.delete(inputs, testIdxs, axis=0) # 0 indicates to delete row
-    trainingLabels = np.delete(labels, testIdxs, axis=0) 
+        # Training data
+        trainingInputs = np.delete(inputs, testIdxs, axis=0) # 0 indicates to delete row
+        trainingLabels = np.delete(labels, testIdxs, axis=0) 
 
-    # Test data
-    testInputs = inputs[startTestIdx:endTestIdx]
-    testLabels = labels[startTestIdx:endTestIdx]
+        # Test data
+        testInputs = inputs[startTestIdx:endTestIdx]
+        testLabels = labels[startTestIdx:endTestIdx]
+    else:
+        trainingInputs = inputs
+        trainingLabels = labels
+        # Parse input test
+        testInputs = parser.parseInput(config.inputTest, addExtraInput=True, flatten=config.flatten, normalize=False)
+        testLabels = parser.parseInput(config.desiredTest, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
 
     print("######################\nTRAINING\n######################")
     if config.multilayer:

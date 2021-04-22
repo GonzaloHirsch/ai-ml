@@ -11,13 +11,15 @@ class Config:
             raise Exception("No config instance available")
         return Config.__instance
 
-    def __init__(self, inputs, flatten, desired, iterations, activation, learningRate, multilayer, error, layers, normalizeDesired, beta, delta, alpha, momentum, blockAmount, testBlock):
+    def __init__(self, inputs, inputsTest, flatten, desired, desiredTest, iterations, activation, learningRate, multilayer, error, layers, normalizeDesired, beta, delta, alpha, momentum, blockAmount, testBlock, useKTraining, calculateMetrics):
         if Config.__instance != None:
             raise Exception("Cannot create another instance of config")
 
         self.input = inputs
+        self.inputTest = inputsTest
         self.flatten = flatten
         self.desired = desired
+        self.desiredTest = desiredTest
         self.iterations = iterations
         self.activation = activation
         self.learningRate = learningRate
@@ -31,6 +33,8 @@ class Config:
         self.alpha = alpha
         self.blockAmount = blockAmount
         self.testBlock = testBlock
+        self.useKTraining = useKTraining
+        self.calculateMetrics = calculateMetrics
 
         Config.__instance = self
     
