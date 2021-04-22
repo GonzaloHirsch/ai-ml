@@ -21,8 +21,6 @@ La configuración del programa se realiza desde el archivo `input/configuration.
     "files": {
         "input": "datasets/TP3-ej3-Conjuntoentrenamiento.txt",
         "desired": "datasets/TP3-ej3-Salida-deseada.txt",
-        "inputTest": "datasets/TP3-ej1-Conjuntoentrenamiento-and.txt",
-        "desiredTest": "datasets/TP3-ej1-Salida-deseada-and.txt",
         "flatten": 7,
         "normalizeDesired": false
     },
@@ -35,6 +33,8 @@ La configuración del programa se realiza desde el archivo `input/configuration.
     "momentum": true,
     "alpha": 0.8,
     "multilayer": false,
+    "blockAmount": 5,
+    "testBlock": 1,
     "layers": [
         {
             "activation": "simple",
@@ -62,12 +62,12 @@ Los posibles valores de cada campo son:
 * `deltaDesired` --> Delta para tener en cuenta cuando se hacen pruebas con la red, post entrenamiento
 * `momentum` --> Activa el momentum, `true` o `false`
 * `alpha` --> Alpha para el momentum, número entre 0 y 1
+* `blockAmount` --> Me indica en cuantos bloques quiero dividir el input
+* `testBlock` --> Indica que bloque quiero usar del dataset para el testeo luego del entrenamiento.
 
 Dentro del objeto `files` debe ir:
 * `input` --> Path desde el root del proyecto al archivo con los datos de prueba
 * `desired` --> Path desde el root del proyecto al archivo con los datos de los resultados esperados
-* `inputTest` --> Path desde el root del proyecto al archivo con los datos de prueba para probar post entrenamiento
-* `desiredTest` --> Path desde el root del proyecto al archivo con los datos de los resultados esperados para probar post entrenamiento
 * `flatten` --> Cada cuantas filas de input de entrenamiento se agrupa (para el EJ3 debería ser `7`, para el resto `1`)
 * `normalizeDesired` --> Flag para definir si se tienen que normalizar los datos de salida (para el EJ2 con el dataset en 3 dimensiones debería ser `true`, para el resto `false`)
 

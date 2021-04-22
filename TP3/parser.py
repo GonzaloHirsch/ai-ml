@@ -47,8 +47,6 @@ def parseConfiguration(configPath):
         # Get FILES data
         inputData = files[ConfigOptions.INPUT_DATA.value]
         desiredData = files[ConfigOptions.DESIRED_DATA.value]
-        inputDataTest = files[ConfigOptions.INPUT_TEST_DATA.value]
-        desiredDataTest = files[ConfigOptions.DESIRED_TEST_DATA.value]
         flatten = files[ConfigOptions.FLATTEN_DATA.value]
         normalizeDesired = files[ConfigOptions.NORMALIZE_DESIRED_DATA.value]
         # Get other data
@@ -61,13 +59,13 @@ def parseConfiguration(configPath):
         beta = data[ConfigOptions.BETA.value]
         delta = data[ConfigOptions.DELTA_DESIRED.value]
         alpha = data[ConfigOptions.ALPHA.value]
+        blockAmount = data[ConfigOptions.BLOCK_AMOUNT.value]
+        testBlock = data[ConfigOptions.TEST_BLOCK.value]
         
         # Create config
         config = Config(
             inputs=inputData,
-            inputsTest=inputDataTest,
             desired=desiredData,
-            desiredTest=desiredDataTest,
             iterations=iterations,
             activation=activation,
             learningRate=learningRate,
@@ -80,5 +78,7 @@ def parseConfiguration(configPath):
             beta=beta,
             delta=delta,
             alpha=alpha,
+            blockAmount=blockAmount,
+            testBlock=testBlock
         )
     return config

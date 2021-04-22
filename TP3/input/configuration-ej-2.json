@@ -2,8 +2,6 @@
     "files": {
         "input": "datasets/TP3-ej2-Conjuntoentrenamiento.txt",
         "desired": "datasets/TP3-ej2-Salida-deseada.txt",
-        "inputTest": "datasets/TP3-ej2-Conjuntoentrenamiento.txt",
-        "desiredTest": "datasets/TP3-ej2-Salida-deseada.txt",
         "flatten": 1,
         "normalizeDesired": false
     },
@@ -16,6 +14,8 @@
     "multilayer": false,
     "momentum": false,
     "alpha": 0.8,
+    "blockAmount": 5,
+    "testBlock": 2,
     "layers": [
         {
             "activation": "simple",

@@ -5,6 +5,7 @@ import os
 import numpy as np
 import random
 from sys import stdout
+from math import floor
 # Local imports
 import parser
 from perceptron import Perceptron
@@ -116,6 +117,7 @@ def getMetrics(labels, results, delta):
     recall = {}
     f1 = {}
     # Asumes labels and keys are 1 and -1, interchangeable by multiplying by -1
+
     for key in truePredictions:
         # Initiate
         precision[key] = truePredictions[key]/((truePredictions[key] + falsePredictions[key * -1]) if (truePredictions[key] + falsePredictions[key * -1]) > 0 else 1)
@@ -406,17 +408,33 @@ def main():
     # Parse configuration files
     config = parser.parseConfiguration(CONFIG_INPUT)
     # Parse input
-    trainingInput = parser.parseInput(config.input, addExtraInput=True, flatten=config.flatten, normalize=False)
+    inputs = parser.parseInput(config.input, addExtraInput=True, flatten=config.flatten, normalize=False)
     labels = parser.parseInput(config.desired, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
-    # Parse input test
-    trainingInputTest = parser.parseInput(config.inputTest, addExtraInput=True, flatten=config.flatten, normalize=False)
-    labelsTest = parser.parseInput(config.desiredTest, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
     
+    # block size of the test data
+    blockSize = floor(len(inputs)/config.blockAmount)
+    # start and end indexes of the test data
+    startTestIdx = config.testBlock * blockSize
+    endTestIdx = startTestIdx + blockSize
+    # if the end exceeds the range (due to uneven block size)
+    if (endTestIdx > len(inputs)):
+        endTestIdx = len(inputs)
+    # Indexes of the test data
+    testIdxs = np.arange(startTestIdx, endTestIdx)
+
+    # Training data
+    trainingInputs = np.delete(inputs, testIdxs, axis=0) # 0 indicates to delete row
+    trainingLabels = np.delete(labels, testIdxs, axis=0) 
+
+    # Test data
+    testInputs = inputs[startTestIdx:endTestIdx]
+    testLabels = labels[startTestIdx:endTestIdx]
+
     print("######################\nTRAINING\n######################")
     if config.multilayer:
-        trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest)
+        trainMultilayer(config, trainingInputs, trainingLabels, testInputs, testLabels)
     else:
-        trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest)
+        trainSingle(config, trainingInputs, trainingLabels, testInputs, testLabels)
     
 
 # App entrypoint

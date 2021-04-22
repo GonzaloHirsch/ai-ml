@@ -2,8 +2,6 @@
     "files": {
         "input": "datasets/TP3-ej1-Conjuntoentrenamiento-xor.txt",
         "desired": "datasets/TP3-ej1-Salida-deseada-xor.txt",
-        "inputTest": "datasets/TP3-ej1-Conjuntoentrenamiento-xor.txt",
-        "desiredTest": "datasets/TP3-ej1-Salida-deseada-xor.txt",
         "flatten": 1,
         "normalizeDesired": false
     },
@@ -16,6 +14,8 @@
     "multilayer": true,
     "momentum": true,
     "alpha": 0.8,
+    "blockAmount": 4,
+    "testBlock": 0,
     "layers": [
         {
             "activation": "simple",

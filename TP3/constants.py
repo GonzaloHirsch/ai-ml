@@ -16,8 +16,6 @@ class ActivationOptions(enum.Enum):
 class ConfigOptions(enum.Enum):
    INPUT_DATA = "input"
    DESIRED_DATA = "desired"
-   INPUT_TEST_DATA = "inputTest"
-   DESIRED_TEST_DATA = "desiredTest"
    FLATTEN_DATA = "flatten"
    NORMALIZE_DESIRED_DATA = "normalizeDesired"
    ITERATIONS = "iterations"
@@ -30,6 +28,8 @@ class ConfigOptions(enum.Enum):
    DELTA_DESIRED = "deltaDesired"
    MOMENTUM = "momentum"
    ALPHA = "alpha"
+   BLOCK_AMOUNT = "blockAmount"
+   TEST_BLOCK = "testBlock"
 
    def __str__(self):
       return str(self.value)
