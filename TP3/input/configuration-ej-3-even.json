@@ -2,6 +2,8 @@
     "files": {
         "input": "datasets/TP3-ej3-Conjuntoentrenamiento.txt",
         "desired": "datasets/TP3-ej3-Salida-deseada.txt",
+        "inputTest": "datasets/TP3-ej3-Conjuntoentrenamiento.txt",
+        "desiredTest": "datasets/TP3-ej3-Salida-deseada.txt",
         "flatten": 7,
         "normalizeDesired": false
     },
