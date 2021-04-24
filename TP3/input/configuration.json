@@ -9,8 +9,8 @@
     },
     "kTraining": {
         "useKTraining": true,
-        "blockAmount": 10,
-        "testBlock": 7
+        "blockAmount": 5,
+        "testBlock": 2
     },
     "iterations": 500,
     "activation": "linear",

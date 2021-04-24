@@ -111,6 +111,29 @@ def graphR2Hiperplane(inputs, desired, hiperplanes):
     ax.set_ylabel('y', color='#1C2833')
     ax.grid()
 
+    ax.set_aspect('equal')
+    ax.grid(True, which='both')
+
+    # set the x-spine (see below for more info on `set_position`)
+    ax.spines['left'].set_position('zero')
+
+    # turn off the right spine/ticks
+    ax.spines['right'].set_color('none')
+    ax.yaxis.tick_left()
+
+
+    # set the y-spine
+    ax.spines['bottom'].set_position('zero')
+
+    # turn off the top spine/ticks
+    ax.spines['top'].set_color('none')
+    ax.xaxis.tick_bottom()
+
+    plt.xticks(np.arange(-1, 1.1, 0.5))
+    plt.yticks(np.arange(-1, 1.1, 0.5))
+    plt.xlim(-1.1,1.1)
+    plt.ylim(-1.1,1.1)
+
     line, = ax.plot(x, hiperplanes[0], '-r', label='Iteration 0')
 
     def animate(i):
@@ -119,7 +142,7 @@ def graphR2Hiperplane(inputs, desired, hiperplanes):
         return line,
 
     ani = animation.FuncAnimation(
-        fig, animate, interval=200, blit=True, save_count=50)
+        fig, animate, interval=200, blit=False, save_count=50)
 
     plt.show()
 
