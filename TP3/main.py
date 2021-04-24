@@ -469,7 +469,7 @@ def main():
                 trainMultilayer(config, trainingInputs, trainingLabels, testInputs, testLabels)
             else:
                 trainSingle(config, trainingInputs, trainingLabels, testInputs, testLabels)
-    elif not config.randomizeBlock:
+    elif config.useKTraining and not config.randomizeBlock:
         # block size of the test data
         blockSize = floor(len(inputs)/config.blockAmount)
         # start and end indexes of the test data
