@@ -34,6 +34,7 @@ class ConfigOptions(enum.Enum):
    BLOCK_AMOUNT = "blockAmount"
    TEST_BLOCK = "testBlock"
    USE_K_TRAINING = "useKTraining"
+   RANDOMIZE_BLOCK = "randomizeBlock"
    CALCULATE_METRICS = "calculateMetrics"
 
    def __str__(self):

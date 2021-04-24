@@ -56,6 +56,7 @@ def parseConfiguration(configPath):
         blockAmount = ktraining[ConfigOptions.BLOCK_AMOUNT.value]
         testBlock = ktraining[ConfigOptions.TEST_BLOCK.value]
         useKTraining = ktraining[ConfigOptions.USE_K_TRAINING.value]
+        randomizeBlock = ktraining[ConfigOptions.RANDOMIZE_BLOCK.value]
         # Get other data
         iterations = data[ConfigOptions.ITERATIONS.value]
         activation = data[ConfigOptions.ACTIVATION.value]
@@ -89,6 +90,7 @@ def parseConfiguration(configPath):
             blockAmount=blockAmount,
             testBlock=testBlock,
             useKTraining=useKTraining,
-            calculateMetrics=calculateMetrics
+            calculateMetrics=calculateMetrics,
+            randomizeBlock=randomizeBlock
         )
     return config

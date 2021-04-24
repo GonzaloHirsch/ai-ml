@@ -201,7 +201,6 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             for inputs, label in zip(trainingInput, labels):
                 summation, prediction = predict(perceptron, inputs)
                 error += perceptron.calculateError(label, prediction)
-
             errors.append(error[0])
             weights.append(perceptron.getWeights())
 
@@ -432,7 +431,45 @@ def main():
     inputs = parser.parseInput(config.input, addExtraInput=True, flatten=config.flatten, normalize=False)
     labels = parser.parseInput(config.desired, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
     
-    if config.useKTraining:
+    if config.useKTraining and config.randomizeBlock:
+        # block size of the test data
+        blockSize = floor(len(inputs)/config.blockAmount)
+        # Calculate random indexes and obtain randomized datasets
+        randomIndexes = getRandomDatasetOrder(len(inputs))
+        randomInputs = []
+        randomLabels = []
+        for i in randomIndexes:
+            randomInputs.append(inputs[i])
+            randomLabels.append(labels[i])
+        randomInputs = np.array(randomInputs)
+        randomLabels = np.array(randomLabels)
+
+        for j in range(config.blockAmount):
+            inputCopy = np.copy(randomInputs)
+            labelsCopy = np.copy(randomLabels)
+            # start and end indexes of the test data
+            startTestIdx = j * blockSize
+            endTestIdx = startTestIdx + blockSize
+            # if the end exceeds the range (due to uneven block size)
+            if (endTestIdx > len(inputCopy)):
+                endTestIdx = len(inputCopy)
+            # Indexes of the test data
+            testIdxs = np.arange(startTestIdx, endTestIdx)
+
+            # Training data
+            trainingInputs = np.delete(inputCopy, testIdxs, axis=0) # 0 indicates to delete row
+            trainingLabels = np.delete(labelsCopy, testIdxs, axis=0) 
+
+            # Test data
+            testInputs = inputCopy[startTestIdx:endTestIdx]
+            testLabels = labelsCopy[startTestIdx:endTestIdx]
+
+            print("######################\nTRAINING BLOCK " + str(j) + "\n######################")
+            if config.multilayer:
+                trainMultilayer(config, trainingInputs, trainingLabels, testInputs, testLabels)
+            else:
+                trainSingle(config, trainingInputs, trainingLabels, testInputs, testLabels)
+    elif not config.randomizeBlock:
         # block size of the test data
         blockSize = floor(len(inputs)/config.blockAmount)
         # start and end indexes of the test data
@@ -451,6 +488,12 @@ def main():
         # Test data
         testInputs = inputs[startTestIdx:endTestIdx]
         testLabels = labels[startTestIdx:endTestIdx]
+
+        print("######################\nTRAINING\n######################")
+        if config.multilayer:
+            trainMultilayer(config, trainingInputs, trainingLabels, testInputs, testLabels)
+        else:
+            trainSingle(config, trainingInputs, trainingLabels, testInputs, testLabels)
     else:
         trainingInputs = inputs
         trainingLabels = labels
@@ -458,11 +501,11 @@ def main():
         testInputs = parser.parseInput(config.inputTest, addExtraInput=True, flatten=config.flatten, normalize=False)
         testLabels = parser.parseInput(config.desiredTest, addExtraInput=False, flatten=1, normalize=config.normalizeDesired)
 
-    print("######################\nTRAINING\n######################")
-    if config.multilayer:
-        trainMultilayer(config, trainingInputs, trainingLabels, testInputs, testLabels)
-    else:
-        trainSingle(config, trainingInputs, trainingLabels, testInputs, testLabels)
+        print("######################\nTRAINING\n######################")
+        if config.multilayer:
+            trainMultilayer(config, trainingInputs, trainingLabels, testInputs, testLabels)
+        else:
+            trainSingle(config, trainingInputs, trainingLabels, testInputs, testLabels)
     
 
 # App entrypoint

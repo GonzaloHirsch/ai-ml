@@ -10,7 +10,7 @@
     "kTraining": {
         "useKTraining": true,
         "blockAmount": 2,
-        "testBlock": 2
+        "testBlock": 1
     },
     "iterations": 750,
     "activation": "simple",
@@ -19,7 +19,7 @@
     "deltaDesired": 0,
     "error": 0.005,
     "multilayer": true,
-    "momentum": true,
+    "momentum": false,
     "calculateMetrics": true,
     "alpha": 0.8,
     "layers": [

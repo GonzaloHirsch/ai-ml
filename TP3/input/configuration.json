@@ -10,7 +10,8 @@
     "kTraining": {
         "useKTraining": true,
         "blockAmount": 2,
-        "testBlock": 1
+        "testBlock": 0,
+        "randomizeBlock": false
     },
     "iterations": 500,
     "activation": "simple",
@@ -25,11 +26,11 @@
     "layers": [
         {
             "activation": "simple",
-            "perceptrons": 8
+            "perceptrons": 36
         },
         {
             "activation": "simple",
-            "perceptrons": 8
+            "perceptrons": 24
         },
         {
             "activation": "simple",
