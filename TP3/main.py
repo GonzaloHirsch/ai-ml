@@ -206,9 +206,9 @@ def trainSingle(config, trainingInput, labels, trainingInputTest, labelsTest):
             weights.append(perceptron.getWeights())
 
             # Calculate metrics
-            accuracy, error, precision, recall, f1 = testPerceptron(perceptron, trainingInput, labels, config.delta, calculateMetrics=config.calculateMetrics)
+            accuracy, errorMetric, precision, recall, f1 = testPerceptron(perceptron, trainingInput, labels, config.delta, calculateMetrics=config.calculateMetrics)
             trainMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
-            accuracy, error, precision, recall, f1 = testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta, calculateMetrics=config.calculateMetrics)
+            accuracy, errorMetric, precision, recall, f1 = testPerceptron(perceptron, trainingInputTest, labelsTest, config.delta, calculateMetrics=config.calculateMetrics)
             testMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
 
             iterations += 1
@@ -382,10 +382,10 @@ def trainMultilayer(config, trainingInput, labels, trainingInputTest, labelsTest
 
             # Calculate metrics
             # Train metrics
-            accuracy, error, precision, recall, f1 = testNetwork(network, networkSize, trainingInput, labels, config.delta, calculateMetrics=config.calculateMetrics)
+            accuracy, errorMetric, precision, recall, f1 = testNetwork(network, networkSize, trainingInput, labels, config.delta, calculateMetrics=config.calculateMetrics)
             trainMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
             # Test metrics
-            accuracy, error, precision, recall, f1 = testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta, calculateMetrics=config.calculateMetrics)
+            accuracy, errorMetric, precision, recall, f1 = testNetwork(network, networkSize, trainingInputTest, labelsTest, config.delta, calculateMetrics=config.calculateMetrics)
             testMetrics.append([accuracy, precision, recall, f1] if config.calculateMetrics else [accuracy])
 
             # Increase iterations
