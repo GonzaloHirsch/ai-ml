@@ -100,6 +100,13 @@ Se recomienda agregar una carpeta `datasets` que ya está ignorada en el `.gitig
 
 Es recomendable que los datos del ejercicio 1 se formatee de manera idéntica al resto de los datasets.
 
+## Ejecución
+
+Para ejecutar al programa, una vez lista la configuración, se puede correr así:
+```python
+python main.py
+```
+
 ## Graficar
 Para poder ver una animacion de los hiperplanos creados, ya sea de 2D o 3D, debe correr el siguiente comando:
 ```
