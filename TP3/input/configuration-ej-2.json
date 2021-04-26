@@ -8,7 +8,7 @@
         "normalizeDesired": false
     },
     "kTraining": {
-        "useKTraining": true,
+        "useKTraining": false,
         "blockAmount": 5,
         "testBlock": 2,
         "randomizeBlock": true
