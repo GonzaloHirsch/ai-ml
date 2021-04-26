@@ -29,9 +29,9 @@ def calculateR2Hiperplanes(filename):
                 # Creating the y = mx + b function
                 # Comes as a + by + cx = 0
                 a = float(weights[0])
-                b = float(weights[1])
-                c = float(weights[2])
-                if b != 0:
+                c = float(weights[1])
+                b = float(weights[2])
+                if c != 0:
                     y = (c/(-1*b))*x + (a/(-1*b))
                 else:
                     y = 0*x
@@ -57,10 +57,10 @@ def calculateR3Hiperplanes(filename):
             else:
                 # Comes as a + bz + cy + dx = 0 -> despejo Z
                 a = float(weights[0])
-                b = float(weights[1])
+                d = float(weights[1])
                 c = float(weights[2])
-                d = float(weights[3])
-                if b != 0:
+                b = float(weights[3])
+                if d != 0:
                     X, Y = np.meshgrid(x2, y2)
                     Z = (a/(-1*b)) + (c/(-1*b))*Y + (d/(-1*b))*X
                 else:
@@ -98,6 +98,22 @@ def getErrorInputFromFile(errorFile):
                 errors.append(float(data[1]))
             index += 1
     return iterations, errors
+
+def getAccuracyInputFromFile(errorFile):
+    with open(errorFile) as f:
+        # Read all lines
+        lines = f.readlines()
+        iterations = []
+        accuracies = []
+        index = 0
+        for line in lines:
+            # Skip headers
+            if index > 0:
+                data = line.rstrip("\n").split(",")
+                iterations.append(int(data[0]))
+                accuracies.append(float(data[1]))
+            index += 1
+    return iterations, accuracies
 
 
 def graphR2Hiperplane(inputs, desired, hiperplanes):
@@ -197,6 +213,21 @@ def graphError(iterations, errors):
     plt.show()
 
 
+def graphAccuracyComparison(iterations, trainAccuracy, testAccuracy):
+    fig, ax = plt.subplots()
+
+    ax.set_xlabel('Iterations', color='#1C2833')
+    ax.set_ylabel('Accuracy', color='#1C2833')
+    ax.grid()
+
+    ax.plot(iterations, trainAccuracy, '-g')
+    ax.plot(iterations, testAccuracy, '-r')
+
+    plt.legend(["Train", "Test"], loc ="lower right")
+
+    plt.show()
+
+
 def main():
     # Command line args are in sys.argv[1], sys.argv[2] ..
     # sys.argv[0] is the script name itself and can be ignored
@@ -207,6 +238,8 @@ def main():
     parser.add_argument('-i', dest='inputFile', required=False)
     parser.add_argument('-w', dest='weightsFile', required=False)
     parser.add_argument('-e', dest='errorFile', required=False)
+    parser.add_argument('-test', dest='testFile', required=False)
+    parser.add_argument('-train', dest='trainFile', required=False)
 
     args = parser.parse_args()
 
@@ -219,6 +252,13 @@ def main():
         print("Graphing error per iteration")
         iterations, errors = getErrorInputFromFile("output/" + args.errorFile)
         graphError(iterations, errors)
+        exit(0)
+
+    if args.testFile or args.trainFile:
+        print("Graphing accuracy comparison")
+        iterations, testAccuracy = getAccuracyInputFromFile("output/" + args.testFile)
+        iterations, trainAccuracy = getAccuracyInputFromFile("output/" + args.trainFile)
+        graphAccuracyComparison(iterations, trainAccuracy, testAccuracy)
         exit(0)
 
     if args.inputFile == EJ1_XOR:
