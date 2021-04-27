@@ -98,7 +98,7 @@ Dentro de cada objeto de `layers` (el orden de las capas es según se define en 
 
 Se recomienda agregar una carpeta `datasets` que ya está ignorada en el `.gitignore`. Ahí dentro se pueden poner los datos de entrada. En [este link](https://drive.google.com/drive/folders/1N8HqoasPf_8VuInag2kxV2yUFMki2RB-?usp=sharing) pueden encontrar datasets para cada problema.
 
-Es recomendable que los datos del ejercicio 1 se formatee de manera idéntica al resto de los datasets.
+Es recomendable que los datos del ejercicio 1 se formateen de manera idéntica al resto de los datasets.
 
 ## Ejecución
 
