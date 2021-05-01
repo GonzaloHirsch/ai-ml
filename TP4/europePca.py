@@ -33,6 +33,7 @@ print("\n------------------PROYECTIONS------------------")
 print(valuesDf)
 
 # Plotting the biplot (width, height)
+plt.style.use('seaborn-bright')
 fig, ax = plt.subplots(figsize=(12,7))
 # Calculate scaling factor for points
 scalex = 1.0/(valuesDf["PC1"].max() - valuesDf["PC1"].min())
