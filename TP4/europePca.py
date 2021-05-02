@@ -35,6 +35,22 @@ print(valuesDf)
 # Plotting the biplot (width, height)
 plt.style.use('seaborn-bright')
 fig, ax = plt.subplots(figsize=(12,7))
+# Plot the horizontal bars
+ax.barh(df.index, valuesDf["PC1"], align='center', color=['g' if val > 0 else 'r' for val in valuesDf["PC1"]])
+ax.set_xlabel("PC1 (%{})".format(round(pcaFit.explained_variance_ratio_[0]*100, 2)))
+# Add internal gridlines
+major_ticks = np.arange(-4, 5.5, 0.5)
+minor_ticks = np.arange(-4, 5.5, 0.25)
+ax.set_xticks(major_ticks)
+ax.set_xticks(minor_ticks, minor=True)
+ax.grid(which='minor', alpha=0.25)
+ax.grid(which='major', alpha=0.5)
+ax.set_title("PCA for European Countries")
+plt.show()
+
+# Biplot
+plt.style.use('seaborn-bright')
+fig, ax = plt.subplots(figsize=(12,7))
 # Calculate scaling factor for points
 scalex = 1.0/(valuesDf["PC1"].max() - valuesDf["PC1"].min())
 scaley = 1.0/(valuesDf["PC2"].max() - valuesDf["PC2"].min())
@@ -54,12 +70,12 @@ ax.set_xlabel("PC1 (%{})".format(round(pcaFit.explained_variance_ratio_[0]*100, 
 ax.set_ylabel("PC2 (%{})".format(round(pcaFit.explained_variance_ratio_[1]*100, 2)))
 # Add internal gridlines
 major_ticks = np.arange(-0.6, 0.8, 0.1)
-minor_ticks = np.arange(-0.6, 0.8, 0.2)
+minor_ticks = np.arange(-0.6, 0.8, 0.05)
 ax.set_xticks(major_ticks)
 ax.set_xticks(minor_ticks, minor=True)
 ax.set_yticks(major_ticks)
 ax.set_yticks(minor_ticks, minor=True)
 ax.grid(which='minor', alpha=0.25)
-ax.grid(which='major', alpha=0.75)
+ax.grid(which='major', alpha=0.5)
 ax.set_title("PCA for European Countries")
 plt.show()
