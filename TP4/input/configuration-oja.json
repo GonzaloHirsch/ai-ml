@@ -1,0 +1,12 @@
+{
+    "files": {
+        "input": "datasets/europe.csv",
+        "flatten": 1
+    },
+    "method": {
+        "network": "oja",
+        "k": 10
+    },
+    "iterations": 15000,
+    "learningRate": 0.005
+}

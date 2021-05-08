@@ -1,4 +1,4 @@
-# TP 3 - Perceptron simple y multicapa
+# TP 4 - Métodos de Aprendizaje NO Supervisado
 
 ## Requerimientos
 
@@ -15,6 +15,35 @@ pip install -r requirements.txt
 
 ## Configuración
 
+La configuración del programa se realiza desde el archivo `input/configuration.json`, el formato del archivo tiene que ser el siguiente:
+```json
+{
+    "files": {
+        "input": "datasets/europe.csv",
+        "flatten": 1
+    },
+    "method": {
+        "network": "oja",
+        "k": 10
+    },
+    "iterations": 15000,
+    "learningRate": 0.005
+}
+```
+
+Los posibles valores de cada campo son:
+* `iterations` --> Número entero mayor a 0, cantidad de iteraciones que se hacen
+* `learningRate` --> Número decimal menor a 1, learning rate del programa (buen valor = `0.005`)
+
+Dentro del objeto `files` debe ir:
+* `input` --> Path desde el root del proyecto al archivo con los datos de training
+* `flatten` --> Cada cuantas filas de input de entrenamiento se agrupa (para el de Hopfield debería ser `5`, para el resto `1`)
+
+Dentro del objeto `method` debe ir:
+* `network` --> Método que se usa, posibles valores son [`oja`, `kohonen`, `hopfield`]
+* `k` --> Tamaño de la matriz de Kohonen (k x k). Solo se usa si `network=kohonen`.
+
+**NOTA**: Se agregaron ejemplos de configuraciones en la carpeta `input`
 
 ## Datasets
 
