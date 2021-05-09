@@ -4,6 +4,7 @@ import random
 
 from neurons.kohonenNeuron import KohonenNeuron
 
+# TODO FALTA NORMALIZAR LOS VECTORES!!
 def apply(config, inputs):
     try:
         kohonen = Kohonen(config, inputs)
@@ -51,8 +52,7 @@ class Kohonen:
 
     # Want the positions of the neurons that live within a certain radius
     # of the neuron I'm analyzing
-    def getNeuronNeighbours(self, row, col, t): 
-        radius = self.getRadius(t)
+    def getNeuronNeighbours(self, row, col, radius): 
         neuronPos = np.array([row, col])
         neighbours = []
 
@@ -103,6 +103,8 @@ class Kohonen:
 
                 row, col = self.getWinningNeuron(inputData)
 
-                neighbours = self.getNeuronNeighbours(row, col, iteration)
+                radius = self.getRadius(iteration)
+
+                neighbours = self.getNeuronNeighbours(row, col, radius)
 
                 self.updateNeuronsWeights(neighbours, learningRate, inputData)
