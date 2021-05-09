@@ -4,7 +4,6 @@ from numpy.random import rand
 
 class OjaNeuron:
     def __init__(self, weightsAmount, learningRate):
-        
         self.weights = rand(weightsAmount) * sqrt(1/weightsAmount)
         self.learningRate = learningRate
 
@@ -27,8 +26,3 @@ class OjaNeuron:
         subs = 'weights=%s, learningRate=%s' % (self.weights, self.learningRate)
         s = '%s{%s}' % (type(self).__name__, subs)
         return s
-
-
-    
-
-    

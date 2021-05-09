@@ -29,7 +29,7 @@ def apply(config, inputs):
         # Calculate the PC1
         weights = neuron.getWeights()
         norm = sqrt(sum(dot(weights, weights)))
-        df = DataFrame(data = weights/norm, columns = ['PC1 Approximation'])
+        df = DataFrame(data = weights/norm, columns = ['Eigenvector Approximation'])
         print(df)
 
     except KeyboardInterrupt:
