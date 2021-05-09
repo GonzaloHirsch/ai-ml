@@ -4,9 +4,9 @@
         "flatten": 1
     },
     "method": {
-        "network": "oja",
+        "network": "kohonen",
         "k": 10
     },
-    "iterations": 10000,
+    "iterations": 5,
     "learningRate": 0.00005
 }
