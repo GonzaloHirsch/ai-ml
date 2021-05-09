@@ -7,6 +7,6 @@
         "network": "oja",
         "k": 10
     },
-    "iterations": 15000,
-    "learningRate": 0.005
+    "iterations": 10000,
+    "learningRate": 0.00005
 }
