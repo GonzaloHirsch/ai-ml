@@ -15,8 +15,8 @@ def apply(config, inputs):
         eucDistMatrix = kohonen.calculateWeightDistanceMatrix()
         
         # Writing matrices to files
-        writeMatrixToFile(('counterMatrix_%s_%s.csv' % (config.k, time.time())), neuronCounterMatrix)
-        writeMatrixToFile(('eucDistMatrix_%s_%s.csv' % (config.k, time.time())), eucDistMatrix)
+        writeMatrixToFile(('counterMatrix_%s_%s.txt' % (config.k, time.time())), neuronCounterMatrix)
+        writeMatrixToFile(('eucDistMatrix_%s_%s.txt' % (config.k, time.time())), eucDistMatrix)
 
     except KeyboardInterrupt:
         print("Finishing up...")

@@ -20,6 +20,6 @@ def printIterationsInPlace(iterations):
 # Input: file where to write, matrix to write
 def writeMatrixToFile(filename, matrix):
     mat = np.matrix(matrix)
-    with open(OUTPUT_DIR + filename + '.txt','wb') as f:
+    with open(OUTPUT_DIR + filename,'wb') as f:
         for line in mat:
             np.savetxt(f, line, fmt='%.2f')
