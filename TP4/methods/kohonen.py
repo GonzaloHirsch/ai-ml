@@ -1,14 +1,23 @@
 import numpy as np
 import math
 import random 
+import time
 
 from neurons.kohonenNeuron import KohonenNeuron
+from helper import writeMatrixToFile
 
 # TODO FALTA NORMALIZAR LOS VECTORES!!
 def apply(config, inputs):
     try:
         kohonen = Kohonen(config, inputs)
         kohonen.learn()
+        neuronCounterMatrix = kohonen.getNeuronCounterMatrix()
+        eucDistMatrix = kohonen.calculateWeightDistanceMatrix()
+        
+        # Writing matrices to files
+        writeMatrixToFile(('counterMatrix_%s_%s.csv' % (config.k, time.time())), neuronCounterMatrix)
+        writeMatrixToFile(('eucDistMatrix_%s_%s.csv' % (config.k, time.time())), eucDistMatrix)
+
     except KeyboardInterrupt:
         print("Finishing up...")
 
@@ -48,6 +57,9 @@ class Kohonen:
                     row = i
                     col = j
 
+        # Add 1 to the amount of data that landed on the winning neuron
+        self.network[row][col].newDataEntry()
+        
         return row, col
 
     # Want the positions of the neurons that live within a certain radius
@@ -86,6 +98,42 @@ class Kohonen:
             return random.uniform(0, 1)
 
         return 1 / iteration
+
+    def getNeuronCounterMatrix(self):
+        neuronCounterMatrix = np.zeros(shape=(self.k, self.k))
+
+        for i in range(0, self.k):
+            for j in range(0, self.k):
+                neuronCounterMatrix[i][j] = self.network[i][j].getCounter()
+
+        return neuronCounterMatrix
+
+    def calculateWeightDistanceMatrix(self):
+        eucDistMatrix = np.zeros(shape=(self.k, self.k))
+        radius = 1
+
+        for i in range(0, self.k):
+            for j in range(0, self.k):
+                neighbours = self.getNeuronNeighbours(i, j, radius)
+                eucDistMatrix[i][j] = self.calculateAverageEucDist(self.network[i][j], neighbours)
+
+        return eucDistMatrix
+
+
+    def calculateAverageEucDist(self, neuron, neighbours):
+        average = 0;
+
+        for i in range(0, len(neighbours)):
+            row = neighbours[i][0]
+            col = neighbours[i][1]
+            neighbor = self.network[row][col]
+
+            dist = np.linalg.norm(neuron.getWeights()-neighbor.getWeights())
+            average += dist
+
+        average /= len(neighbours)
+
+        return average
 
     
     def learn(self):

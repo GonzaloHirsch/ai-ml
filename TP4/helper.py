@@ -1,5 +1,8 @@
 from random import sample
 from sys import stdout
+import numpy as np
+
+OUTPUT_DIR = 'output/'
 
 # Returns a random dataset index order based on the dataset length
 # Input: number of rows or items in dataset
@@ -12,3 +15,11 @@ def getRandomDatasetOrder(datasetLength):
 def printIterationsInPlace(iterations):
     stdout.write("Epoch #{}\r".format(iterations))
     stdout.flush()
+
+# Writes matrix to file 
+# Input: file where to write, matrix to write
+def writeMatrixToFile(filename, matrix):
+    mat = np.matrix(matrix)
+    with open(OUTPUT_DIR + filename + '.txt','wb') as f:
+        for line in mat:
+            np.savetxt(f, line, fmt='%.2f')
