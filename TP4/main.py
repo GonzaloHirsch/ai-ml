@@ -17,7 +17,8 @@ def main():
     elif config.network == NetworkOptions.KOHONEN.value:
         kohonen.apply(config, inputs)
     elif config.network == NetworkOptions.HOPFIELD.value:
-        hopfield.apply(config, inputs)
+        testInputs = parseInput(config.test, flatten=config.flatten)
+        hopfield.apply(config, inputs, testInputs)
     else:
         print("Invalid method \"{}\" chosen".format(config.network))
 

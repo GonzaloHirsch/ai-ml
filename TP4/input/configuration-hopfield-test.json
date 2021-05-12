@@ -1,11 +1,11 @@
 {
     "files": {
-        "input": "datasets/europe.csv",
+        "input": "datasets/hopfield-test.txt",
         "test": "datasets/hopfield-test.txt",
-        "flatten": 1
+        "flatten": 2
     },
     "method": {
-        "network": "oja",
+        "network": "hopfield",
         "k": 10
     },
     "iterations": 15000,

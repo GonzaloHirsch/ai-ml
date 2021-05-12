@@ -11,11 +11,12 @@ class Config:
             raise Exception("No config instance available")
         return Config.__instance
 
-    def __init__(self, input, flatten, iterations, learningRate, network, k):
+    def __init__(self, input, test, flatten, iterations, learningRate, network, k):
         if Config.__instance != None:
             raise Exception("Cannot create another instance of config")
 
         self.input = input
+        self.test = test
         self.flatten = flatten
         self.iterations = iterations
         self.learningRate = learningRate

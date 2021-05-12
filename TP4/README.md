@@ -20,6 +20,7 @@ La configuración del programa se realiza desde el archivo `input/configuration.
 {
     "files": {
         "input": "datasets/europe.csv",
+        "test": "datasets/letters-test-big.txt",
         "flatten": 1
     },
     "method": {
@@ -37,6 +38,7 @@ Los posibles valores de cada campo son:
 
 Dentro del objeto `files` debe ir:
 * `input` --> Path desde el root del proyecto al archivo con los datos de training
+* `test` --> Path desde el root del proyecto al archivo con los de testing para redes de hopfield, deberían tener el mismo tamaño de flatten. Solo se usa cuando `network=hopfield`
 * `flatten` --> Cada cuantas filas de input de entrenamiento se agrupa (para el de Hopfield debería ser `5`, para el resto `1`)
 
 Dentro del objeto `method` debe ir:

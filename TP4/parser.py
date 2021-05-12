@@ -22,7 +22,7 @@ def parseInput(filepath, flatten = 1):
             for line in lines:
                 rowCount += 1
                 # Append to sub data
-                subdata = subdata + [float(elem) for elem in line.strip().split()]
+                subdata = subdata + [int(elem) for elem in line.strip().split()]
                 # Flatten the array
                 if rowCount == flatten:
                     data.append(array(subdata).flatten())
@@ -46,6 +46,7 @@ def parseConfiguration(configPath):
         method = data[METHOD]
         # Get FILES data
         inputData = files[ConfigOptions.INPUT_DATA.value]
+        testData = files[ConfigOptions.TEST_DATA.value]
         flatten = files[ConfigOptions.FLATTEN_DATA.value]
         # Get METHOD data
         network = method[ConfigOptions.NETWORK_METHOD.value]
@@ -57,6 +58,7 @@ def parseConfiguration(configPath):
         # Create config
         config = Config(
             input=inputData,
+            test=testData,
             flatten=flatten,
             network=network,
             k=k,

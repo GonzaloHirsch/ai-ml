@@ -15,6 +15,7 @@ class NetworkOptions(enum.Enum):
 # Configurable options
 class ConfigOptions(enum.Enum):
    INPUT_DATA = "input"
+   TEST_DATA = "test"
    FLATTEN_DATA = "flatten"
    ITERATIONS = "iterations"
    LEARNING_RATE = "learningRate"
