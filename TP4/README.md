@@ -28,13 +28,15 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         "k": 10
     },
     "iterations": 15000,
-    "learningRate": 0.005
+    "learningRate": 0.005,
+    "colormap": false
 }
 ```
 
 Los posibles valores de cada campo son:
 * `iterations` --> Número entero mayor a 0, cantidad de iteraciones que se hacen
 * `learningRate` --> Número decimal menor a 1, learning rate del programa (buen valor = `0.005`)
+* `colormap` --> Determina si se realiza el mapa de colores y la matriz U para redes de Kohonen, `true` o `false`
 
 Dentro del objeto `files` debe ir:
 * `input` --> Path desde el root del proyecto al archivo con los datos de training

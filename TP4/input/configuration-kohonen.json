@@ -10,5 +10,5 @@
     },
     "iterations": 5,
     "learningRate": 0.00005,
-    "colormap": false
+    "colormap": true
 }

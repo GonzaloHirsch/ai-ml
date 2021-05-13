@@ -17,6 +17,7 @@ class ConfigOptions(enum.Enum):
    INPUT_DATA = "input"
    TEST_DATA = "test"
    FLATTEN_DATA = "flatten"
+   COLORMAP = "colormap"
    ITERATIONS = "iterations"
    LEARNING_RATE = "learningRate"
    NETWORK_METHOD = "network"

@@ -15,8 +15,9 @@ def apply(config, inputs):
         eucDistMatrix = kohonen.calculateWeightDistanceMatrix()
 
         # Plotting matrices
-        # plot_kohonen_colormap(neuronCounterMatrix, filename='output/colormap-plot.png')
-        # plot_kohonen_colormap(eucDistMatrix, colormap='Greys' ,filename='output/u-matrix-plot.png')
+        if(config.colormap):
+            plot_kohonen_colormap(neuronCounterMatrix, k=config.k, filename='output/colormap-plot.png')
+            plot_kohonen_colormap(eucDistMatrix, k=config.k, colormap='Greys' ,filename='output/u-matrix-plot.png')
         
         # Writing matrices to files
         writeMatrixToFile(('counterMatrix_%s_%s.txt' % (config.k, time.time())), neuronCounterMatrix)
