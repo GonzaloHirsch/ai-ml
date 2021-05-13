@@ -98,7 +98,7 @@ class Kohonen:
         return ((1 - 2 * math.sqrt(self.k)) / (self.iterations)) * (t+1) + 2 * math.sqrt(self.k)
 
     def getLearningRate(self, iteration):
-        if iteration == 0 or iteration == 1:
+        if iteration <= 1:
             return random.uniform(0, 1)
 
         return 1 / iteration
@@ -125,7 +125,7 @@ class Kohonen:
 
 
     def calculateAverageEucDist(self, neuron, neighbours):
-        average = 0;
+        average = 0
 
         for i in range(0, len(neighbours)):
             row = neighbours[i][0]
@@ -142,14 +142,15 @@ class Kohonen:
     
     def learn(self):
         iteration = 0
+        inputsCount = self.inputs.shape[0]
 
-        for iteration in range(0,self.iterations):
+        for iteration in range(0, self.iterations):
 
             print("ITERATION = ", iteration)
 
             learningRate = self.getLearningRate(iteration)
 
-            for inputIdx in range(0, self.inputs.shape[0]):
+            for inputIdx in range(0, inputsCount):
 
                 inputData = self.inputs[inputIdx]
 
