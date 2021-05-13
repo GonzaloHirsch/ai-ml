@@ -71,7 +71,7 @@ def apply(config, inputs, testInputs):
             currS = testInput
             # Operate until it converges and is stable
             # Stability is defined by comparing the 2 arrays
-            while not array_equal(prevS, currS):
+            while not array_equal(prevS, currS) and steps < config.iterations:
                 # Keep the current S as the previous one to be able to compute the new one
                 prevS = currS
                 # Printing
