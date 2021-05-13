@@ -15,10 +15,13 @@ def apply(config, inputs, inputNames):
         eucDistMatrix = kohonen.calculateWeightDistanceMatrix()
 
         # Plotting matrices
-        plot_kohonen_colormap(neuronCounterMatrix, k=config.k, filename='graphs/colormap-plot.png')
-        plot_kohonen_colormap(lastNeuronCounterMatrix, k=config.k, filename='graphs/last-iter-plot.png')
-        plot_kohonen_colormap(eucDistMatrix, k=config.k, colormap='Greys', filename='graphs/u-matrix-plot.png')
+        plot_kohonen_colormap(neuronCounterMatrix, k=config.k, filename='colormap-plot.png')
+        plot_kohonen_colormap(lastNeuronCounterMatrix, k=config.k, filename='last-iter-plot.png')
+        plot_kohonen_colormap(eucDistMatrix, k=config.k, colormap='Greys', filename='u-matrix-plot.png')
         
+        # Print where each country landed on
+        kohonen.printLastIterationData()
+
         # Writing matrices to files
         writeMatrixToFile(('counterMatrix_%s.txt' % (config.k)), neuronCounterMatrix)
         writeMatrixToFile(('lastCounterMatrix_%s.txt' % (config.k)), lastNeuronCounterMatrix)
@@ -181,3 +184,9 @@ class Kohonen:
                 learningRates = self.getLearningRateForNeighbours(learningRate, radius, np.array([row, col]), neighbours)
                 # Updating the weights of the neighbour neurons
                 self.updateNeuronsWeights(neighbours, learningRates, inputData)
+
+    def printLastIterationData(self):
+        print("---------------------\nPos\tCountries")
+        for i in range(0, self.k):
+            for j in range(0, self.k):
+                print(('[%i, %i]\t%s' % (i, j, self.network[i][j].getCountries())))

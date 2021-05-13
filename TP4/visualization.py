@@ -4,6 +4,7 @@ import numpy as np
 
 
 def plot_kohonen_colormap(data, k=10, colormap='Blues', filename=None):
+    directory = 'graphs/'
     fig, ax = plt.subplots(figsize=(k, k))
     plt.pcolormesh(data, cmap=colormap, edgecolors=None)
     plt.colorbar()
@@ -15,8 +16,8 @@ def plot_kohonen_colormap(data, k=10, colormap='Blues', filename=None):
         ax.text(j + .5 , i + .5, round(z,2), ha='center', va='center')
 
     if filename:
-        plt.savefig(filename)
+        plt.savefig(directory + filename)
         plt.close()
-        print("Kohonen color map done!")
+        print(filename, " color map done!")
     else:
         plt.show()
