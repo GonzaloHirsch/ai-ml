@@ -53,8 +53,8 @@ def testOrthogonality(inputs):
 
 def apply(config, inputs, testInputs):
     #inputsAnalysis(inputs)
-    testOrthogonality(inputs)
-    exit(0)
+    #testOrthogonality(inputs)
+    #exit(0)
     
     # Build weights matrix
     weights = buildWeights(inputs)
