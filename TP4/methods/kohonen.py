@@ -52,17 +52,16 @@ class Kohonen:
         row = 0
         col = 0
 
-        for i in range(0, self.k):
-            for j in range(0, self.k):
-                neuron = self.network[i][j]
-                # Euclidean distance between data and weight
-                dist = np.linalg.norm(neuron.getWeights()-inputData)
+        for i, j in np.ndindex(self.network.shape):
+            neuron = self.network[i][j]
+            # Euclidean distance between data and weight
+            dist = np.linalg.norm(neuron.getWeights()-inputData)
    
-                # winning neuron is the one with minimum distance
-                if dist <= minDist:
-                    minDist = dist
-                    row = i
-                    col = j
+            # winning neuron is the one with minimum distance
+            if dist <= minDist:
+                minDist = dist
+                row = i
+                col = j                
 
         # Add 1 to the amount of data that landed on the winning neuron
         self.network[row][col].newDataEntry()
@@ -78,14 +77,13 @@ class Kohonen:
         neuronPos = np.array([row, col])
         neighbours = []
 
-        for i in range(0, self.k):
-            for j in range(0, self.k):
-                currPos = np.array([i, j])  
-                # Euc distance in the matrix positions
-                dist = self.calculatePositionDistance(neuronPos, currPos)
-                # Will be considered a neighbour if it is inside the radius
-                if dist <= radius:
-                    neighbours.append(currPos)
+        for i, j in np.ndindex(self.network.shape):
+            currPos = np.array([i, j])  
+            # Euc distance in the matrix positions
+            dist = self.calculatePositionDistance(neuronPos, currPos)
+            # Will be considered a neighbour if it is inside the radius
+            if dist <= radius:
+                neighbours.append(currPos)
 
         return neighbours
 
@@ -119,14 +117,14 @@ class Kohonen:
     def getNeuronCounterMatrix(self, isComplete):
         neuronCounterMatrix = np.zeros(shape=(self.k, self.k))
 
-        for i in range(0, self.k):
-            for j in range(0, self.k):
-                if isComplete:
-                    # Matrix with the count of all the data that went through each neuron
-                    neuronCounterMatrix[i][j] = self.network[i][j].getCompleteCounter()
-                else:
-                    # Matrix with data that went through the neuron on the last iteration
-                    neuronCounterMatrix[i][j] = self.network[i][j].getLastEpochCounter()
+        for i, j in np.ndindex(self.network.shape):
+
+            if isComplete:
+                # Matrix with the count of all the data that went through each neuron
+                neuronCounterMatrix[i][j] = self.network[i][j].getCompleteCounter()
+            else:
+                # Matrix with data that went through the neuron on the last iteration
+                neuronCounterMatrix[i][j] = self.network[i][j].getLastEpochCounter()
 
         return neuronCounterMatrix
 
@@ -135,10 +133,9 @@ class Kohonen:
         # Weight will be 1 in the last iteration
         radius = 1
 
-        for i in range(0, self.k):
-            for j in range(0, self.k):
-                neighbours = self.getNeuronNeighbours(i, j, radius)
-                eucDistMatrix[i][j] = self.calculateAverageEucDist(self.network[i][j], neighbours)
+        for i, j in np.ndindex(self.network.shape):
+            neighbours = self.getNeuronNeighbours(i, j, radius)
+            eucDistMatrix[i][j] = self.calculateAverageEucDist(self.network[i][j], neighbours)
 
         return eucDistMatrix
 
@@ -187,6 +184,5 @@ class Kohonen:
 
     def printLastIterationData(self):
         print("---------------------\nPos\tCountries")
-        for i in range(0, self.k):
-            for j in range(0, self.k):
-                print(('[%i, %i]\t%s' % (i, j, self.network[i][j].getCountries())))
+        for i, j in np.ndindex(self.network.shape):
+            print(('[%i, %i]\t%s' % (i, j, self.network[i][j].getCountries())))
