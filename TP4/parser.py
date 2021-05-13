@@ -54,6 +54,7 @@ def parseConfiguration(configPath):
         # Get other data
         iterations = data[ConfigOptions.ITERATIONS.value]
         learningRate = data[ConfigOptions.LEARNING_RATE.value]
+        colormap = data[ConfigOptions.COLORMAP.value]
         
         # Create config
         config = Config(
@@ -63,6 +64,7 @@ def parseConfiguration(configPath):
             network=network,
             k=k,
             iterations=iterations,
-            learningRate=learningRate
+            learningRate=learningRate,
+            colormap=colormap
         )
     return config

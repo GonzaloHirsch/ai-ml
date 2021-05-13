@@ -9,5 +9,6 @@
         "k": 10
     },
     "iterations": 15000,
-    "learningRate": 0.005
+    "learningRate": 0.005,
+    "colormap": false
 }

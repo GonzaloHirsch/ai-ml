@@ -1,7 +1,7 @@
 {
     "files": {
         "input": "datasets/europe.csv",
-        "test": "datasets/europe.csv",
+        "test": "",
         "flatten": 1
     },
     "method": {
@@ -10,5 +10,5 @@
     },
     "iterations": 5,
     "learningRate": 0.00005,
-    "colormap": false
+    "colormap": true
 }
