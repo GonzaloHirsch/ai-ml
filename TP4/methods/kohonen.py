@@ -2,7 +2,7 @@ import numpy as np
 import math
 import random 
 import time
-
+from visualization import plot_kohonen_colormap
 from neurons.kohonenNeuron import KohonenNeuron
 from helper import writeMatrixToFile
 
@@ -13,6 +13,10 @@ def apply(config, inputs):
         kohonen.learn()
         neuronCounterMatrix = kohonen.getNeuronCounterMatrix()
         eucDistMatrix = kohonen.calculateWeightDistanceMatrix()
+
+        # Plotting matrices
+        # plot_kohonen_colormap(neuronCounterMatrix, filename='output/colormap-plot.png')
+        # plot_kohonen_colormap(eucDistMatrix, colormap='Greys' ,filename='output/u-matrix-plot.png')
         
         # Writing matrices to files
         writeMatrixToFile(('counterMatrix_%s_%s.txt' % (config.k, time.time())), neuronCounterMatrix)
