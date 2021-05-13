@@ -1,5 +1,6 @@
 # Lib imports
 from numpy import array_equal, zeros, dot, array, sign, transpose
+import numpy as np
 # Local imports
 
 def printMatrix(input, flattenSize):
@@ -34,7 +35,26 @@ def buildWeights (inputs):
             weights[row, col] = (dot(inputs[:,row],inputs[:,col])*mult) if not row == col else 0
     return weights
 
+def inputsAnalysis(inputs):
+    mat = np.zeros((inputs.shape[0], inputs.shape[0]))
+    sums = np.zeros((inputs.shape[0]))
+    for i in range(0, inputs.shape[0]):
+        for j in range(0, inputs.shape[0]):
+            if not j == i:
+                mat[i, j] = np.abs(dot(inputs[i], inputs[j]))
+    for i in range(0, inputs.shape[0]):
+        sums[i] = np.sum(mat[i, :])
+        print("Pattern {} is {}".format(i, sums[i]))
+
+def testOrthogonality(inputs):
+    for i in range(0, inputs.shape[0]):
+        for j in range(i + 1, inputs.shape[0]):
+            print("{}x{} = {}".format(i, j, dot(inputs[i], inputs[j])))
+
 def apply(config, inputs, testInputs):
+    #inputsAnalysis(inputs)
+    testOrthogonality(inputs)
+    exit(0)
     
     # Build weights matrix
     weights = buildWeights(inputs)

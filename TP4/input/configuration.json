@@ -1,6 +1,6 @@
 {
     "files": {
-        "input": "datasets/letters.txt",
+        "input": "datasets/letters-test.txt",
         "test": "datasets/letters-test-big.txt",
         "flatten": 5
     },
