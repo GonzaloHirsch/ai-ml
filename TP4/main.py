@@ -10,12 +10,12 @@ def main():
     # Parse configuration files
     config = parseConfiguration(CONFIG_INPUT)
     # Parse input
-    inputs = parseInput(config.input, flatten=config.flatten)
+    inputs, inputNames = parseInput(config.input, flatten=config.flatten)
 
     if config.network == NetworkOptions.OJA.value:
         oja.apply(config, inputs)
     elif config.network == NetworkOptions.KOHONEN.value:
-        kohonen.apply(config, inputs)
+        kohonen.apply(config, inputs, inputNames)
     elif config.network == NetworkOptions.HOPFIELD.value:
         testInputs = parseInput(config.test, flatten=config.flatten)
         hopfield.apply(config, inputs, testInputs)

@@ -28,13 +28,13 @@ def parseInput(filepath, flatten = 1):
                     data.append(array(subdata).flatten())
                     subdata = []
                     rowCount = 0
-            return array(data)
+            return array(data), None
     # Asume that not flatten is for pca
     else:
         df = read_csv(filepath, sep=',', header=0, index_col=0)
         standardScaler = StandardScaler()
         standarizedDf = standardScaler.fit_transform(df)
-        return standarizedDf
+        return standarizedDf, array(df.index)
 
 # Parses the configuration
 def parseConfiguration(configPath):

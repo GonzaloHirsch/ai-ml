@@ -1,13 +1,13 @@
 {
     "files": {
-        "input": "datasets/letters-test.txt",
-        "test": "datasets/letters-test-big.txt",
-        "flatten": 5
+        "input": "datasets/europe.csv",
+        "test": "datasets/europe.csv",
+        "flatten": 1
     },
     "method": {
-        "network": "hopfield",
-        "k": 10
+        "network": "kohonen",
+        "k": 5
     },
-    "iterations": 15000,
+    "iterations": 1500,
     "learningRate": 0.005
 }

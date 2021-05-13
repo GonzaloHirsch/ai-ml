@@ -5,17 +5,26 @@ import random
 
 class KohonenNeuron:
     def __init__(self, weightsAmount):
-        self.dataCounter = 0
+        self.completeCounter = 0
+        self.lastEpochCounter = 0
+        self.country = []
         self.weights = rand(weightsAmount) * sqrt(1/weightsAmount)
 
     def newDataEntry(self):
-        self.dataCounter += 1
+        self.completeCounter += 1
+
+    def lastEpochEntry(self, country):
+        self.lastEpochCounter += 1
+        self.country.append(country)
 
     def getWeights(self):
         return copy(self.weights)
 
-    def getCounter(self):
-        return self.dataCounter
+    def getCompleteCounter(self):
+        return self.completeCounter
+
+    def getLastEpochCounter(self):
+        return self.lastEpochCounter
 
     def correctWeights(self, learningRate, dataInput): 
         delta = learningRate * (dataInput - self.weights)
