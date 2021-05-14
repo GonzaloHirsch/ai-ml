@@ -3,10 +3,14 @@
 from parser import parseConfiguration, parseInput
 from methods import oja, kohonen, hopfield
 from constants import NetworkOptions
+from helper import createDirectoryIfNotExist
 
 CONFIG_INPUT = "input/configuration.json"
 
 def main():
+    # Create directories to avoid errors
+    createDirectoryIfNotExist("output/")
+    createDirectoryIfNotExist("graphs/")
     # Parse configuration files
     config = parseConfiguration(CONFIG_INPUT)
     # Parse input

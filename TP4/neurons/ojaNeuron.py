@@ -10,9 +10,6 @@ class OjaNeuron:
     def getWeights(self):
         return copy(self.weights)
 
-    def updateLearningRate(self, iteration):
-        self.learningRate = 1 / iteration
-
     # Input shape (1, N)
     # Weight shape (N, 1)
     def summation(self, inputs):

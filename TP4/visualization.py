@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_kohonen_colormap(data, k=10, colormap='Blues', filename=None):
+def plot_kohonen_colormap(data, k=10, colormap='Blues', filename=None, addLabels = True):
     directory = 'graphs/'
     fig, ax = plt.subplots(figsize=(k, k))
     plt.pcolormesh(data, cmap=colormap, edgecolors=None)
@@ -12,8 +12,9 @@ def plot_kohonen_colormap(data, k=10, colormap='Blues', filename=None):
     plt.yticks(np.arange(.5, float(k) + .5), range(k))
     ax.set_aspect('equal')
 
-    for (i, j), z in np.ndenumerate(data):
-        ax.text(j + .5 , i + .5, round(z,2), ha='center', va='center')
+    if addLabels:
+        for (i, j), z in np.ndenumerate(data):
+            ax.text(j + .5 , i + .5, round(z,2), ha='center', va='center')
 
     if filename:
         plt.savefig(directory + filename)

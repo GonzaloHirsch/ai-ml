@@ -1,7 +1,6 @@
 # Lib imports
-from numpy import sqrt, copy, dot
+from numpy import sqrt, copy
 from numpy.random import rand
-import random
 
 class KohonenNeuron:
     def __init__(self, weightsAmount):
