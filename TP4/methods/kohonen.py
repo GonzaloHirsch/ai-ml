@@ -1,11 +1,12 @@
 import numpy as np
 import math
+from random import randint
 from visualization import plot_kohonen_colormap
 from neurons.kohonenNeuron import KohonenNeuron
 from helper import writeMatrixToFile
 from helper import printIterationsInPlace
 
-
+# VER SI HAY QUE CAMBIAR LOS PESOS DE LA NEURONA GANADORA
 def apply(config, inputs, inputNames):
     try:
         kohonen = Kohonen(config, inputs, inputNames)
@@ -42,8 +43,13 @@ class Kohonen:
     def createKohonenNetwork(self):
         network = []
 
-        for i in range(0, self.k):
-            network.append(np.array([KohonenNeuron(int(self.inputs.shape[1])) for x in range(0, self.k)], dtype = KohonenNeuron))
+        for _ in range(0, self.k):
+            network.append(
+                np.array(
+                    [KohonenNeuron(self.inputs[randint(0, self.inputs.shape[0]-1)], (self.k, self.k)) for _ in range(0, self.k)], 
+                    dtype = KohonenNeuron
+                )
+            )
 
         return np.array(network, dtype = object)
 
@@ -75,17 +81,20 @@ class Kohonen:
     # of the neuron I'm analyzing
     def getNeuronNeighbours(self, row, col, radius): 
         neuronPos = np.array([row, col])
-        neighbours = []
+        neuron = self.network[row][col]
+        currNeighbours = neuron.getNeighbours()
+        newNeighbours = []
 
-        for i, j in np.ndindex(self.network.shape):
-            currPos = np.array([i, j])  
+        for currPos in currNeighbours:
             # Euc distance in the matrix positions
             dist = self.calculatePositionDistance(neuronPos, currPos)
             # Will be considered a neighbour if it is inside the radius
             if dist <= radius:
-                neighbours.append(currPos)
+                newNeighbours.append(currPos)
 
-        return neighbours
+        neuron.setNeighbours(newNeighbours)
+
+        return newNeighbours
 
     def calculatePositionDistance(self, firstPos, secondPos):
         return np.linalg.norm(firstPos-secondPos)
@@ -99,8 +108,8 @@ class Kohonen:
             neuron.correctWeights(learningRates[i], inputData)
 
     def getRadius(self, t):
-        # return math.floor((self.iterations - t) * 2 * math.sqrt(self.k) / self.iterations)
-        return math.floor(((1 - 2 * math.sqrt(self.k)) / (self.iterations)) * (t+1) + 2 * math.sqrt(self.k))
+        # return math.floor((self.iterations - t) * 2 * math.sqrt(self.k) / self.iterations) + 1
+        return math.floor(((1 - self.k * math.sqrt(2)) / (self.iterations)) * (t+1) + self.k * math.sqrt(2))
 
     def getLearningRate(self, iteration):
         if iteration <= 1:

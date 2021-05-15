@@ -1,14 +1,13 @@
 # Lib imports
-from numpy import sqrt, copy, dot
-from numpy.random import rand
-import random
+from numpy import copy, ndindex
 
 class KohonenNeuron:
-    def __init__(self, weightsAmount):
+    def __init__(self, initialWeight, shape):
         self.completeCounter = 0
         self.lastEpochCounter = 0
         self.countries = []
-        self.weights = rand(weightsAmount) * sqrt(1/weightsAmount)
+        self.weights = initialWeight
+        self.neighbours = [[i, j] for i, j in ndindex(shape)]
 
     def newDataEntry(self):
         self.completeCounter += 1
@@ -28,6 +27,12 @@ class KohonenNeuron:
 
     def getCountries(self):
         return self.countries
+
+    def getNeighbours(self):
+        return self.neighbours
+
+    def setNeighbours(self, neighbours):
+        self.neighbours = neighbours
 
     def correctWeights(self, learningRate, dataInput): 
         delta = learningRate * (dataInput - self.weights)
