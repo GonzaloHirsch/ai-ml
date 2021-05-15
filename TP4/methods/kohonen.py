@@ -1,4 +1,6 @@
-import numpy as np
+# Lib imports
+from numpy import array, ndindex, zeros
+from numpy.linalg import norm
 import math
 from random import randint
 from visualization import plot_kohonen_colormap
@@ -16,7 +18,7 @@ def apply(config, inputs, inputNames):
         eucDistMatrix = kohonen.calculateWeightDistanceMatrix()
 
         # Plotting matrices
-        plot_kohonen_colormap(neuronCounterMatrix, k=config.k, filename='colormap-plot.png')
+        plot_kohonen_colormap(neuronCounterMatrix, k=config.k, filename='colormap-plot.png', addLabels=False)
         plot_kohonen_colormap(lastNeuronCounterMatrix, k=config.k, filename='last-iter-plot.png')
         plot_kohonen_colormap(eucDistMatrix, k=config.k, colormap='Greys', filename='u-matrix-plot.png')
         
@@ -45,23 +47,23 @@ class Kohonen:
 
         for _ in range(0, self.k):
             network.append(
-                np.array(
+                array(
                     [KohonenNeuron(self.inputs[randint(0, self.inputs.shape[0]-1)], (self.k, self.k)) for _ in range(0, self.k)], 
                     dtype = KohonenNeuron
                 )
             )
 
-        return np.array(network, dtype = object)
+        return array(network, dtype = object)
 
     def getWinningNeuron(self, inputData, country = ''): 
         minDist = 214748364
         row = 0
         col = 0
 
-        for i, j in np.ndindex(self.network.shape):
+        for i, j in ndindex(self.network.shape):
             neuron = self.network[i][j]
             # Euclidean distance between data and weight
-            dist = np.linalg.norm(neuron.getWeights()-inputData)
+            dist = norm(neuron.getWeights()-inputData)
    
             # winning neuron is the one with minimum distance
             if dist <= minDist:
@@ -80,7 +82,7 @@ class Kohonen:
     # Want the positions of the neurons that live within a certain radius
     # of the neuron I'm analyzing
     def getNeuronNeighbours(self, row, col, radius): 
-        neuronPos = np.array([row, col])
+        neuronPos = array([row, col])
         neuron = self.network[row][col]
         currNeighbours = neuron.getNeighbours()
         newNeighbours = []
@@ -97,7 +99,7 @@ class Kohonen:
         return newNeighbours
 
     def calculatePositionDistance(self, firstPos, secondPos):
-        return np.linalg.norm(firstPos-secondPos)
+        return norm(firstPos-secondPos)
 
     # Updating the weights of the neighbouring neurons
     def updateNeuronsWeights(self, neurons, learningRates, inputData):
@@ -118,15 +120,15 @@ class Kohonen:
         return 1 / iteration
 
     def getLearningRateForNeighbours(self, learningRate, radius, neuron, neighbours):
-        distance = np.array([self.calculatePositionDistance(neuron, neighbour) for neighbour in neighbours])
+        distance = array([self.calculatePositionDistance(neuron, neighbour) for neighbour in neighbours])
         values = -1 * distance / radius
-        exponential = np.array([math.exp(value) for value in values])
+        exponential = array([math.exp(value) for value in values])
         return exponential * learningRate
 
     def getNeuronCounterMatrix(self, isComplete):
-        neuronCounterMatrix = np.zeros(shape=(self.k, self.k))
+        neuronCounterMatrix = zeros(shape=(self.k, self.k))
 
-        for i, j in np.ndindex(self.network.shape):
+        for i, j in ndindex(self.network.shape):
 
             if isComplete:
                 # Matrix with the count of all the data that went through each neuron
@@ -138,11 +140,11 @@ class Kohonen:
         return neuronCounterMatrix
 
     def calculateWeightDistanceMatrix(self):
-        eucDistMatrix = np.zeros(shape=(self.k, self.k))
+        eucDistMatrix = zeros(shape=(self.k, self.k))
         # Weight will be 1 in the last iteration
         radius = 1
 
-        for i, j in np.ndindex(self.network.shape):
+        for i, j in ndindex(self.network.shape):
             neighbours = self.getNeuronNeighbours(i, j, radius)
             eucDistMatrix[i][j] = self.calculateAverageEucDist(self.network[i][j], neighbours)
 
@@ -157,7 +159,7 @@ class Kohonen:
             col = neighbours[i][1]
             neighbor = self.network[row][col]
 
-            dist = np.linalg.norm(neuron.getWeights()-neighbor.getWeights())
+            dist = norm(neuron.getWeights()-neighbor.getWeights())
             average += dist
 
         average /= len(neighbours)
@@ -187,11 +189,11 @@ class Kohonen:
                 # Neighbours = neurons within a certain radius of the winning neuron
                 neighbours = self.getNeuronNeighbours(row, col, radius)
                 # Array of modified learning rates for the neighbours
-                learningRates = self.getLearningRateForNeighbours(learningRate, radius, np.array([row, col]), neighbours)
+                learningRates = self.getLearningRateForNeighbours(learningRate, radius, array([row, col]), neighbours)
                 # Updating the weights of the neighbour neurons
                 self.updateNeuronsWeights(neighbours, learningRates, inputData)
 
     def printLastIterationData(self):
         print("---------------------\nPos\tCountries")
-        for i, j in np.ndindex(self.network.shape):
+        for i, j in ndindex(self.network.shape):
             print(('[%i, %i]\t%s' % (i, j, self.network[i][j].getCountries())))

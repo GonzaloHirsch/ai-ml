@@ -1,6 +1,7 @@
 from random import sample
 from sys import stdout
-import numpy as np
+from numpy import matrix, savetxt
+import os
 
 OUTPUT_DIR = 'output/'
 
@@ -18,8 +19,13 @@ def printIterationsInPlace(iterations):
 
 # Writes matrix to file 
 # Input: file where to write, matrix to write
-def writeMatrixToFile(filename, matrix):
-    mat = np.matrix(matrix)
+def writeMatrixToFile(filename, _matrix):
+    mat = matrix(_matrix)
     with open(OUTPUT_DIR + filename,'wb') as f:
         for line in mat:
-            np.savetxt(f, line, fmt='%.2f')
+            savetxt(f, line, fmt='%.2f')
+
+# Creates a directory if the directory doesn't exist
+def createDirectoryIfNotExist(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
