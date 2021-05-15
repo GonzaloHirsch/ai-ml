@@ -1,5 +1,5 @@
 # Lib imports
-from numpy import array, ndindex, zeros
+from numpy import array, ndindex, zeros, exp
 from numpy.linalg import norm
 import math
 from random import randint
@@ -89,7 +89,7 @@ class Kohonen:
 
         for currPos in currNeighbours:
             # Euc distance in the matrix positions
-            dist = self.calculatePositionDistance(neuronPos, currPos)
+            dist = norm(neuronPos - currPos)
             # Will be considered a neighbour if it is inside the radius
             if dist <= radius:
                 newNeighbours.append(currPos)
@@ -110,20 +110,15 @@ class Kohonen:
             neuron.correctWeights(learningRates[i], inputData)
 
     def getRadius(self, t):
-        # return math.floor((self.iterations - t) * 2 * math.sqrt(self.k) / self.iterations) + 1
-        return math.floor(((1 - self.k * math.sqrt(2)) / (self.iterations)) * (t+1) + self.k * math.sqrt(2))
+        lmt = self.k * math.sqrt(2)
+        return ((1-lmt)/self.iterations) * t + lmt
 
     def getLearningRate(self, iteration):
-        if iteration <= 1:
-            return  0.5
-
-        return 1 / iteration
+        return 0.0001 if iteration <= 1000 else 1/iteration
 
     def getLearningRateForNeighbours(self, learningRate, radius, neuron, neighbours):
-        distance = array([self.calculatePositionDistance(neuron, neighbour) for neighbour in neighbours])
-        values = -1 * distance / radius
-        exponential = array([math.exp(value) for value in values])
-        return exponential * learningRate
+        distance = array([norm(neuron - neighbour) for neighbour in neighbours])
+        return exp(-1 * distance / radius) * learningRate
 
     def getNeuronCounterMatrix(self, isComplete):
         neuronCounterMatrix = zeros(shape=(self.k, self.k))

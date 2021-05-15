@@ -1,24 +1,23 @@
-import matplotlib.patches as mptchs
-import matplotlib.pyplot as plt
-import numpy as np
+from matplotlib.pyplot import subplots, pcolormesh, colorbar, xticks, yticks, savefig, close, show
+from numpy import arange, ndenumerate
 
 
 def plot_kohonen_colormap(data, k=10, colormap='Blues', filename=None, addLabels = True):
     directory = 'graphs/'
-    fig, ax = plt.subplots(figsize=(k, k))
-    plt.pcolormesh(data, cmap=colormap, edgecolors=None)
-    plt.colorbar()
-    plt.xticks(np.arange(.5, float(k) + .5), range(k))
-    plt.yticks(np.arange(.5, float(k) + .5), range(k))
+    fig, ax = subplots(figsize=(k, k))
+    pcolormesh(data, cmap=colormap, edgecolors=None)
+    colorbar()
+    xticks(arange(.5, float(k) + .5), range(k))
+    yticks(arange(.5, float(k) + .5), range(k))
     ax.set_aspect('equal')
 
     if addLabels:
-        for (i, j), z in np.ndenumerate(data):
-            ax.text(j + .5 , i + .5, round(z,2), ha='center', va='center')
+        for (i, j), z in ndenumerate(data):
+            ax.text(j + .5 , i + .5, round(z,2), ha='center', va='center', c='r')
 
     if filename:
-        plt.savefig(directory + filename)
-        plt.close()
+        savefig(directory + filename)
+        close()
         print(filename, " color map done!")
     else:
-        plt.show()
+        show()

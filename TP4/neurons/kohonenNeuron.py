@@ -1,5 +1,5 @@
 # Lib imports
-from numpy import copy, ndindex
+from numpy import array, ndindex
 
 class KohonenNeuron:
     def __init__(self, initialWeight, shape):
@@ -7,7 +7,7 @@ class KohonenNeuron:
         self.lastEpochCounter = 0
         self.countries = []
         self.weights = initialWeight
-        self.neighbours = [[i, j] for i, j in ndindex(shape)]
+        self.neighbours = [array([i, j]) for i, j in ndindex(shape)]
 
     def newDataEntry(self):
         self.completeCounter += 1
@@ -17,7 +17,7 @@ class KohonenNeuron:
         self.countries.append(country)
 
     def getWeights(self):
-        return copy(self.weights)
+        return self.weights
 
     def getCompleteCounter(self):
         return self.completeCounter
