@@ -6,9 +6,9 @@
     },
     "method": {
         "network": "kohonen",
-        "k": 5
+        "k": 2
     },
-    "iterations": 7500,
+    "iterations": 1200,
     "learningRate": 0.00005,
     "colormap": true
 }

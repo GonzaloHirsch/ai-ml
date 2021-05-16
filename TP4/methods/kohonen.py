@@ -114,7 +114,7 @@ class Kohonen:
         return ((1-lmt)/self.iterations) * t + lmt
 
     def getLearningRate(self, iteration):
-        return 0.0001 if iteration <= 1000 else 1/iteration
+        return 1/(self.iterations * 0.25) if iteration <= (self.iterations * 0.25) else 1/iteration
 
     def getLearningRateForNeighbours(self, learningRate, radius, neuron, neighbours):
         distance = array([norm(neuron - neighbour) for neighbour in neighbours])
