@@ -1,0 +1,34 @@
+{
+    "files": {
+        "input": "datasets/TP3-ej2-Conjuntoentrenamiento.txt"
+    },
+    "iterations": 2000,
+    "learningRate": 0.01,
+    "beta": 1,
+    "error": 0.001,
+    "momentum": true,
+    "calculateMetrics": false,
+    "alpha": 0.8,
+    "layers": [
+        {
+            "activation": "nonlinear",
+            "perceptrons": 35
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 17
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 2
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 17
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 36
+        }
+    ]
+}

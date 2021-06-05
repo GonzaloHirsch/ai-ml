@@ -7,7 +7,7 @@ from config import Config
 
 # Function to parse a file and split and store contents
 # Returns a np.array with all data
-def parseInput(filepath, addExtraInput = False, flatten = 1, normalize = False):
+def parseInput(filepath, addExtraInput = False):
     with open(filepath) as f:
         # Read all lines
         lines = f.readlines()
@@ -44,53 +44,27 @@ def parseConfiguration(configPath):
         # Get submaps inside config
         files = data[FILES]
         layers = data[LAYERS]
-        ktraining = data[K_TRAINING]
         # Get FILES data
         inputData = files[ConfigOptions.INPUT_DATA.value]
-        desiredData = files[ConfigOptions.DESIRED_DATA.value]
-        inputDataTest = files[ConfigOptions.INPUT_TEST_DATA.value]
-        desiredDataTest = files[ConfigOptions.DESIRED_TEST_DATA.value]
-        flatten = files[ConfigOptions.FLATTEN_DATA.value]
-        normalizeDesired = files[ConfigOptions.NORMALIZE_DESIRED_DATA.value]
-        # Get K training data
-        blockAmount = ktraining[ConfigOptions.BLOCK_AMOUNT.value]
-        testBlock = ktraining[ConfigOptions.TEST_BLOCK.value]
-        useKTraining = ktraining[ConfigOptions.USE_K_TRAINING.value]
-        randomizeBlock = ktraining[ConfigOptions.RANDOMIZE_BLOCK.value]
         # Get other data
         iterations = data[ConfigOptions.ITERATIONS.value]
-        activation = data[ConfigOptions.ACTIVATION.value]
         learningRate = data[ConfigOptions.LEARNING_RATE.value]
-        multilayer = data[ConfigOptions.MULTILAYER.value]
         momentum = data[ConfigOptions.MOMENTUM.value]        
         error = data[ConfigOptions.ERROR_LIMIT.value]
         beta = data[ConfigOptions.BETA.value]
-        delta = data[ConfigOptions.DELTA_DESIRED.value]
         alpha = data[ConfigOptions.ALPHA.value]
         calculateMetrics = data[ConfigOptions.CALCULATE_METRICS.value]
         
         # Create config
         config = Config(
             inputs=inputData,
-            inputsTest=inputDataTest,
-            desired=desiredData,
-            desiredTest=desiredDataTest,
             iterations=iterations,
-            activation=activation,
             learningRate=learningRate,
-            multilayer=multilayer,
             momentum=momentum,
             error=error,
             layers=layers,
-            flatten=flatten,
-            normalizeDesired=normalizeDesired,
             beta=beta,
-            delta=delta,
             alpha=alpha,
-            blockAmount=blockAmount,
-            testBlock=testBlock,
-            useKTraining=useKTraining,
-            calculateMetrics=calculateMetrics,
-            randomizeBlock=randomizeBlock
+            calculateMetrics=calculateMetrics
         )
     return config
