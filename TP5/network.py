@@ -231,7 +231,7 @@ class Network:
             # Propagate to get the last activation value
             _, activ = self.__forwardPropagate(input[i])
             # print(expected[i][1:], activ[-1])
-            error += self.__computeInputError(expected[i][1:], activ[-1])
+            error = error + self.__computeInputError(expected[i][1:], activ[-1])
         return error
 
     def predict(self, input):

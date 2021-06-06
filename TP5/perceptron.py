@@ -37,30 +37,15 @@ class Perceptron:
     def initialBackpropagate(self, summation, desired, prediction):
         return self.derivative(summation) * (desired - prediction)
 
-    def weightCorrectionFactor(self, inputs, desired, prediction, summation):
-        # Inpute shape (1, N)
-        # Return type (N, 1)
-        dActivation = self.derivative(summation)
-        return self.learningRate * (desired - prediction) * dActivation * np.transpose(inputs)
-
-    def correctWeights(self, inputs, desired, prediction, summation): 
-        correction = self.weightCorrectionFactor(inputs, desired, prediction, summation)
-        
-        if self.useMomentum:
-            correction += self.alpha * self.previousCorrection
-            self.previousCorrection = correction
-
-        self.weights += correction
-
     def correctHiddenWeights(self, backpropagation, prediction):
-        correction = (self.learningRate * backpropagation * prediction)
+        correction = self.learningRate * backpropagation * prediction
         # Add correction used in momentum
         if self.useMomentum:
-            correction += self.alpha * self.previousCorrection
+            correction = correction + self.alpha * self.previousCorrection
             self.previousCorrection = correction
 
         # Updates weights and update the previousWeights
-        self.weights += correction
+        self.weights = self.weights + correction
 
     # -----------------------------------------------------------------
     # ERROR FUNCTIONS
