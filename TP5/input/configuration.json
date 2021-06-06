@@ -16,7 +16,11 @@
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 17
+            "perceptrons": 20
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 10
         },
         {
             "activation": "nonlinear",
@@ -24,11 +28,15 @@
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 17
+            "perceptrons": 10
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 36
+            "perceptrons": 20
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 35
         }
     ]
 }

@@ -158,8 +158,8 @@ class Network:
         for i in range(len(input)):
             # Propagate to get the last activation value
             _, activ = self.__forwardPropagate(input[i])
-            print(expected[i], activ[-1])
-            error += self.__computeInputError(expected[i], activ[-1])
+            print(expected[i][1:], activ[-1])
+            error += self.__computeInputError(expected[i][1:], activ[-1])
         return error
 
     def predict(self, input):
@@ -208,7 +208,6 @@ class Network:
                 errors.append(error)
                 # Increment iterations
                 iterations += 1
-
             print(errors)
         except KeyboardInterrupt:
             print("Finishing up...")
