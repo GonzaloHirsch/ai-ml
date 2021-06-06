@@ -2,13 +2,13 @@
     "files": {
         "input": "datasets/font.txt"
     },
-    "iterations": 500,
-    "learningRate": 0.01,
+    "iterations": 1000,
+    "learningRate": 0.005,
     "beta": 1,
     "error": 0.001,
     "momentum": true,
     "calculateMetrics": false,
-    "plotLatent": true,
+    "plotLatent": false,
     "alpha": 0.8,
     "layers": [
         {

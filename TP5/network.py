@@ -49,11 +49,17 @@ class Network:
             lastLayer = layer
         return np.array(network, dtype=object)
 
-    def __forwardPropagate(self, input, storeLatent = False):
+    def __forwardPropagate(self, input, storeLatent = False, offsetStart = 0, offsetValues = [0,0]):
         """Method to forward propagate an input to obtain a prediction from the network
 
         Parameters:
             input --> Input point (with bias) to be forwarded
+
+            storeLatent --> Flag to determine if the latent portion is stored or not
+
+            offsetStart --> Index to start the forward propagation from, used mainly in generation from latent code
+
+            offsetValues --> Values to be passed on to the network when offsetting, it is required if offsetStart is used
         Returns:
             summationValues --> np.array of np.array of the different summation values calculated
 
@@ -62,21 +68,31 @@ class Network:
         activationValues = []
         summationValues = []
         for index, layer in enumerate(self.network):
-            # Get data to pass to layer, use training input or activated data before
-            data = input if index == 0 else activationValues[index - 1]
-            # Perform all summations
-            summationValues.append(
-                np.array([perceptron.summation(data) for perceptron in layer]))
-            # Perform all activations
-            activations = [layer[i].activate(
-                summationValues[index][i]) for i in range(len(summationValues[index]))]
-            # Store the latent code only on the layer with 2 perceptrons
-            if storeLatent and layer.shape[0] == 2:
-                self.latentCode.append(activations)
-            # If it's not the last layer, add bias to activations for next iterations
-            if index < self.networkSize - 1:
-                activations = [1] + activations
-            activationValues.append(np.array(activations))
+            # If not in the desired offset start, fill it with empty to avoid index errors
+            if index < offsetStart - 1:
+                activationValues.append(np.array([]))
+                summationValues.append(np.array([]))
+            # If in the layer before, fill it with the values
+            elif index == offsetStart - 1:
+                activationValues.append(np.array(offsetValues))
+                summationValues.append(np.array(offsetValues))
+            # From the layer onwards, operate normally
+            else:
+                # Get data to pass to layer, use training input or activated data before
+                data = input if index == 0 else activationValues[index - 1]
+                # Perform all summations
+                summationValues.append(
+                    np.array([perceptron.summation(data) for perceptron in layer]))
+                # Perform all activations
+                activations = [layer[i].activate(
+                    summationValues[index][i]) for i in range(len(summationValues[index]))]
+                # Store the latent code only on the layer with 2 perceptrons
+                if storeLatent and layer.shape[0] == 2:
+                    self.latentCode.append(activations)
+                # If it's not the last layer, add bias to activations for next iterations
+                if index < self.networkSize - 1:
+                    activations = [1] + activations
+                activationValues.append(np.array(activations))
         return summationValues, activationValues
 
     def __backPropagate(self, input, summations, activations):
@@ -94,8 +110,9 @@ class Network:
         # Calculate prediction to backpropagate
         # This is delta/phi M
         # Calculate the initial backpropagation for each of the end neurons
+        # Add 1 to the input to account for the bias
         initialBackpropagation = [perceptron.initialBackpropagate(
-            summations[-1][index], input[index], activations[-1][index]) for index, perceptron in enumerate(self.network[-1])]
+            summations[-1][index], input[index + 1], activations[-1][index]) for index, perceptron in enumerate(self.network[-1])]
         # Backpropagate
         # Create array of fixed size and set last value
         backpropagationValues = [None] * self.networkSize
@@ -177,6 +194,20 @@ class Network:
         """
         _, activ = self.__forwardPropagate(input)
         return activ[-1]
+
+    def generate(self, latentInputs):
+        """Method to generate a new datapoint from the latent code
+
+        Parameters:
+            latentInputs --> Array of arrays with 2 elements to be fed into the decoder
+        Returns:
+            Nothing, simply generates the values and prints them to the screen
+        """
+        # Start index is the index of the latent layer + 1
+        startIndex = np.ceil(self.networkSize/2)
+        for latentInput in latentInputs:
+            _, activ = self.__forwardPropagate(input, offsetStart=startIndex, offsetValues=latentInput)
+            print(f'Generated using {latentInput}: {activ[-1]}')
 
     def train(self, input):
         """Method to train the neural network instance based on a training input set
