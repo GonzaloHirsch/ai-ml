@@ -1,5 +1,6 @@
 # Lib imports
 import numpy as np
+from scipy.optimize import minimize
 # Local imports
 from perceptron import Perceptron
 from helper import printIterationsInPlace, getRandomDatasetOrder
@@ -10,6 +11,8 @@ class Network:
     """
 
     def __init__(self, config, inputSize):
+        # Dimension of the input
+        self.inputSize = inputSize
         # Create the network
         self.network = self.__createNetwork(config, inputSize)
         # Store size to access it only once
@@ -49,6 +52,52 @@ class Network:
             lastLayer = layer
         return np.array(network, dtype=object)
 
+    def __flattenNetwork(self):
+        weightMatrix = []
+        # Matrix with all the weights as rows
+        for index, layer in enumerate(self.network):
+            for perceptron in layer:
+                weightMatrix.append(perceptron.getWeights()) 
+        
+        weightMatrix = np.array(weightMatrix, dtype=object)
+        # Flatten the weights matrix to be an array
+        return np.hstack(weightMatrix)
+
+    def __unflattenWeights(self, flatWeights):
+        network = []
+        isFirst = True
+        lastLayer = []
+        currIndex = 0
+        for layer in self.config.layers:
+            # If its the first layer, the bias is accounted in the input size
+            if isFirst:
+                weightCount = self.inputSize
+                # Modify first flag
+                isFirst = False
+            # If its another layer, the weights are the number of
+            # perceptrons in previous layer + 1 (bias)
+            else:
+                weightCount = lastLayer[1] + 1
+            # layer[0] = activation, layer[1] = perceptron count
+
+            layerWeights = []
+            for _ in range(0, layer[1]):
+                layerWeights.append(flatWeights[currIndex:currIndex+weightCount])
+                currIndex += weightCount
+            
+            # Append the array of weights of current layer
+            network.append(np.array(layerWeights))
+            # Store previous layer
+            lastLayer = layer
+        return np.array(network, dtype=object)
+
+    def __rebuildNetwork(self, flatWeights):
+        weightMatrix = self.__unflattenWeights(flatWeights)
+
+        for row in range(0, weightMatrix.shape[0]):
+            for col in range(0, self.config.layers[row][1]):
+                self.network[row][col].setWeights(weightMatrix[row][col])
+        
     def __forwardPropagate(self, input, storeLatent = False, offsetStart = 0, offsetValues = [0,0]):
         """Method to forward propagate an input to obtain a prediction from the network
 
@@ -257,3 +306,21 @@ class Network:
                 plotLatentSpace(self.latentCode)
         except KeyboardInterrupt:
             print("Finishing up...")
+
+
+    def cost(self, flatWeights, input, expected):
+        self.__rebuildNetwork(flatWeights)
+        return self.__calculateError(input, expected)
+
+    def trainMinimizer(self, input, optimizer):
+        # Flatten the weights matrix
+        flattenedWeights = self.__flattenNetwork()
+        # Minimize the cost function
+        res = minimize(fun=self.cost, x0=flattenedWeights, args=(input, input), method=optimizer)
+        # Rebuild the weights matrix
+        self.__rebuildNetwork(flattenedWeights)
+        # Error of the cost function
+        error = res.fun
+        print(f'Final loss is {error}')
+
+        return error

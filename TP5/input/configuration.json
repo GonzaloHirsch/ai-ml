@@ -2,7 +2,8 @@
     "files": {
         "input": "datasets/font.txt"
     },
-    "mode": "normal",
+    "mode": "optimizer",
+    "optimizer": "Powell",
     "iterations": 1000,
     "learningRate": 0.005,
     "beta": 1,

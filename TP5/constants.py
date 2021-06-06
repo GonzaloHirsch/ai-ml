@@ -18,6 +18,7 @@ class ModeOptions(enum.Enum):
    NORMAL = "normal"
    DENOISER = "denoiser"
    VARIACIONAL = "variacional"
+   OPTIMIZER = "optimizer"
 
    def __str__(self):
       return str(self.value)
@@ -37,6 +38,7 @@ class ConfigOptions(enum.Enum):
    PLOT_LATENT = "plotLatent"
    MODE = "mode"
    GENERATOR_POINTS = "generatorPoints"
+   OPTIMIZER = "optimizer"
 
    def __str__(self):
       return str(self.value)

@@ -11,7 +11,7 @@ class Config:
             raise Exception("No config instance available")
         return Config.__instance
 
-    def __init__(self, inputs, layers, iterations, learningRate, error, beta, alpha, momentum, calculateMetrics, plotLatent, mode, generatorPoints):
+    def __init__(self, inputs, layers, iterations, learningRate, error, beta, alpha, momentum, calculateMetrics, plotLatent, mode, generatorPoints, optimizer):
         if Config.__instance != None:
             raise Exception("Cannot create another instance of config")
 
@@ -26,6 +26,7 @@ class Config:
         self.plotLatent = plotLatent
         self.mode = mode
         self.generatorPoints = generatorPoints
+        self.optimizer = optimizer
 
         Config.__instance = self
     
