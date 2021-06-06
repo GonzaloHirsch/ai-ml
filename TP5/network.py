@@ -3,7 +3,7 @@ import numpy as np
 # Local imports
 from perceptron import Perceptron
 from helper import printIterationsInPlace, getRandomDatasetOrder
-
+from graphing import plotLatentSpace
 
 class Network:
     """Class to represent a Neural Network made of Perceptrons and the methods to train and predict with it
@@ -16,6 +16,8 @@ class Network:
         self.networkSize = self.network.shape[0]
         # Store config
         self.config = config
+        # Latent code data
+        self.latentCode = []
 
     def __createNetwork(self, config, inputSize):
         """Method to dynamically build the network
@@ -47,7 +49,7 @@ class Network:
             lastLayer = layer
         return np.array(network, dtype=object)
 
-    def __forwardPropagate(self, input):
+    def __forwardPropagate(self, input, storeLatent = False):
         """Method to forward propagate an input to obtain a prediction from the network
 
         Parameters:
@@ -68,6 +70,9 @@ class Network:
             # Perform all activations
             activations = [layer[i].activate(
                 summationValues[index][i]) for i in range(len(summationValues[index]))]
+            # Store the latent code only on the layer with 2 perceptrons
+            if storeLatent and layer.shape[0] == 2:
+                self.latentCode.append(activations)
             # If it's not the last layer, add bias to activations for next iterations
             if index < self.networkSize - 1:
                 activations = [1] + activations
@@ -158,7 +163,7 @@ class Network:
         for i in range(len(input)):
             # Propagate to get the last activation value
             _, activ = self.__forwardPropagate(input[i])
-            print(expected[i][1:], activ[-1])
+            # print(expected[i][1:], activ[-1])
             error += self.__computeInputError(expected[i][1:], activ[-1])
         return error
 
@@ -192,11 +197,14 @@ class Network:
                 printIterationsInPlace(iterations)
                 # Getting a random index order
                 indexes = getRandomDatasetOrder(trainingSize)
+                # Reset latent code
+                if self.config.plotLatent:
+                    self.latentCode = []
                 # Iterate through the dataset order
                 for itemIndex in indexes:
                     # Forward propagation
                     summationValues, activationValues = self.__forwardPropagate(
-                        input[itemIndex])
+                        input[itemIndex], storeLatent=self.config.plotLatent)
                     # Backpropagation
                     backpropagationValues = self.__backPropagate(
                         input[itemIndex], summationValues, activationValues)
@@ -208,6 +216,10 @@ class Network:
                 errors.append(error)
                 # Increment iterations
                 iterations += 1
-            print(errors)
+            # Printing the error
+            print(f'Final loss is {errors[-1]}')
+            # Plotting the latent code
+            if self.config.plotLatent:
+                plotLatentSpace(self.latentCode)
         except KeyboardInterrupt:
             print("Finishing up...")

@@ -11,7 +11,7 @@ class Config:
             raise Exception("No config instance available")
         return Config.__instance
 
-    def __init__(self, inputs, layers, iterations, learningRate, error, beta, alpha, momentum, calculateMetrics):
+    def __init__(self, inputs, layers, iterations, learningRate, error, beta, alpha, momentum, calculateMetrics, plotLatent):
         if Config.__instance != None:
             raise Exception("Cannot create another instance of config")
 
@@ -23,6 +23,7 @@ class Config:
         self.layers = [[layer[ConfigOptions.ACTIVATION.value], layer[ConfigOptions.PERCEPTRONS.value]] for layer in layers]
         self.momentum = momentum
         self.alpha = alpha
+        self.plotLatent = plotLatent
 
         Config.__instance = self
     

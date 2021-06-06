@@ -24,8 +24,7 @@ def main():
     # Parse configuration files
     config = parser.parseConfiguration(CONFIG_INPUT)
     # Parse input
-    # inputs = parser.parseInput(config.input, addExtraInput=True)
-    inputs = np.array([[1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1]])
+    inputs = parser.parseInput(config.input)
 
     print("######################\nTRAINING\n######################")
     trainMultilayer(config, inputs)

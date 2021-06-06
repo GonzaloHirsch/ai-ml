@@ -93,6 +93,13 @@ class Perceptron:
     def __dNonLinearActivation(self, summation):
         return self.beta * (1 - (self.__nonLinearActivation(summation)**2))
 
+    def __reluActivation(self, summation):
+        return max(0, summation)
+
+    # Derivative
+    def __dReluActivation(self, summation):
+        return 0 if summation <= 0 else 1
+
     def __str__(self):
         subs = 'activation=%s, weights=%s, learningRate=%s' % (self.activationMethod, self.weights, self.learningRate)
         s = '%s{%s}' % (type(self).__name__, subs)
@@ -102,7 +109,8 @@ class Perceptron:
         activations = {
             ActivationOptions.SIMPLE.value: self.__simpleActivation, 
             ActivationOptions.LINEAR.value: self.__linearActivation, 
-            ActivationOptions.NON_LINEAR.value: self.__nonLinearActivation
+            ActivationOptions.NON_LINEAR.value: self.__nonLinearActivation,
+            ActivationOptions.RELU.value: self.__reluActivation
         }
         return activations[activationMethod]
 
@@ -110,7 +118,8 @@ class Perceptron:
         derivatives = {
             ActivationOptions.SIMPLE.value: self.__dSimpleActivation, 
             ActivationOptions.LINEAR.value: self.__dLinearActivation, 
-            ActivationOptions.NON_LINEAR.value: self.__dNonLinearActivation
+            ActivationOptions.NON_LINEAR.value: self.__dNonLinearActivation,
+            ActivationOptions.RELU.value: self.__dReluActivation
         }
         return derivatives[activationMethod]
 
