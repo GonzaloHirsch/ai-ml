@@ -3,7 +3,7 @@
         "input": "datasets/font.txt"
     },
     "mode": "normal",
-    "iterations": 1000,
+    "iterations": 200,
     "learningRate": 0.005,
     "beta": 1,
     "error": 0.001,
