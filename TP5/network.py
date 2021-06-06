@@ -73,8 +73,9 @@ class Network:
                 activationValues.append(np.array([]))
                 summationValues.append(np.array([]))
             # If in the layer before, fill it with the values
+            # Add a [1] to account for the bias not present in the points
             elif index == offsetStart - 1:
-                activationValues.append(np.array(offsetValues))
+                activationValues.append(np.array([1] + offsetValues))
                 summationValues.append(np.array(offsetValues))
             # From the layer onwards, operate normally
             else:
@@ -201,13 +202,15 @@ class Network:
         Parameters:
             latentInputs --> Array of arrays with 2 elements to be fed into the decoder
         Returns:
-            Nothing, simply generates the values and prints them to the screen
+            results --> Array of values where each value is an array of [latentInput, activationResult]
         """
         # Start index is the index of the latent layer + 1
         startIndex = np.ceil(self.networkSize/2)
+        results = []
         for latentInput in latentInputs:
             _, activ = self.__forwardPropagate(input, offsetStart=startIndex, offsetValues=latentInput)
-            print(f'Generated using {latentInput}: {activ[-1]}')
+            results.append([latentInput, activ[-1]])
+        return results
 
     def train(self, input):
         """Method to train the neural network instance based on a training input set

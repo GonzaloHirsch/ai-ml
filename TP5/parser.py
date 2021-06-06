@@ -35,6 +35,8 @@ def parseConfiguration(configPath):
         alpha = data[ConfigOptions.ALPHA.value]
         calculateMetrics = data[ConfigOptions.CALCULATE_METRICS.value]
         plotLatent = data[ConfigOptions.PLOT_LATENT.value]
+        mode = data[ConfigOptions.MODE.value]
+        generatorPoints = data[ConfigOptions.GENERATOR_POINTS.value]
         
         # Create config
         config = Config(
@@ -47,6 +49,8 @@ def parseConfiguration(configPath):
             beta=beta,
             alpha=alpha,
             calculateMetrics=calculateMetrics,
-            plotLatent=plotLatent
+            plotLatent=plotLatent,
+            mode=mode,
+            generatorPoints=generatorPoints
         )
     return config

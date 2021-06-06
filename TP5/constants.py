@@ -14,6 +14,15 @@ class ActivationOptions(enum.Enum):
       return str(self.value)
 
 # Configurable options
+class ModeOptions(enum.Enum):
+   NORMAL = "normal"
+   DENOISER = "denoiser"
+   VARIACIONAL = "variacional"
+
+   def __str__(self):
+      return str(self.value)
+
+# Configurable options
 class ConfigOptions(enum.Enum):
    INPUT_DATA = "input"
    ITERATIONS = "iterations"
@@ -26,6 +35,8 @@ class ConfigOptions(enum.Enum):
    ACTIVATION = "activation"
    PERCEPTRONS = "perceptrons"
    PLOT_LATENT = "plotLatent"
+   MODE = "mode"
+   GENERATOR_POINTS = "generatorPoints"
 
    def __str__(self):
       return str(self.value)
