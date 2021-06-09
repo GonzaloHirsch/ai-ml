@@ -55,7 +55,7 @@ class Network:
     def __flattenNetwork(self):
         weightMatrix = []
         # Matrix with all the weights as rows
-        for index, layer in enumerate(self.network):
+        for layer in self.network:
             for perceptron in layer:
                 weightMatrix.append(perceptron.getWeights()) 
         
@@ -310,13 +310,17 @@ class Network:
 
     def cost(self, flatWeights, input, expected):
         self.__rebuildNetwork(flatWeights)
-        return self.__calculateError(input, expected)
+        error = self.__calculateError(input, expected)
+        print('ERROR', error)
+        return error
 
     def trainMinimizer(self, input, optimizer):
         # Flatten the weights matrix
         flattenedWeights = self.__flattenNetwork()
+        print(flattenedWeights.shape)
         # Minimize the cost function
         res = minimize(fun=self.cost, x0=flattenedWeights, args=(input, input), method=optimizer)
+        # res = minimize(fun=self.cost, x0=flattenedWeights, args=(input, input), method=optimizer, options={'maxiter':10})
         # Rebuild the weights matrix
         self.__rebuildNetwork(flattenedWeights)
         # Error of the cost function

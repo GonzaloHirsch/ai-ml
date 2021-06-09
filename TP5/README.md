@@ -72,6 +72,8 @@ Dentro de cada objeto de `layers` (el orden de las capas es según se define en 
     * `nonlinear` --> Función Sigmoidea (tanh)
 * `perceptrons` --> Cantidad de perceptrones en esa capa
 
+OPTIMIZADORES = 'L-BFGS-B'
+
 **NOTA**: Se agregaron ejemplos de configuraciones en la carpeta `input`
 
 ## Datasets
