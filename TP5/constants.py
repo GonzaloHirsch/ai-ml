@@ -39,6 +39,7 @@ class ConfigOptions(enum.Enum):
    MODE = "mode"
    GENERATOR_POINTS = "generatorPoints"
    OPTIMIZER = "optimizer"
+   NOISE = "noise"
 
    def __str__(self):
       return str(self.value)

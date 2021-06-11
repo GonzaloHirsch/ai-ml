@@ -2,9 +2,13 @@
     "files": {
         "input": "datasets/font-small.txt"
     },
-    "mode": "vae",
+    "mode": "denoiser",
     "optimizer": "TNC",
-    "iterations": 1000,
+    "noise": {
+        "count": 5,
+        "probability": 0.2
+    },
+    "iterations": 100,
     "learningRate": 0.005,
     "beta": 1,
     "error": 0.001,

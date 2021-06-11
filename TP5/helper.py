@@ -34,7 +34,8 @@ def createDirectoryIfNotExist(dir):
 def createNoise(input, p):
     noiseInput = input.copy()
 
-    for idx in range(0, len(input)):
+    # First one is the bias and should not be changed
+    for idx in range(1, len(input)):
         rnd = uniform(0, 1)
 
         # If less than probability, alter input

@@ -261,7 +261,7 @@ class Network:
             results.append([latentInput, activ[-1]])
         return results
 
-    def train(self, input):
+    def train(self, input, expected):
         """Method to train the neural network instance based on a training input set
 
         Parameters:
@@ -295,7 +295,7 @@ class Network:
                     self.__correctWeights(
                         input[itemIndex], backpropagationValues, activationValues)
                 # Calculate error once epoch is finished
-                error = self.__calculateError(input, input)
+                error = self.__calculateError(input, expected)
                 errors.append(error)
                 # Increment iterations
                 iterations += 1
