@@ -300,7 +300,8 @@ class Network:
                     latentLabels = []
                 # Iterate through the dataset order
                 for itemIndex in indexes:
-                    latentLabels.append(labels[itemIndex])
+                    if self.config.plotLatent:
+                        latentLabels.append(labels[itemIndex])
                     # Forward propagation
                     summationValues, activationValues = self.__forwardPropagate(
                         input[itemIndex], storeLatent=self.config.plotLatent)
