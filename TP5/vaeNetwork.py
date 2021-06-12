@@ -147,6 +147,121 @@ class VaeNetwork:
         # Perform the sampling
         return encoderSummationValues, encoderActivationValues, decoderSummationValues, decoderActivationValues, zMeanSumm, zMeanActivation, zLogVarSumm, zLogVarActivation, epsilonSample, sampledData
 
+    def __backPropagate(self, input, encSumm, encActiv, decSumm, decActiv, zMeanSumm, zMeanActiv, zLogVarSumm, zLogVarActiv, eSample):
+        """Method to backpropagate error into the network
+
+        Parameters:
+            input --> Input point (with bias) to be forwarded
+
+            summations --> Summation values calculated through the forward propagation
+
+            activations --> Activation values calculated through the forward propagation
+        Returns:
+            backpropagationValues --> np.array of np.array of the different backpropagation values calculated
+        """
+        # Calculate prediction to backpropagate
+        # This is delta/phi M
+        # Calculate the initial backpropagation for each of the end neurons
+        # Add 1 to the input to account for the bias
+        initialBackpropagation = [perceptron.initialBackpropagate(
+            decSumm[-1][index], input[index + 1], decActiv[-1][index]) for index, perceptron in enumerate(self.decoder[-1])]
+
+        # Backpropagate the decoder values
+        # Create array of fixed size and set last value
+        decBackpropValues = [None] * self.decoderSize
+        decBackpropValues[-1] = np.array(initialBackpropagation)
+        # Use from size-2 to avoid out of bounds and last layer
+        # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
+        for index in range(self.decoderSize - 2, -1, -1):
+            # Iterate each perceptron in layer
+            data = []
+            for subindex, perceptron in enumerate(self.decoder[index]):
+                # Get all weights leaving that perceptron
+                # Add 1 to index to take into account bias
+                outboundWeights = np.array(
+                    [p.weights[subindex + 1] for p in self.decoder[index + 1]])
+                # Calculate backpropagation for next layer in iteration
+                data.append(perceptron.backpropagate(
+                    decSumm[index][subindex], outboundWeights, decBackpropValues[index + 1]))
+            # Add all backpropagation values
+            decBackpropValues[index] = np.array(data)
+
+        # Calculate kl loss term
+        klLossMean = -0.5 * np.sum(2 * zMeanActiv)
+        klLossLogVar = -0.5 * np.sum(1 - np.exp(zLogVarActiv))
+        # Calculate backpropagation for middle layers
+        parallelBackpropValues = np.append(np.array([perceptron.backpropagate(zMeanSumm, np.array([1] * len(decBackpropValues[0])), decBackpropValues[0]) for perceptron in self.parallelNetwork[0]]) +
+                                           klLossMean, np.array([perceptron.backpropagate(zLogVarSumm, np.array([1] * len(decBackpropValues[0])), decBackpropValues[0]) for perceptron in self.parallelNetwork[1]]) + klLossLogVar)
+
+        # Backpropagate the encoder values
+        # Create array of fixed size and set last value
+        encBackpropValues = [None] * self.encoderSize
+        # Use from size-2 to avoid out of bounds and last layer
+        # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
+        for index in range(self.encoderSize - 1, -1, -1):
+            if index == self.encoderSize - 1:
+                # Iterate each perceptron in layer
+                data = []
+                for subindex, perceptron in enumerate(self.encoder[index]):
+                    # Get all weights leaving that perceptron
+                    # Add 1 to index to take into account bias
+                    outboundWeights = np.array(
+                        [p.weights[subindex + 1] for p in self.parallelNetwork[0]] + [p.weights[subindex + 1] for p in self.parallelNetwork[1]])
+                    # Calculate backpropagation for next layer in iteration
+                    data.append(perceptron.backpropagate(
+                        encSumm[index][subindex], outboundWeights, parallelBackpropValues))
+            else:
+                # Iterate each perceptron in layer
+                data = []
+                for subindex, perceptron in enumerate(self.encoder[index]):
+                    # Get all weights leaving that perceptron
+                    # Add 1 to index to take into account bias
+                    outboundWeights = np.array(
+                        [p.weights[subindex + 1] for p in self.encoder[index + 1]])
+                    # Calculate backpropagation for next layer in iteration
+                    data.append(perceptron.backpropagate(
+                        encSumm[index][subindex], outboundWeights, encBackpropValues[index + 1]))
+            # Add all backpropagation values
+            encBackpropValues[index] = np.array(data)
+
+        return encBackpropValues, parallelBackpropValues, decBackpropValues
+
+    def __correctWeights(self, input, encBackprop, parallelBackprop, decBackprop, encActiv, decActiv, zMeanActiv, zLogVarActiv, sampledData):
+        """Method to corrects weights through the network
+
+        Parameters:
+            input --> Input point (with bias) to be forwarded
+
+            backpropagations --> Backpropagation values calculated through the backpropagation
+
+            activations --> Activation values calculated through the forward propagation
+        Returns:
+            Nothing, it updates the values across the network
+        """
+        # Correct weights
+        for index, layer in enumerate(self.encoder):
+            # Determine which data using depending on index
+            data = input if index == 0 else encActiv[index - 1]
+            # Call weight correction on each one
+            for subindex, p in enumerate(layer):
+                p.correctHiddenWeights(encBackprop[index][subindex], data)
+
+        # Correct weights
+        for index, layer in enumerate(self.parallelNetwork):
+            # Determine which data using depending on index
+            data = encActiv[-1]
+            # Call weight correction on each one
+            for subindex, p in enumerate(layer):
+                p.correctHiddenWeights(parallelBackprop[2 * index + subindex], data)
+
+        # Correct weights
+        for index, layer in enumerate(self.decoder):
+            # Determine which data using depending on index
+            data = sampledData if index == 0 else decActiv[index - 1]
+            # Call weight correction on each one
+            for subindex, p in enumerate(layer):
+                p.correctHiddenWeights(decBackprop[index][subindex], data)
+
     def predict(self, input):
         """Method to calculate a prediction given the input
 

@@ -274,7 +274,7 @@ class Network:
         _, activ = self.__forwardPropagate(input, offsetStart=startIndex, offsetValues=latentInput)
         return activ[-1]
 
-    def train(self, input, expected):
+    def train(self, input, expected, labels = None):
         """Method to train the neural network instance based on a training input set
 
         Parameters:
@@ -286,6 +286,7 @@ class Network:
         iterations = 0
         error = 1
         errors = []
+        latentLabels = []
         try:
             # Iterate while iterations less than config and error less than config
             while iterations < self.config.iterations and error > self.config.error:
@@ -296,8 +297,10 @@ class Network:
                 # Reset latent code
                 if self.config.plotLatent:
                     self.latentCode = []
+                    latentLabels = []
                 # Iterate through the dataset order
                 for itemIndex in indexes:
+                    latentLabels.append(labels[itemIndex])
                     # Forward propagation
                     summationValues, activationValues = self.__forwardPropagate(
                         input[itemIndex], storeLatent=self.config.plotLatent)
@@ -316,7 +319,7 @@ class Network:
             print(f'Final loss is {errors[-1]}')
             # Plotting the latent code
             if self.config.plotLatent:
-                plotLatentSpace(self.latentCode)
+                plotLatentSpace(self.latentCode, latentLabels)
         except KeyboardInterrupt:
             print("Finishing up...")
 
