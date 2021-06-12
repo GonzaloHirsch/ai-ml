@@ -11,6 +11,7 @@ class Perceptron:
         self.alpha = alpha
         self.activationMethod = activationMethod
         self.weights = np.random.rand(weightsAmount) * np.sqrt(1/weightsAmount)
+        self.weightsAmount = weightsAmount
         self.activation = self.getActivationFunction(activationMethod)
         self.derivative = self.getDerivativeFunction(activationMethod)
         self.learningRate = learningRate
@@ -36,6 +37,9 @@ class Perceptron:
 
     def initialBackpropagate(self, summation, desired, prediction):
         return self.derivative(summation) * (desired - prediction)
+
+    def initialBackpropagateWithError(self, summation, error):
+        return self.derivative(summation) * error
 
     def correctHiddenWeights(self, backpropagation, prediction):
         correction = self.learningRate * backpropagation * prediction

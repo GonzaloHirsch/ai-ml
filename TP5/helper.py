@@ -1,6 +1,7 @@
 from random import sample, uniform
 from sys import stdout
-from numpy import matrix, savetxt
+import numpy as np
+from scipy.optimize import OptimizeResult
 import os
 
 OUTPUT_DIR = 'output/'
@@ -20,10 +21,10 @@ def printIterationsInPlace(iterations):
 # Writes matrix to file 
 # Input: file where to write, matrix to write
 def writeMatrixToFile(filename, _matrix):
-    mat = matrix(_matrix)
+    mat = np.matrix(_matrix)
     with open(OUTPUT_DIR + filename,'wb') as f:
         for line in mat:
-            savetxt(f, line, fmt='%.2f')
+            np.savetxt(f, line, fmt='%.2f')
 
 # Creates a directory if the directory doesn't exist
 def createDirectoryIfNotExist(dir):
@@ -46,3 +47,40 @@ def createNoise(input, p):
                 noiseInput[idx] = 1
             
     return noiseInput
+
+def adam(
+    fun,
+    x0,
+    jac,
+    args=(),
+    learning_rate=0.001,
+    beta1=0.9,
+    beta2=0.999,
+    eps=1e-8,
+    startiter=0,
+    maxiter=1000,
+    callback=None,
+    **kwargs
+):
+    """``scipy.optimize.minimize`` compatible implementation of ADAM -
+    [http://arxiv.org/pdf/1412.6980.pdf].
+    Adapted from ``autograd/misc/optimizers.py``.
+    """
+    x = x0
+    m = np.zeros_like(x)
+    v = np.zeros_like(x)
+
+    for i in range(startiter, startiter + maxiter):
+        g = jac(x)
+
+        if callback and callback(x):
+            break
+
+        m = (1 - beta1) * g + beta1 * m  # first  moment estimate.
+        v = (1 - beta2) * (g**2) + beta2 * v  # second moment estimate.
+        mhat = m / (1 - beta1**(i + 1))  # bias correction.
+        vhat = v / (1 - beta2**(i + 1))
+        x = x - learning_rate * mhat / (np.sqrt(vhat) + eps)
+
+    i += 1
+    return OptimizeResult(x=x, fun=fun(x), jac=g, nit=i, nfev=i, success=True)

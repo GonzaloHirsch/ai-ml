@@ -28,7 +28,31 @@
         },
         {
             "activation": "nonlinear",
+            "perceptrons": 15
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 10
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 5
+        },
+        {
+            "activation": "nonlinear",
             "perceptrons": 2
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 5
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 10
+        },
+        {
+            "activation": "nonlinear",
+            "perceptrons": 15
         },
         {
             "activation": "nonlinear",

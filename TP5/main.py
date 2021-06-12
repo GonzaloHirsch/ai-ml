@@ -15,11 +15,15 @@ from helper import createNoise
 
 CONFIG_INPUT = "input/configuration.json"
 
-def trainVae(config, inputs):
+def trainVae(config, inputs, optimizer):
     # Create instance of the network
     network = VaeNetwork(config, inputs.shape[1])
     # Train the network
-    network.train(inputs)
+    network.trainMinimizer(inputs, optimizer)
+    result = network.predict(inputs[0])
+    result = np.array([1 if e > 0.5 else 0 for e in result]).reshape((7, 5))
+    print(inputs[0][1:].reshape((7, 5)))
+    print(result)
     # If generator points were given
     # if len(config.generatorPoints) > 0:
     #     results = network.generate(config.generatorPoints)
@@ -92,7 +96,7 @@ def main():
     elif config.mode == ModeOptions.OPTIMIZER.value:
         trainMultilayerOptimizer(config, inputs, config.optimizer)
     else:
-        trainVae(config, inputs)
+        trainVae(config, inputs, config.optimizer)
     
 
 # App entrypoint

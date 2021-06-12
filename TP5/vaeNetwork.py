@@ -1,9 +1,12 @@
 # Lib imports
 import numpy as np
 from math import floor
+from tensorflow import keras
+import tensorflow as tf
+from scipy import optimize
 # Local imports
 from perceptron import Perceptron
-from helper import printIterationsInPlace, getRandomDatasetOrder
+from helper import printIterationsInPlace, getRandomDatasetOrder, adam
 from graphing import plotLatentSpace
 
 
@@ -54,13 +57,13 @@ class VaeNetwork:
             if layerCount == self.midLayer:
                 # Both Z MEAN and Z LOG VARIANCE have 2 perceptrons
                 # Creating Z MEAN layer, with linear activation
-                parallelNetwork.append(np.array([Perceptron(weightCount, 'linear', config.learningRate, config.beta,
+                parallelNetwork.append(np.array([Perceptron(weightCount, 'nonlinear', config.learningRate, config.beta,
                                                             config.momentum, config.alpha) for x in range(0, 2)], dtype=Perceptron))
                 # Creating Z LOG VARIANCE layer, with linear activation
-                parallelNetwork.append(np.array([Perceptron(weightCount, 'linear', config.learningRate, config.beta,
+                parallelNetwork.append(np.array([Perceptron(weightCount, 'nonlinear', config.learningRate, config.beta,
                                                             config.momentum, config.alpha) for x in range(0, 2)], dtype=Perceptron))
-                # Create the middle layer
-                # network.append(np.array([Perceptron(weightCount, layer[0], config.learningRate, config.beta,
+                # Create the middle layer in the decoder as the input
+                # decoder.append(np.array([Perceptron(3, layer[0], config.learningRate, config.beta,
                 #            config.momentum, config.alpha) for x in range(0, layer[1])], dtype=Perceptron))
             elif layerCount > self.midLayer:
                 decoder.append(np.array([Perceptron(weightCount, layer[0], config.learningRate, config.beta,
@@ -78,6 +81,7 @@ class VaeNetwork:
         # Sample from normal distribution with mean 0, stdev 1
         epsilon = np.random.normal(0, 1, (2))
         return zMean + np.exp(zLogVariance / 2) * epsilon, epsilon
+        # return zMean + zLogVariance * epsilon, epsilon
 
     def __activateLayer(self, layer, pastActivations):
         summationValues = np.array(
@@ -118,10 +122,12 @@ class VaeNetwork:
             self.parallelNetwork[0], encoderActivationValues[-1])
         zLogVarSumm, zLogVarActivation = self.__activateLayer(
             self.parallelNetwork[1], encoderActivationValues[-1])
+        print(zMeanActivation, zLogVarActivation)
         samplingResult, epsilonSample = self.__sampling(
             zMeanActivation, zLogVarActivation)
         # Sample the distribuiton, add a 1 for the bias
         sampledData = np.concatenate((np.array([1]), samplingResult))
+        # sampledData = samplingResult
 
         # Perform the decoding operations
         for index, layer in enumerate(self.decoder):
@@ -141,159 +147,6 @@ class VaeNetwork:
         # Perform the sampling
         return encoderSummationValues, encoderActivationValues, decoderSummationValues, decoderActivationValues, zMeanSumm, zMeanActivation, zLogVarSumm, zLogVarActivation, epsilonSample, sampledData
 
-    def __backPropagate(self, input, encSumm, encActiv, decSumm, decActiv, zMeanSumm, zMeanActiv, zLogVarSumm, zLogVarActiv, eSample):
-        """Method to backpropagate error into the network
-
-        Parameters:
-            input --> Input point (with bias) to be forwarded
-
-            summations --> Summation values calculated through the forward propagation
-
-            activations --> Activation values calculated through the forward propagation
-        Returns:
-            backpropagationValues --> np.array of np.array of the different backpropagation values calculated
-        """
-        # Calculate prediction to backpropagate
-        # This is delta/phi M
-        # Calculate the initial backpropagation for each of the end neurons
-        # Add 1 to the input to account for the bias
-        initialBackpropagation = [perceptron.initialBackpropagate(
-            decSumm[-1][index], input[index + 1], decActiv[-1][index]) for index, perceptron in enumerate(self.decoder[-1])]
-
-        # Backpropagate the decoder values
-        # Create array of fixed size and set last value
-        decBackpropValues = [None] * self.decoderSize
-        decBackpropValues[-1] = np.array(initialBackpropagation)
-        # Use from size-2 to avoid out of bounds and last layer
-        # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
-        for index in range(self.decoderSize - 2, -1, -1):
-            # Iterate each perceptron in layer
-            data = []
-            for subindex, perceptron in enumerate(self.decoder[index]):
-                # Get all weights leaving that perceptron
-                # Add 1 to index to take into account bias
-                outboundWeights = np.array(
-                    [p.weights[subindex + 1] for p in self.decoder[index + 1]])
-                # Calculate backpropagation for next layer in iteration
-                data.append(perceptron.backpropagate(
-                    decSumm[index][subindex], outboundWeights, decBackpropValues[index + 1]))
-            # Add all backpropagation values
-            decBackpropValues[index] = np.array(data)
-
-        # Calculate kl loss term
-        klLossMean = -0.5 * np.sum(2 * zMeanActiv)
-        klLossLogVar = -0.5 * np.sum(1 - np.exp(zLogVarActiv))
-        # Calculate backpropagation for middle layers
-        parallelBackpropValues = np.append(np.array([perceptron.backpropagate(zMeanSumm, np.array([1] * len(decBackpropValues[0])), decBackpropValues[0]) for perceptron in self.parallelNetwork[0]]) +
-                                           klLossMean, np.array([perceptron.backpropagate(zLogVarSumm, np.array([1] * len(decBackpropValues[0])), decBackpropValues[0]) for perceptron in self.parallelNetwork[1]]) + klLossLogVar)
-
-        # Backpropagate the encoder values
-        # Create array of fixed size and set last value
-        encBackpropValues = [None] * self.encoderSize
-        # Use from size-2 to avoid out of bounds and last layer
-        # Use -1 as stop to finish in layer 0 and -1 in step to go in inverse direction
-        for index in range(self.encoderSize - 1, -1, -1):
-            if index == self.encoderSize - 1:
-                # Iterate each perceptron in layer
-                data = []
-                for subindex, perceptron in enumerate(self.encoder[index]):
-                    # Get all weights leaving that perceptron
-                    # Add 1 to index to take into account bias
-                    outboundWeights = np.array(
-                        [p.weights[subindex + 1] for p in self.parallelNetwork[0]] + [p.weights[subindex + 1] for p in self.parallelNetwork[1]])
-                    # Calculate backpropagation for next layer in iteration
-                    data.append(perceptron.backpropagate(
-                        encSumm[index][subindex], outboundWeights, parallelBackpropValues))
-            else:
-                # Iterate each perceptron in layer
-                data = []
-                for subindex, perceptron in enumerate(self.encoder[index]):
-                    # Get all weights leaving that perceptron
-                    # Add 1 to index to take into account bias
-                    outboundWeights = np.array(
-                        [p.weights[subindex + 1] for p in self.encoder[index + 1]])
-                    # Calculate backpropagation for next layer in iteration
-                    data.append(perceptron.backpropagate(
-                        encSumm[index][subindex], outboundWeights, encBackpropValues[index + 1]))
-            # Add all backpropagation values
-            encBackpropValues[index] = np.array(data)
-
-        return encBackpropValues, parallelBackpropValues, decBackpropValues
-
-    def __correctWeights(self, input, encBackprop, parallelBackprop, decBackprop, encActiv, decActiv, zMeanActiv, zLogVarActiv, sampledData):
-        """Method to corrects weights through the network
-
-        Parameters:
-            input --> Input point (with bias) to be forwarded
-
-            backpropagations --> Backpropagation values calculated through the backpropagation
-
-            activations --> Activation values calculated through the forward propagation
-        Returns:
-            Nothing, it updates the values across the network
-        """
-        # Correct weights
-        for index, layer in enumerate(self.encoder):
-            # Determine which data using depending on index
-            data = input if index == 0 else encActiv[index - 1]
-            # Call weight correction on each one
-            for subindex, p in enumerate(layer):
-                p.correctHiddenWeights(encBackprop[index][subindex], data)
-
-        # Correct weights
-        for index, layer in enumerate(self.parallelNetwork):
-            # Determine which data using depending on index
-            data = encActiv[-1]
-            # Call weight correction on each one
-            for subindex, p in enumerate(layer):
-                p.correctHiddenWeights(parallelBackprop[2 * index + subindex], data)
-
-        # Correct weights
-        for index, layer in enumerate(self.decoder):
-            # Determine which data using depending on index
-            data = sampledData if index == 0 else decActiv[index - 1]
-            # Call weight correction on each one
-            for subindex, p in enumerate(layer):
-                p.correctHiddenWeights(decBackprop[index][subindex], data)
-
-    def __computeInputError(self, actualData, predictedData, zMean, zLogVariance):
-        """Method to compute the ||X-X'||^2 distance error
-
-        Parameters:
-            actualData --> Expected data
-
-            predictedData --> Predicted data
-        Returns:
-            Float, error calculated
-        """
-        print(predictedData)
-        xentLoss = -1 * predictedData.shape[0] * \
-            np.dot(actualData, np.log(predictedData))
-        klLoss = -0.5 * np.sum(1 + zLogVariance -
-                               (zMean**2) - np.exp(zLogVariance))
-        return np.mean(xentLoss + klLoss)
-
-    def __calculateError(self, input, expected):
-        """Method to calculate the error of the network
-
-        Parameters:
-            input --> All the input points
-
-            expected --> All the expected values for those input points
-        Returns:
-            Float, error calculated across the network
-        """
-        error = 0
-        for i in range(len(input)):
-            # Propagate to get the last activation value
-            _, _, _, decActiv, _, zMeanActiv, _, zLogVarActiv, _, _ = self.__forwardPropagate(
-                input[i])
-            # print(expected[i][1:], activ[-1])
-            error = error + \
-                self.__computeInputError(
-                    expected[i][1:], decActiv[-1], zMeanActiv, zLogVarActiv)
-        return error
-
     def predict(self, input):
         """Method to calculate a prediction given the input
 
@@ -302,8 +155,8 @@ class VaeNetwork:
         Returns:
             np.array with the predicted value
         """
-        _, activ = self.__forwardPropagate(input)
-        return activ[-1]
+        _, _, _, decActiv, _, zMeanActiv, _, zLogVarActiv, _, _ = self.__forwardPropagate(input)
+        return decActiv[-1]
 
     def generate(self, latentInputs):
         """Method to generate a new datapoint from the latent code
@@ -322,49 +175,88 @@ class VaeNetwork:
             results.append([latentInput, activ[-1]])
         return results
 
-    def train(self, input):
-        """Method to train the neural network instance based on a training input set
+    def __computeInputError(self, actualData, predictedData, zMean, zLogVariance):
+        """Method to compute the ||X-X'||^2 distance error
 
         Parameters:
-            input --> Values to train the network with
+            actualData --> Expected data
+
+            predictedData --> Predicted data
         Returns:
-            Nothing, it trains the network
+            Float, error calculated
         """
-        trainingSize = input.shape[0]
-        iterations = 0
-        error = 1
-        errors = []
-        try:
-            # Iterate while iterations less than config and error less than config
-            while iterations < self.config.iterations and error > self.config.error:
-                # Print the iteration number in place
-                printIterationsInPlace(iterations)
-                # Getting a random index order
-                indexes = getRandomDatasetOrder(trainingSize)
-                # Reset latent code
-                # if self.config.plotLatent:
-                #     self.latentCode = []
-                # Iterate through the dataset order
-                for itemIndex in indexes:
-                    # Forward propagation
-                    encSumm, encActiv, decSumm, decActiv, zMeanSumm, zMeanActiv, zLogVarSumm, zLogVarActiv, eSample, sampledData = self.__forwardPropagate(
-                        input[itemIndex])
-                    # Backpropagation
-                    encBackprop, parallelBackprop, decBackprop = self.__backPropagate(
-                        input[itemIndex], encSumm, encActiv, decSumm, decActiv, zMeanSumm, zMeanActiv, zLogVarSumm, zLogVarActiv, eSample)
-                    # Weight correction
-                    self.__correctWeights(
-                        input[itemIndex], encBackprop, parallelBackprop, decBackprop, encActiv, decActiv, zMeanActiv, zLogVarActiv, sampledData)
-                # Calculate error once epoch is finished
-                error = self.__calculateError(input, input)
-                print(error)
-                errors.append(error)
-                # Increment iterations
-                iterations += 1
-            # Printing the error
-            print(f'Final loss is {errors[-1]}')
-            # Plotting the latent code
-            # if self.config.plotLatent:
-            #     plotLatentSpace(self.latentCode)
-        except KeyboardInterrupt:
-            print("Finishing up...")
+        # print(predictedData)
+        # xentLoss = -1 * predictedData.shape[0] * \
+        #     np.dot(actualData, np.log(predictedData))
+        # klLoss = -0.5 * np.sum(1 + zLogVariance -
+        #                        (zMean**2) - np.exp(zLogVariance))
+        # return np.mean(xentLoss + klLoss)
+
+        # Aca se computa la cross entropy entre los "labels" x que son los valores 0/1 de los pixeles, y lo que salió al final del Decoder.
+        actualData = tf.convert_to_tensor(actualData, dtype=tf.float32)
+        predictedData = tf.convert_to_tensor(predictedData, dtype=tf.float32)
+        zMean = tf.convert_to_tensor(zMean, dtype=tf.float32)
+        zLogVariance = tf.convert_to_tensor(zLogVariance, dtype=tf.float32)
+        xent_loss = (predictedData.shape[0]) * keras.metrics.binary_crossentropy(actualData, predictedData) # x-^X
+        kl_loss = - 0.5 * keras.backend.sum(1 + zLogVariance - keras.backend.square(zMean) - keras.backend.exp(zLogVariance), axis=-1)
+        vae_loss = keras.backend.mean(xent_loss + kl_loss)
+        # print(xent_loss, kl_loss)
+        return vae_loss
+
+    def __flattenNetwork(self):
+        weightMatrix = []
+        # Matrix with all the weights as rows
+        for layer in self.encoder:
+            for perceptron in layer:
+                weightMatrix.append(perceptron.getWeights()) 
+        for layer in self.parallelNetwork:
+            for perceptron in layer:
+                weightMatrix.append(perceptron.getWeights()) 
+        for layer in self.decoder:
+            for perceptron in layer:
+                weightMatrix.append(perceptron.getWeights()) 
+        
+        weightMatrix = np.array(weightMatrix, dtype=object)
+        # Flatten the weights matrix to be an array
+        return np.hstack(weightMatrix)
+
+    def __rebuildNetwork(self, flatWeights):
+        wIndex = 0
+        for layer in self.encoder:
+            for perceptron in layer:
+                perceptron.setWeights(flatWeights[wIndex:wIndex+perceptron.weightsAmount])
+                wIndex += perceptron.weightsAmount
+        for layer in self.parallelNetwork:
+            for perceptron in layer:
+                perceptron.setWeights(flatWeights[wIndex:wIndex+perceptron.weightsAmount])
+                wIndex += perceptron.weightsAmount
+        for layer in self.decoder:
+            for perceptron in layer:
+                perceptron.setWeights(flatWeights[wIndex:wIndex+perceptron.weightsAmount])
+                wIndex += perceptron.weightsAmount
+
+    def __loss(self, weights, input, expected):
+        self.__rebuildNetwork(weights)
+        # print(weights)
+        error = 0
+        for i in range(len(input)):
+            # Propagate to get the last activation value
+            _, _, _, decActiv, _, zMeanActiv, _, zLogVarActiv, _, _ = self.__forwardPropagate(
+                input[i])
+            # print(expected[i][1:], decActiv[-1])
+            _error = self.__computeInputError(expected[i][1:], decActiv[-1], zMeanActiv, zLogVarActiv).numpy()
+            error = error + _error
+        print(error)
+        return error
+
+    def trainMinimizer(self, input, optimizer):
+        flattenedWeights = self.__flattenNetwork()
+        print(flattenedWeights.shape)
+        # Minimize the cost function
+        res = optimize.basinhopping(func=self.__loss, x0=flattenedWeights, disp=True, minimizer_kwargs={"args":(input, input), "method": "L-BFGS-B", "options": {"disp": True}})
+        # res = adam(fun=self.__loss, x0=flattenedWeights, args=(input, input))
+        # Rebuild the weights matrix
+        self.__rebuildNetwork(flattenedWeights)
+        # Error of the cost function
+        error = res.fun
+        print(f'Final loss is {error}')
