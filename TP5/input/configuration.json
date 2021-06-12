@@ -1,18 +1,18 @@
 {
     "files": {
-        "input": "datasets/font-small.txt"
+        "input": "datasets/cartoons-small/"
     },
-    "mode": "denoiser",
+    "mode": "generative",
     "optimizer": "TNC",
     "noise": {
         "count": 5,
         "probability": 0.2
     },
-    "iterations": 100,
-    "learningRate": 0.005,
+    "iterations": 50,
+    "learningRate": 0.01,
     "beta": 1,
     "error": 0.001,
-    "momentum": true,
+    "momentum": false,
     "calculateMetrics": false,
     "plotLatent": true,
     "alpha": 0.8,
@@ -20,23 +20,11 @@
     "layers": [
         {
             "activation": "nonlinear",
-            "perceptrons": 35
+            "perceptrons": 625
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 25
-        },
-        {
-            "activation": "nonlinear",
-            "perceptrons": 15
-        },
-        {
-            "activation": "nonlinear",
-            "perceptrons": 10
-        },
-        {
-            "activation": "nonlinear",
-            "perceptrons": 5
+            "perceptrons": 500
         },
         {
             "activation": "nonlinear",
@@ -44,23 +32,11 @@
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 5
+            "perceptrons": 500
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 10
-        },
-        {
-            "activation": "nonlinear",
-            "perceptrons": 15
-        },
-        {
-            "activation": "nonlinear",
-            "perceptrons": 25
-        },
-        {
-            "activation": "nonlinear",
-            "perceptrons": 35
+            "perceptrons": 625
         }
     ]
 }

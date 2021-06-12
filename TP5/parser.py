@@ -1,6 +1,9 @@
 # Lib imports
-from numpy import array
+from numpy import array, concatenate
+from PIL import Image
 import json
+from os import listdir
+from os.path import isfile, join
 # Local imports
 from constants import FILES, LAYERS, ConfigOptions
 from config import Config
@@ -15,6 +18,18 @@ def parseInput(filepath):
         for line in lines:
             data.append(array([1.0] + [float(elem) for elem in line.strip().split()]))
     return array(data)
+
+def parseImages(directory):
+    data = []
+    size = None
+    images = [join(directory, f) for f in listdir(directory) if isfile(join(directory, f))]
+    for image in images:
+        img = Image.open(image)
+        size = img.size
+        greyscaleImg = img.convert(mode="1", dither=Image.NONE)
+        grayscalePixels = array(greyscaleImg.getdata())/255
+        data.append(concatenate((array([1]), grayscalePixels)))
+    return array(data), size
 
 # Parses the configuration
 def parseConfiguration(configPath):

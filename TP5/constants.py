@@ -17,7 +17,7 @@ class ActivationOptions(enum.Enum):
 class ModeOptions(enum.Enum):
    NORMAL = "normal"
    DENOISER = "denoiser"
-   VARIACIONAL = "variacional"
+   GENERATIVE = "generative"
    OPTIMIZER = "optimizer"
 
    def __str__(self):

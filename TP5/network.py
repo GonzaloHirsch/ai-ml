@@ -261,6 +261,19 @@ class Network:
             results.append([latentInput, activ[-1]])
         return results
 
+    def generateFromPoint(self, latentInput):
+        """Method to generate a new datapoint from the latent code
+
+        Parameters:
+            latentInputs --> Array of arrays with 2 elements to be fed into the decoder
+        Returns:
+            results --> Array of values where each value is an array of [latentInput, activationResult]
+        """
+        # Start index is the index of the latent layer + 1
+        startIndex = np.ceil(self.networkSize/2)
+        _, activ = self.__forwardPropagate(input, offsetStart=startIndex, offsetValues=latentInput)
+        return activ[-1]
+
     def train(self, input, expected):
         """Method to train the neural network instance based on a training input set
 
