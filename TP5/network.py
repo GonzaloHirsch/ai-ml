@@ -4,7 +4,7 @@ from scipy.optimize import minimize
 # Local imports
 from perceptron import Perceptron
 from helper import printIterationsInPlace, getRandomDatasetOrder
-from graphing import plotLatentSpace
+from graphing import plotLatentSpace, plotError
 
 class Network:
     """Class to represent a Neural Network made of Perceptrons and the methods to train and predict with it
@@ -21,6 +21,7 @@ class Network:
         self.config = config
         # Latent code data
         self.latentCode = []
+        self.optimizerError = []
 
     def __createNetwork(self, config, inputSize):
         """Method to dynamically build the network
@@ -327,21 +328,20 @@ class Network:
 
     def cost(self, flatWeights, input, expected):
         self.__rebuildNetwork(flatWeights)
-        error = self.__calculateError(input, expected)
+        error = self.__calculateError(input, expected)/input.shape[0]
+        self.optimizerError.append(error)
         print('ERROR', error)
         return error
 
     def trainMinimizer(self, input, optimizer):
         # Flatten the weights matrix
         flattenedWeights = self.__flattenNetwork()
-        print(flattenedWeights.shape)
         # Minimize the cost function
-        res = minimize(fun=self.cost, x0=flattenedWeights, args=(input, input), method=optimizer)
-        # res = minimize(fun=self.cost, x0=flattenedWeights, args=(input, input), method=optimizer, options={'maxiter':10})
+        res = minimize(fun=self.cost, x0=flattenedWeights, args=(input, input), method=optimizer, options={'maxfun': self.config.iterations, 'maxfev': self.config.iterations, 'maxiter': 1, 'disp': True})
         # Rebuild the weights matrix
         self.__rebuildNetwork(flattenedWeights)
         # Error of the cost function
         error = res.fun
         print(f'Final loss is {error}')
-
+        plotError(self.optimizerError)
         return error

@@ -19,15 +19,23 @@ La configuración del programa se realiza desde el archivo `input/configuration.
 ```json
 {
     "files": {
-        "input": "datasets/TP3-ej2-Conjuntoentrenamiento.txt"
+        "input": "datasets/font.txt"
     },
-    "iterations": 2000,
-    "learningRate": 0.01,
+    "mode": "optimizer",
+    "optimizer": "TNC",
+    "noise": {
+        "count": 5,
+        "probability": 0.2
+    },
+    "iterations": 15000,
+    "learningRate": 0.005,
     "beta": 1,
     "error": 0.001,
     "momentum": true,
     "calculateMetrics": false,
+    "plotLatent": false,
     "alpha": 0.8,
+    "generatorPoints": [[0.5, 0.6], [0.2, 0.75], [0.1, 0.9], [0.9, -0.5]],
     "layers": [
         {
             "activation": "nonlinear",
@@ -35,7 +43,7 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 17
+            "perceptrons": 25
         },
         {
             "activation": "nonlinear",
@@ -43,17 +51,23 @@ La configuración del programa se realiza desde el archivo `input/configuration.
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 17
+            "perceptrons": 25
         },
         {
             "activation": "nonlinear",
-            "perceptrons": 36
+            "perceptrons": 35
         }
     ]
 }
 ```
 
 Los posibles valores de cada campo son:
+* `mode` --> Modo que se usa de Autoencoder, los valores pueden ser:
+    * `normal` --> Autoencoder normal
+    * `denoiser` --> Autoencoder preparado para entrenar de modo denoiser
+    * `generativo` --> Autoencoder preparado para entrenar y generar datos nuevos
+    * `optimizer` --> Autoencoder para entrenar con un optimizador
+* `optimizer` --> Optimizador usado solo con `mode: optimizer`, posibles valores son [`Nelder-Mead`, `Powell`, `CG`, `BFGS`, `L-BFGS-B`, `TNC`]
 * `iterations` --> Número entero mayor a 0, cantidad de iteraciones que se hacen
 * `learningRate` --> Número decimal menor a 1, learning rate del programa (buen valor = `0.001`)
 * `error` --> Número decimal menor a 1, cota de error (buen valor = `0.05`)
@@ -61,9 +75,15 @@ Los posibles valores de cada campo son:
 * `beta` --> Beta a ser usado en la función `tanh` siendo `tanh(beta * x)`
 * `momentum` --> Activa el momentum, `true` o `false`
 * `alpha` --> Alpha para el momentum, número entre 0 y 1
+* `plotLatent` --> Booleano que define si se hace un gráfico del espacio latente. NO sirve con el `mode: optimizer`
+* `generatorPoints`--> Array de arrays JSON, cada sub array tiene 2 elementos, un X e Y que se usan para generar muestras nuevas desde el espacio latente
 
 Dentro del objeto `files` debe ir:
 * `input` --> Path desde el root del proyecto al archivo con los datos de training
+
+Dentro del objeto `noise` debe ir (sólo para `mode: denoiser`):
+* `count` --> Cantidad de letras diferentes usadas para entrenar
+* `probability` --> Probabilidad de ruido, decimal entre 0 y 1
 
 Dentro de cada objeto de `layers` (el orden de las capas es según se define en este arreglo):
 * `activation` --> Función de activación para esa capa
@@ -72,15 +92,9 @@ Dentro de cada objeto de `layers` (el orden de las capas es según se define en 
     * `nonlinear` --> Función Sigmoidea (tanh)
 * `perceptrons` --> Cantidad de perceptrones en esa capa
 
-OPTIMIZADORES = 'L-BFGS-B'
-
-**NOTA**: Se agregaron ejemplos de configuraciones en la carpeta `input`
-
 ## Datasets
 
-Se recomienda agregar una carpeta `datasets` que ya está ignorada en el `.gitignore`. Ahí dentro se pueden poner los datos de entrada. En [este link](https://drive.google.com/drive/folders/1N8HqoasPf_8VuInag2kxV2yUFMki2RB-?usp=sharing) pueden encontrar datasets para cada problema.
-
-Es recomendable que los datos del ejercicio 1 se formateen de manera idéntica al resto de los datasets.
+Se recomienda agregar una carpeta `datasets` que ya está ignorada en el `.gitignore`. Ahí dentro se pueden poner los datos de entrada. Se incluye la versión del archivo `font.h` usada por el grupo, el `font.txt` en la carpeta `input`.
 
 ## Ejecución
 
