@@ -313,12 +313,13 @@ class Network:
                     self.__correctWeights(
                         input[itemIndex], backpropagationValues, activationValues)
                 # Calculate error once epoch is finished
-                error = self.__calculateError(input, expected)
+                error = self.__calculateError(input, expected)/trainingSize
                 errors.append(error)
                 # Increment iterations
                 iterations += 1
             # Printing the error
             print(f'Final loss is {errors[-1]}')
+            plotError(errors)
             # Plotting the latent code
             if self.config.plotLatent:
                 plotLatentSpace(self.latentCode, latentLabels if labels != None else None)
