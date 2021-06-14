@@ -300,7 +300,7 @@ class Network:
                     latentLabels = []
                 # Iterate through the dataset order
                 for itemIndex in indexes:
-                    if self.config.plotLatent:
+                    if self.config.plotLatent and labels != None:
                         latentLabels.append(labels[itemIndex])
                     # Forward propagation
                     summationValues, activationValues = self.__forwardPropagate(
@@ -320,7 +320,7 @@ class Network:
             print(f'Final loss is {errors[-1]}')
             # Plotting the latent code
             if self.config.plotLatent:
-                plotLatentSpace(self.latentCode, latentLabels)
+                plotLatentSpace(self.latentCode, latentLabels if labels != None else None)
         except KeyboardInterrupt:
             print("Finishing up...")
 

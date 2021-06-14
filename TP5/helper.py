@@ -84,3 +84,24 @@ def adam(
 
     i += 1
     return OptimizeResult(x=x, fun=fun(x), jac=g, nit=i, nfev=i, success=True)
+
+
+def predictAndPrintResults(network, inputs, expected):
+    for i in range(0, len(inputs)):
+        print('Original Input:')
+        print(expected[i][1:].reshape((7, 5)))
+        print('Noise Input')
+        print(inputs[i][1:].reshape((7, 5)))
+        # Predict with the trained network
+        result = network.predict(inputs[i])
+        print('Result:')
+        print(np.array([0 if e < 0.5 else 1 for e in result]).reshape((7, 5)))
+
+def concatenateArrays(a1, a2):
+    result = []
+    for x in a1:
+        result.append(x)
+    for y in a2:
+        result.append(y)
+
+    return np.array(result)

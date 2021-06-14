@@ -6,12 +6,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 from sys import stdout
-from math import floor
+from math import exp, floor
 # Local imports
 import parser
 from network import Network
 from constants import ModeOptions
-from helper import createNoise
+from helper import createNoise, predictAndPrintResults, concatenateArrays
 
 CONFIG_INPUT = "input/configuration.json"
 
@@ -70,25 +70,47 @@ def trainMultilayerOptimizer(config, inputs, optimizer):
     #         print(f'Generated using {result[0]}:\n {result[1]}')
 
 def trainDenoiser(config, inputs):
+    # Cantidad de input a generar con ruido por caracter
+    repeatedInput = 3
     # Which inputs to use to generate noise
-    inputsCount = len(inputs);
-    indexes = [ x for x in range(0, inputsCount) ]
-    indexesSample = random.sample(indexes, config.noiseCount if config.noiseCount < inputsCount else inputsCount)
+    indexesSample = [7, 14, 16, 17, 21, 24, 25, 26, 29, 30]
+    # inputsCount = len(inputs)
+    # indexes = [ x for x in range(0, inputsCount) ]
+    # indexesSample = random.sample(indexes, config.noiseCount if config.noiseCount < inputsCount else inputsCount)
+    
+    inputCharacters = []
+    expected = []
+    for index in indexesSample:
+        inputCharacters.append(inputs[index])
+        for _ in range(0, repeatedInput):
+            expected.append(inputs[index])
+
     # Expected outcome 
-    expected = np.array([inputs[index] for index in indexesSample])
+    expected = np.array(expected)
     # Create noise with expected input
     noiseInput = np.array([createNoise(origInput, config.noiseProbability) for origInput in expected])
     
-    for i in range(0, len(indexesSample)):
-        print('Original Input:')
-        print(expected[i][1:].reshape((7, 5)))
-        print('Noise Input')
-        print(noiseInput[i][1:].reshape((7, 5)))
-
     # Create instance of the network
     network = Network(config, inputs.shape[1])
     # Train with noise
     network.train(noiseInput, expected)
+
+    print('#### TRAINING SET RESULTS ####')
+
+    predictAndPrintResults(network, noiseInput, expected)
+
+    predictNewNoise(config, network, inputCharacters)
+
+
+def predictNewNoise(config, network, expected):
+    print('#### NEW SET RESULTS ####')
+
+    newNoiseInputs = np.array([createNoise(origInput, config.noiseProbability) for origInput in expected])
+
+    inputs = concatenateArrays(newNoiseInputs, expected)
+    outputs = concatenateArrays(expected, expected)
+
+    predictAndPrintResults(network, inputs, outputs)
 
 
 # Parses data and triggers training

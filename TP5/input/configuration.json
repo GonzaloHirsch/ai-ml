@@ -2,14 +2,14 @@
     "files": {
         "input": "datasets/font.txt"
     },
-    "mode": "generative",
+    "mode": "denoiser",
     "optimizer": "TNC",
     "noise": {
-        "count": 5,
-        "probability": 0.2
+        "count": 10,
+        "probability": 0
     },
-    "iterations": 5000,
-    "learningRate": 0.005,
+    "iterations": 2000,
+    "learningRate": 0.001,
     "beta": 1,
     "error": 0.001,
     "momentum": true,
@@ -29,7 +29,7 @@
         {
             "activation": "nonlinear",
             "perceptrons": 2
-        },
+        },    
         {
             "activation": "nonlinear",
             "perceptrons": 25
