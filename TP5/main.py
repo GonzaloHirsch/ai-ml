@@ -25,8 +25,8 @@ def trainGenerative(config):
     network.train(inputs, inputs, labels)
     n = 25
     dimensions = (7, 5)
-    grid_x = np.linspace(-1, 1, n)
-    grid_y = np.linspace(-1, 1, n)
+    grid_x = np.linspace(0.05, 0.95, n)
+    grid_y = np.linspace(0.05, 0.95, n)
     figure = np.zeros((dimensions[0] * n, dimensions[1] * n))
     for i, yi in enumerate(grid_x):
         for j, xi in enumerate(grid_y):
@@ -62,12 +62,6 @@ def trainMultilayerOptimizer(config, inputs, optimizer):
     network = Network(config, inputs.shape[1])
     # Train the network
     error = network.trainMinimizer(inputs, optimizer)
-    # If generator points were given
-    # if len(config.generatorPoints) > 0:
-    #     results = network.generate(config.generatorPoints)
-    #     results = [[r[0], np.array([1 if e > 0.5 else 0 for e in r[1]]).reshape((7, 5))] for r in results]
-    #     for result in results:
-    #         print(f'Generated using {result[0]}:\n {result[1]}')
 
 def trainDenoiser(config, inputs):
     # Cantidad de input a generar con ruido por caracter
