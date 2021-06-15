@@ -2,6 +2,7 @@ from random import sample, uniform
 from sys import stdout
 import numpy as np
 from scipy.optimize import OptimizeResult
+import matplotlib.pyplot as plt
 import os
 
 OUTPUT_DIR = 'output/'
@@ -96,6 +97,21 @@ def predictAndPrintResults(network, inputs, expected):
         result = network.predict(inputs[i])
         print('Result:')
         print(np.array([0 if e < 0.5 else 1 for e in result]).reshape((7, 5)))
+
+def printCharacter(matrix):
+    # Parse input images
+    dimensions = (7, 5)
+    figure = np.zeros((dimensions[0], dimensions[1]))
+
+    for i in range(0, 7):
+        for j in range (0, 5):
+            matrix[i][j] = 1 if matrix[i][j] == 0 else 0
+    
+    figure = matrix
+            
+    plt.figure(figsize=(7, 7))
+    plt.imshow(figure, cmap='Greys_r')
+    plt.show()
 
 def concatenateArrays(a1, a2):
     result = []
